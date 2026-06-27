@@ -10,6 +10,83 @@ import AddPostModal from "@/components/admin/AddPostModal";
 
 const PAGE_SIZE = 9;
 
+type Filters = {
+  search: string;
+  genre: string;
+  director: string;
+  year: string;
+  postType: string;
+  sort: string;
+};
+
+function FilterPanel({ filters, setFilters, setPage, allGenres, allDirectors, allYears }: {
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  allGenres: string[];
+  allDirectors: string[];
+  allYears: number[];
+}) {
+  function update(key: keyof Filters, value: string) {
+    setFilters((f) => ({ ...f, [key]: value }));
+    if (key !== "sort") setPage(1);
+  }
+
+  return (
+    <div className="space-y-5 text-sm">
+      <div>
+        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Αναζήτηση</label>
+        <input
+          value={filters.search}
+          onChange={(e) => update("search", e.target.value)}
+          placeholder="Τίτλος, περιεχόμενο..."
+          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]"
+        />
+      </div>
+      <div>
+        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Είδος</label>
+        <select value={filters.genre} onChange={(e) => update("genre", e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          <option value="">Όλα</option>
+          {allGenres.map((g) => <option key={g} value={g}>{g}</option>)}
+        </select>
+      </div>
+      <div>
+        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Σκηνοθέτης</label>
+        <select value={filters.director} onChange={(e) => update("director", e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          <option value="">Όλοι</option>
+          {allDirectors.map((d) => <option key={d} value={d}>{d}</option>)}
+        </select>
+      </div>
+      <div>
+        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Έτος</label>
+        <select value={filters.year} onChange={(e) => update("year", e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          <option value="">Όλα</option>
+          {allYears.map((y) => <option key={y} value={y}>{y}</option>)}
+        </select>
+      </div>
+      <div>
+        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Τύπος</label>
+        <select value={filters.postType} onChange={(e) => update("postType", e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          <option value="">Όλοι</option>
+          {["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"].map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+      </div>
+      <div>
+        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Ταξινόμηση</label>
+        <select value={filters.sort} onChange={(e) => update("sort", e.target.value)}
+          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          <option value="date">Ημερομηνία</option>
+          <option value="rating">Βαθμολογία</option>
+        </select>
+      </div>
+    </div>
+  );
+}
+
 function PostsContent() {
   const { posts } = usePosts();
   const { isLoggedIn } = useAuth();
@@ -55,55 +132,7 @@ function PostsContent() {
     setPage(1);
   }
 
-  const FilterPanel = () => (
-    <div className="space-y-5 text-sm">
-      <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Αναζήτηση</label>
-        <input value={filters.search} onChange={(e) => { setFilters({ ...filters, search: e.target.value }); setPage(1); }}
-          placeholder="Τίτλος, περιεχόμενο..." className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]" />
-      </div>
-      <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Είδος</label>
-        <select value={filters.genre} onChange={(e) => { setFilters({ ...filters, genre: e.target.value }); setPage(1); }}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
-          <option value="">Όλα</option>
-          {allGenres.map((g) => <option key={g} value={g}>{g}</option>)}
-        </select>
-      </div>
-      <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Σκηνοθέτης</label>
-        <select value={filters.director} onChange={(e) => { setFilters({ ...filters, director: e.target.value }); setPage(1); }}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
-          <option value="">Όλοι</option>
-          {allDirectors.map((d) => <option key={d} value={d}>{d}</option>)}
-        </select>
-      </div>
-      <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Έτος</label>
-        <select value={filters.year} onChange={(e) => { setFilters({ ...filters, year: e.target.value }); setPage(1); }}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
-          <option value="">Όλα</option>
-          {allYears.map((y) => <option key={y} value={y}>{y}</option>)}
-        </select>
-      </div>
-      <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Τύπος</label>
-        <select value={filters.postType} onChange={(e) => { setFilters({ ...filters, postType: e.target.value }); setPage(1); }}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
-          <option value="">Όλοι</option>
-          {["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"].map((t) => <option key={t} value={t}>{t}</option>)}
-        </select>
-      </div>
-      <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Ταξινόμηση</label>
-        <select value={filters.sort} onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
-          <option value="date">Ημερομηνία</option>
-          <option value="rating">Βαθμολογία</option>
-        </select>
-      </div>
-    </div>
-  );
+  const panelProps = { filters, setFilters, setPage, allGenres, allDirectors, allYears };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -137,7 +166,7 @@ function PostsContent() {
       <div className="flex gap-6">
         <aside className="hidden md:block w-56 flex-shrink-0">
           <div className="bg-white border border-zinc-200 rounded-xl p-5 sticky top-4">
-            <FilterPanel />
+            <FilterPanel {...panelProps} />
           </div>
         </aside>
 
@@ -170,7 +199,7 @@ function PostsContent() {
               <h2 className="font-bold text-zinc-800">Φίλτρα</h2>
               <button onClick={() => setDrawerOpen(false)}><X className="w-5 h-5 text-zinc-500" /></button>
             </div>
-            <FilterPanel />
+            <FilterPanel {...panelProps} />
           </div>
         </div>
       )}

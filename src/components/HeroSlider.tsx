@@ -21,62 +21,73 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
   const post = posts[current];
 
   return (
-    <div className="relative h-[500px] md:h-[600px] overflow-hidden rounded-xl">
+    <div className="relative h-[480px] md:h-[580px] overflow-hidden">
       <Image
         src={post.image}
         alt={post.title}
         fill
-        className="object-cover transition-opacity duration-500"
+        className="object-cover transition-opacity duration-700"
         priority
         sizes="100vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+      {/* Dark gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/60 via-transparent to-transparent" />
 
-      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="bg-[#009DF8] text-white text-xs font-bold px-3 py-1 rounded-full">
+      {/* Content */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 text-white">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="font-inter text-xs font-semibold uppercase tracking-[0.2em] bg-[#009DF8] text-white px-3 py-1.5">
             {post.postType}
           </span>
           {post.rating && (
-            <span className="flex items-center gap-1 bg-black/50 text-yellow-400 text-xs px-2 py-1 rounded-full">
-              <Star className="w-3 h-3 fill-yellow-400" />
-              {post.rating}
+            <span className="flex items-center gap-1 font-inter text-sm font-semibold text-yellow-400">
+              <Star className="w-3.5 h-3.5 fill-yellow-400" />
+              {post.rating}/10
+            </span>
+          )}
+          {post.genre?.[0] && (
+            <span className="font-inter text-xs uppercase tracking-widest text-zinc-400">
+              {post.genre[0]}
             </span>
           )}
         </div>
-        <h2 className="text-3xl md:text-5xl font-serif font-bold mb-2 drop-shadow-lg">
+
+        <h2 className="font-serif font-black italic text-5xl md:text-7xl leading-none mb-4 max-w-3xl drop-shadow-lg">
           {post.title}
         </h2>
-        <p className="text-white/90 text-sm md:text-base max-w-2xl mb-4 drop-shadow">
+        <p className="font-inter text-white/75 text-base md:text-lg max-w-xl mb-8 leading-relaxed">
           {post.subtitle}
         </p>
         <Link
           href={`/posts/${post.slug}`}
-          className="inline-block bg-[#009DF8] hover:bg-[#007fd0] text-white px-6 py-2.5 rounded-full font-semibold text-sm transition-colors"
+          className="inline-block font-inter text-sm font-semibold uppercase tracking-widest bg-[#009DF8] hover:bg-white hover:text-zinc-900 text-white px-6 py-3 transition-colors"
         >
           Διαβάστε Περισσότερα →
         </Link>
       </div>
 
+      {/* Arrows */}
       <button
         onClick={() => setCurrent((c) => (c - 1 + posts.length) % posts.length)}
-        className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-zinc-900/60 hover:bg-zinc-900 text-white p-3 transition-colors"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={() => setCurrent((c) => (c + 1) % posts.length)}
-        className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-colors"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-900/60 hover:bg-zinc-900 text-white p-3 transition-colors"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+      {/* Dots */}
+      <div className="absolute bottom-6 right-8 flex gap-1.5">
         {posts.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrent(i)}
-            className={`w-2 h-2 rounded-full transition-colors ${i === current ? "bg-white" : "bg-white/40"}`}
+            className={`h-0.5 transition-all ${i === current ? "w-8 bg-[#009DF8]" : "w-4 bg-white/40"}`}
           />
         ))}
       </div>

@@ -1,10 +1,25 @@
 @import "tailwindcss";
 
+@theme {
+  --font-serif: var(--font-serif);
+  --font-pixel: var(--font-pixel);
+  --font-inter: var(--font-inter);
+}
+
+.font-serif   { font-family: var(--font-serif), serif; }
+.font-pixel   { font-family: var(--font-pixel), monospace; }
+.font-inter   { font-family: var(--font-inter), sans-serif; }
+
 @keyframes marquee {
-  0% { transform: translateX(0); }
+  0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+.animate-marquee { animation: marquee 30s linear infinite; }
+
+@keyframes marquee-slow {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
+
+.animate-marquee-slow { animation: marquee-slow 60s linear infinite; }

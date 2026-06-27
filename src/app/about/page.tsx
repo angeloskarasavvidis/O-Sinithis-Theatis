@@ -1,16 +1,13 @@
 export default function AboutPage() {
   const stats = [
-    { label: "Κριτικές", value: "150+" },
+    { label: "Κριτικές", value: "10+" },
     { label: "Σκηνοθέτες", value: "80+" },
-    { label: "Χρόνια Online", value: "5" },
-    { label: "Μηνιαίοι Αναγνώστες", value: "12K+" },
+    { label: "Χρόνια Online", value: "< 1" },
   ];
 
   const team = [
-    { name: "Αγγελος Καρασαββίδης", role: "Ιδρυτής & Αρχισυντάκτης", bio: "Κινηματογραφόφιλος από το 2010 με ειδίκευση στο ευρωπαϊκό art house cinema." },
-    { name: "Μαρία Παπαδοπούλου", role: "Κριτικός Κινηματογράφου", bio: "Σπούδασε κινηματογράφο στο Παρίσι. Ειδικεύεται στις γαλλόφωνες παραγωγές." },
-    { name: "Νίκος Αλεξίου", role: "Αρθρογράφος", bio: "Λάτρης του τρόμου και της επιστημονικής φαντασίας με διεθνές κοινό." },
-  ];
+    { name: "Αγγελος Καρασαββίδης", role: "Ιδρυτής & Αρχισυντάκτης", bio: "Δήθεν σινεφίλ με ειδίκευση στο να το παίζει ψαγμένος." },
+ ];
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
@@ -19,7 +16,7 @@ export default function AboutPage() {
           Σχετικά με τον <span className="text-[#009DF8]">Συνήθη Θεατή</span>
         </h1>
         <p className="text-lg text-zinc-500 max-w-2xl mx-auto leading-relaxed">
-          Είμαστε μια ομάδα παθιασμένων κινηματογραφόφιλων που πιστεύουμε ότι κάθε ταινία έχει κάτι να μας πει — αρκεί να ξέρουμε πώς να ακούμε.
+          Μια σελίδα για όσους θέλουν να έρθουν πιο κοντά στο σινεμά.
         </p>
       </div>
 
@@ -51,7 +48,7 @@ export default function AboutPage() {
       <section className="bg-[#009DF8]/5 border border-[#009DF8]/20 rounded-2xl p-8 text-center">
         <h2 className="text-xl font-bold text-zinc-800 mb-3">Επικοινωνία</h2>
         <p className="text-zinc-500 mb-4">Θέλεις να συνεργαστείς μαζί μας ή να μοιραστείς τις απόψεις σου;</p>
-        <a href="mailto:info@osynthiseatist.gr" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#007fd0] transition-colors">
+        <a href="mailto:osinithistheatis@gmail.com" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#007fd0] transition-colors">
           Επικοινωνήστε μαζί μας
         </a>
       </section>

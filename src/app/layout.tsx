@@ -1,14 +1,28 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Noto_Serif_Display, Press_Start_2P, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { PostsProvider } from "@/context/PostsContext";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const geist = Geist({ subsets: ["latin"] });
+const notoSerifDisplay = Noto_Serif_Display({
+  subsets: ["latin", "greek"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+});
+
+const pressStart = Press_Start_2P({
+  subsets: ["latin", "greek"],
+  weight: "400",
+  variable: "--font-pixel",
+});
+
+const inter = Inter({
+  subsets: ["latin", "greek"],
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: "Ο Συνήθης Θεατής",
@@ -18,11 +32,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="el">
-      <body className={`${geist.className} bg-[#FAFAF7] text-zinc-800 antialiased`}>
+      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} font-serif bg-[#F5F4EF] text-zinc-900 antialiased`}>
         <AuthProvider>
           <PostsProvider>
-            <AnnouncementBar />
-            <Header />
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />
