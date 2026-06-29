@@ -35,10 +35,13 @@ export default function AddPostModal({ onClose }: Props) {
     genre: [] as string[],
   });
 
+  const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
+
   function toggleGenre(g: string) {
-    setForm((f) => ({
-      ...f,
-      genre: f.genre.includes(g) ? f.genre.filter((x) => x !== g) : [...f.genre, g],
+    setForm((prev) => ({
+      ...prev,
+      genre: prev.genre.includes(g) ? prev.genre.filter((x) => x !== g) : [...prev.genre, g],
     }));
   }
 
@@ -52,7 +55,7 @@ export default function AddPostModal({ onClose }: Props) {
       excerpt: form.excerpt,
       content: form.content,
       author: form.author,
-      date: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString(),
       readingTime: Math.max(1, Math.ceil(form.content.length / 1000)),
       genre: form.genre,
       director: form.director,
@@ -84,36 +87,36 @@ export default function AddPostModal({ onClose }: Props) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <Field label="Τίτλος *">
-            <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={input} />
+            <input required value={form.title} onChange={(e) => set("title", e.target.value)} className={input} />
           </Field>
           <Field label="Υπότιτλος">
-            <input value={form.subtitle} onChange={(e) => setForm({ ...form, subtitle: e.target.value })} className={input} />
+            <input value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} className={input} />
           </Field>
           <Field label="Σύνοψη *">
-            <textarea required value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} rows={2} className={input} />
+            <textarea required value={form.excerpt} onChange={(e) => set("excerpt", e.target.value)} rows={2} className={input} />
           </Field>
           <Field label="Περιεχόμενο (HTML) *">
-            <textarea required value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={5} className={input} />
+            <textarea required value={form.content} onChange={(e) => set("content", e.target.value)} rows={5} className={input} />
           </Field>
           <div className="grid grid-cols-2 gap-4">
             <Field label="Συγγραφέας *">
-              <input required value={form.author} onChange={(e) => setForm({ ...form, author: e.target.value })} className={input} />
+              <input required value={form.author} onChange={(e) => set("author", e.target.value)} className={input} />
             </Field>
             <Field label="Σκηνοθέτης">
-              <input value={form.director} onChange={(e) => setForm({ ...form, director: e.target.value })} className={input} />
+              <input value={form.director} onChange={(e) => set("director", e.target.value)} className={input} />
             </Field>
             <Field label="Έτος">
-              <input type="number" value={form.year} onChange={(e) => setForm({ ...form, year: Number(e.target.value) })} className={input} />
+              <input type="number" value={form.year} onChange={(e) => set("year", Number(e.target.value))} className={input} />
             </Field>
             <Field label="Βαθμολογία (1-10)">
-              <input type="number" step="0.1" min="1" max="10" value={form.rating} onChange={(e) => setForm({ ...form, rating: e.target.value })} className={input} />
+              <input type="number" step="0.1" min="1" max="10" value={form.rating} onChange={(e) => set("rating", e.target.value)} className={input} />
             </Field>
           </div>
 
           <Field label="Τύπος Άρθρου">
             <div className="flex flex-wrap gap-2">
               {POST_TYPES.map((t) => (
-                <button key={t} type="button" onClick={() => setForm({ ...form, postType: t })}
+                <button key={t} type="button" onClick={() => set("postType", t)}
                   className={`px-3 py-1 rounded-full text-sm border transition-colors ${form.postType === t ? "bg-[#009DF8] text-white border-[#009DF8]" : "border-zinc-300 text-zinc-600 hover:border-[#009DF8]"}`}>
                   {t}
                 </button>
@@ -135,7 +138,7 @@ export default function AddPostModal({ onClose }: Props) {
           <Field label="Badge">
             <div className="flex flex-wrap gap-2">
               {["", ...BADGES].map((b) => (
-                <button key={b} type="button" onClick={() => setForm({ ...form, badge: b as Post["badge"] | "" })}
+                <button key={b} type="button" onClick={() => set("badge", b as Post["badge"] | "")}
                   className={`px-3 py-1 rounded-full text-sm border transition-colors ${form.badge === b ? "bg-zinc-800 text-white border-zinc-800" : "border-zinc-300 text-zinc-600"}`}>
                   {b || "Κανένα"}
                 </button>
@@ -144,15 +147,15 @@ export default function AddPostModal({ onClose }: Props) {
           </Field>
 
           <Field label="Εικόνα">
-            <ImageUploader value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
+            <ImageUploader value={form.image} onChange={(url) => set("image", url)} />
           </Field>
 
           <Field label="Tags (κόμμα)">
-            <input value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} placeholder="Oscar, Νόλαν, ..." className={input} />
+            <input value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="Oscar, Νόλαν, ..." className={input} />
           </Field>
 
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+            <input type="checkbox" checked={form.featured} onChange={(e) => set("featured", e.target.checked)}
               className="w-4 h-4 accent-[#009DF8]" />
             <span className="text-sm text-zinc-700">Προβολή στο Hero Slider</span>
           </label>

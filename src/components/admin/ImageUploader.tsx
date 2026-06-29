@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Upload, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -11,8 +11,13 @@ interface Props {
 
 export default function ImageUploader({ value, onChange }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const onChangeRef = useRef(onChange);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -35,7 +40,7 @@ export default function ImageUploader({ value, onChange }: Props) {
     }
 
     const { data } = supabase.storage.from("images").getPublicUrl(path);
-    onChange(data.publicUrl);
+    onChangeRef.current(data.publicUrl);
     setUploading(false);
   }
 
