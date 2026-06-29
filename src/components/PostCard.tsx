@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Trash2 } from "lucide-react";
+import { Star, Trash2, Pencil } from "lucide-react";
 import { Post } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { usePosts } from "@/context/PostsContext";
+import EditPostModal from "@/components/admin/EditPostModal";
 
 const postTypeColors: Record<string, string> = {
   Κριτική: "bg-[#009DF8] text-white",
@@ -17,6 +19,7 @@ const postTypeColors: Record<string, string> = {
 export default function PostCard({ post }: { post: Post }) {
   const { isLoggedIn } = useAuth();
   const { removePost } = usePosts();
+  const [showEdit, setShowEdit] = useState(false);
 
   function handleDelete(e: React.MouseEvent) {
     e.preventDefault();
@@ -72,14 +75,25 @@ export default function PostCard({ post }: { post: Post }) {
       </div>
 
       {isLoggedIn && (
-        <button
-          onClick={handleDelete}
-          className="absolute top-8 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 bg-red-600 text-white hover:bg-red-700"
-          title="Διαγραφή"
-        >
-          <Trash2 className="w-3 h-3" />
-        </button>
+        <div className="absolute top-8 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={(e) => { e.preventDefault(); setShowEdit(true); }}
+            className="p-1.5 bg-zinc-800 text-white hover:bg-[#009DF8]"
+            title="Επεξεργασία"
+          >
+            <Pencil className="w-3 h-3" />
+          </button>
+          <button
+            onClick={handleDelete}
+            className="p-1.5 bg-red-600 text-white hover:bg-red-700"
+            title="Διαγραφή"
+          >
+            <Trash2 className="w-3 h-3" />
+          </button>
+        </div>
       )}
+
+      {showEdit && <EditPostModal post={post} onClose={() => setShowEdit(false)} />}
     </div>
   );
 }

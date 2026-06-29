@@ -7,7 +7,8 @@ import { supabase } from "@/lib/supabase";
 interface PostsContextType {
   posts: Post[];
   loading: boolean;
-  addPost: (post: Post) => Promise<void>;
+  addPost: (post: Post) => Promise<string | null>;
+  updatePost: (post: Post) => Promise<void>;
   removePost: (id: string) => Promise<void>;
 }
 
@@ -41,17 +42,24 @@ export function PostsProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // clear any stale localStorage from the old version of the app
+    localStorage.removeItem("osth_posts");
+
     supabase
       .from("posts")
       .select("*")
       .order("date", { ascending: false })
       .then(({ data, error }) => {
-        if (!error && data) setPosts(data.map(rowToPost));
+        if (error) {
+          console.error("[PostsContext] Supabase error:", error.message);
+        } else if (data) {
+          setPosts(data.map(rowToPost));
+        }
         setLoading(false);
       });
   }, []);
 
-  async function addPost(post: Post) {
+  async function addPost(post: Post): Promise<string | null> {
     const row = {
       id:           post.id,
       slug:         post.slug,
@@ -74,6 +82,31 @@ export function PostsProvider({ children }: { children: ReactNode }) {
     };
     const { error } = await supabase.from("posts").insert(row);
     if (!error) setPosts((prev) => [post, ...prev]);
+    return error ? error.message : null;
+  }
+
+  async function updatePost(post: Post) {
+    const row = {
+      slug:         post.slug,
+      title:        post.title,
+      subtitle:     post.subtitle,
+      excerpt:      post.excerpt,
+      content:      post.content,
+      author:       post.author,
+      date:         post.date,
+      reading_time: post.readingTime,
+      genre:        post.genre,
+      director:     post.director,
+      year:         post.year,
+      post_type:    post.postType,
+      rating:       post.rating ?? null,
+      image:        post.image,
+      featured:     post.featured,
+      tags:         post.tags,
+      badge:        post.badge ?? null,
+    };
+    const { error } = await supabase.from("posts").update(row).eq("id", post.id);
+    if (!error) setPosts((prev) => prev.map((p) => (p.id === post.id ? post : p)));
   }
 
   async function removePost(id: string) {
@@ -82,7 +115,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <PostsContext.Provider value={{ posts, loading, addPost, removePost }}>
+    <PostsContext.Provider value={{ posts, loading, addPost, updatePost, removePost }}>
       {children}
     </PostsContext.Provider>
   );

@@ -12,7 +12,7 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((c) => (c + 1) % posts.length);
-    }, 6000);
+    }, 10000);
     return () => clearInterval(timer);
   }, [posts.length]);
 

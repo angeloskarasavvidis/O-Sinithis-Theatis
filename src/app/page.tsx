@@ -23,12 +23,36 @@ function SectionTitle({ label }: { label: string }) {
   );
 }
 
+function PostGrid({ posts, cols = 4 }: { posts: ReturnType<typeof usePosts>["posts"]; cols?: number }) {
+  const colClass = cols === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4";
+  return (
+    <div className={`grid grid-cols-1 sm:grid-cols-2 ${colClass} gap-4`}>
+      {posts.map((p) => <PostCard key={p.id} post={p} />)}
+    </div>
+  );
+}
+
+function CardSkeleton() {
+  return (
+    <div className="bg-white border border-zinc-200 animate-pulse">
+      <div className="aspect-[16/10] bg-zinc-200" />
+      <div className="p-5 space-y-3">
+        <div className="h-3 bg-zinc-200 rounded w-1/3" />
+        <div className="h-5 bg-zinc-200 rounded w-full" />
+        <div className="h-5 bg-zinc-200 rounded w-3/4" />
+        <div className="h-3 bg-zinc-200 rounded w-full" />
+        <div className="h-3 bg-zinc-200 rounded w-2/3" />
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
-  const { posts } = usePosts();
+  const { posts, loading } = usePosts();
   const { isLoggedIn } = useAuth();
   const [showModal, setShowModal] = useState(false);
 
-  const featured = posts.filter((p) => p.featured);
+  const featured = posts.slice(0, 4);
   const topRated = posts.filter((p) => p.rating && p.rating >= 9);
   const editorials = posts.filter((p) => p.postType === "Αφιέρωμα");
   const latest = posts.slice(0, 8);
@@ -36,7 +60,7 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      {featured.length > 0 && <HeroSlider posts={featured} />}
+      {!loading && featured.length > 0 && <HeroSlider posts={featured} />}
 
       <div className="max-w-7xl mx-auto px-4 py-12">
 
@@ -56,22 +80,20 @@ export default function HomePage() {
         {/* Latest posts */}
         <section className="mb-16">
           <SectionTitle label="Τελευταίες Αναρτήσεις" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {latest.map((p) => (
-              <PostCard key={p.id} post={p} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, i) => <CardSkeleton key={i} />)}
+            </div>
+          ) : (
+            <PostGrid posts={latest} />
+          )}
         </section>
 
         {/* Top rated */}
-        {topRated.length > 0 && (
+        {!loading && topRated.length > 0 && (
           <section className="mb-16">
             <SectionTitle label="Κορυφαίες Επιλογές" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {topRated.map((p) => (
-                <PostCard key={p.id} post={p} />
-              ))}
-            </div>
+            <PostGrid posts={topRated} />
           </section>
         )}
 
@@ -103,14 +125,10 @@ export default function HomePage() {
         </section>
 
         {/* Editorials */}
-        {editorials.length > 0 && (
+        {!loading && editorials.length > 0 && (
           <section className="mb-4">
             <SectionTitle label="Αφιερώματα" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {editorials.map((p) => (
-                <PostCard key={p.id} post={p} />
-              ))}
-            </div>
+            <PostGrid posts={editorials} cols={3} />
           </section>
         )}
       </div>
