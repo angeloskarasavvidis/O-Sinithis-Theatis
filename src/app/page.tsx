@@ -56,7 +56,7 @@ export default function HomePage() {
         {/* Latest posts */}
         <section className="mb-16">
           <SectionTitle label="Τελευταίες Αναρτήσεις" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {latest.map((p) => (
               <PostCard key={p.id} post={p} />
             ))}
@@ -67,7 +67,7 @@ export default function HomePage() {
         {topRated.length > 0 && (
           <section className="mb-16">
             <SectionTitle label="Κορυφαίες Επιλογές" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {topRated.map((p) => (
                 <PostCard key={p.id} post={p} />
               ))}
@@ -106,7 +106,7 @@ export default function HomePage() {
         {editorials.length > 0 && (
           <section className="mb-4">
             <SectionTitle label="Αφιερώματα" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {editorials.map((p) => (
                 <PostCard key={p.id} post={p} />
               ))}

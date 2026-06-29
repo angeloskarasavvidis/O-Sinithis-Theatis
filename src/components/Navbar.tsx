@@ -103,7 +103,7 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className="hidden md:block font-pixel text-[8px] text-zinc-400 hover:text-white transition-colors"
+                className="hidden md:block font-pixel text-[11px] text-zinc-400 hover:text-white transition-colors"
               >
                 Σύνδεση
               </Link>

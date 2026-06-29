@@ -26,7 +26,7 @@ export default function PostCard({ post }: { post: Post }) {
   }
 
   return (
-    <div className="group bg-white overflow-hidden relative flex flex-col hover:bg-zinc-50 transition-colors">
+    <div className="group bg-white overflow-hidden relative flex flex-col border border-zinc-300 hover:border-zinc-500 hover:bg-zinc-50 transition-colors">
       <Link href={`/posts/${post.slug}`} className="block relative aspect-[16/10] overflow-hidden">
         <Image
           src={post.image}
@@ -48,7 +48,7 @@ export default function PostCard({ post }: { post: Post }) {
 
       <div className="p-5 flex flex-col flex-1">
         {post.genre?.[0] && (
-          <span className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-400 mb-2">
+          <span className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 mb-2">
             {post.genre[0]}
           </span>
         )}
@@ -59,13 +59,13 @@ export default function PostCard({ post }: { post: Post }) {
           </h3>
         </Link>
 
-        <p className="font-inter text-sm text-zinc-500 line-clamp-2 mb-4 leading-relaxed">{post.excerpt}</p>
+        <p className="font-inter text-sm text-zinc-700 line-clamp-2 mb-4 leading-relaxed">{post.excerpt}</p>
 
-        <div className="flex items-center justify-between pt-3 border-t border-zinc-100">
-          <span className="font-inter text-xs uppercase tracking-widest text-zinc-400">
+        <div className="flex items-center justify-between pt-3 border-t border-zinc-200">
+          <span className="font-inter text-xs uppercase tracking-widest text-zinc-500">
             {new Date(post.date).toLocaleDateString("el-GR")}
           </span>
-          <span className="font-inter text-xs uppercase tracking-widest text-zinc-400">
+          <span className="font-inter text-xs uppercase tracking-widest text-zinc-500">
             {post.readingTime} λεπτά
           </span>
         </div>

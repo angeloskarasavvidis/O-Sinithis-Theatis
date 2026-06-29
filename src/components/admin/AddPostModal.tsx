@@ -39,7 +39,7 @@ export default function AddPostModal({ onClose }: Props) {
     }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const post: Post = {
       id: Date.now().toString(),
@@ -61,7 +61,7 @@ export default function AddPostModal({ onClose }: Props) {
       tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
       badge: (form.badge || undefined) as Post["badge"],
     };
-    addPost(post);
+    await addPost(post);
     onClose();
   }
 

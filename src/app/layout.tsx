@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="el">
-      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} font-serif bg-[#F5F4EF] text-zinc-900 antialiased`}>
+      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} font-serif bg-[#EBEBEB] text-zinc-900 antialiased`}>
         <AuthProvider>
           <PostsProvider>
             <Navbar />
