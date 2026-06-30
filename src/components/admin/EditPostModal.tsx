@@ -18,6 +18,7 @@ interface Props {
 export default function EditPostModal({ post, onClose }: Props) {
   const { updatePost } = usePosts();
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: post.title,
     subtitle: post.subtitle ?? "",
@@ -65,9 +66,12 @@ export default function EditPostModal({ post, onClose }: Props) {
       genre: form.genre,
       readingTime: Math.max(1, Math.ceil(form.content.length / 1000)),
     };
+    console.log("[EditPostModal] image at submit:", form.image);
     setSaving(true);
-    await updatePost(updated);
+    setError("");
+    const err = await updatePost(updated);
     setSaving(false);
+    if (err) { setError(err); return; }
     onClose();
   }
 
@@ -155,6 +159,8 @@ export default function EditPostModal({ post, onClose }: Props) {
               className="w-4 h-4 accent-[#009DF8]" />
             <span className="text-sm text-zinc-700">Προβολή στο Hero Slider</span>
           </label>
+
+          {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>}
 
           <div className="flex gap-3 pt-2">
             <button type="submit" disabled={saving} className="flex-1 bg-[#009DF8] text-white py-2.5 rounded-xl font-semibold hover:bg-[#007fd0] transition-colors disabled:opacity-50">

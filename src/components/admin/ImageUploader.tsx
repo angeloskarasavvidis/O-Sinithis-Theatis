@@ -40,6 +40,7 @@ export default function ImageUploader({ value, onChange }: Props) {
     }
 
     const { data } = supabase.storage.from("images").getPublicUrl(path);
+    console.log("[ImageUploader] upload done, url:", data.publicUrl);
     onChangeRef.current(data.publicUrl);
     setUploading(false);
   }

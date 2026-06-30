@@ -8,7 +8,7 @@ interface PostsContextType {
   posts: Post[];
   loading: boolean;
   addPost: (post: Post) => Promise<string | null>;
-  updatePost: (post: Post) => Promise<void>;
+  updatePost: (post: Post) => Promise<string | null>;
   removePost: (id: string) => Promise<void>;
 }
 
@@ -85,7 +85,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
     return error ? error.message : null;
   }
 
-  async function updatePost(post: Post) {
+  async function updatePost(post: Post): Promise<string | null> {
     const row = {
       slug:         post.slug,
       title:        post.title,
@@ -105,8 +105,11 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       tags:         post.tags,
       badge:        post.badge ?? null,
     };
-    const { error } = await supabase.from("posts").update(row).eq("id", post.id);
+    console.log("[updatePost] updating id:", post.id, "row:", row);
+    const { data, error } = await supabase.from("posts").update(row).eq("id", post.id).select();
+    console.log("[updatePost] result error:", error, "rows updated:", data);
     if (!error) setPosts((prev) => prev.map((p) => (p.id === post.id ? post : p)));
+    return error ? error.message : null;
   }
 
   async function removePost(id: string) {
