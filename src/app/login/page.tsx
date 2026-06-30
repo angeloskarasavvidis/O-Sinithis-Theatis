@@ -8,19 +8,19 @@ import { useAuth } from "@/context/AuthContext";
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 400));
-    const ok = login(form.username, form.password);
-    if (ok) {
-      router.push("/");
-    } else {
+    setError("");
+    const err = await login(form.email, form.password);
+    if (err !== null) {
       setError("Λάθος στοιχεία σύνδεσης.");
+    } else {
+      router.push("/");
     }
     setLoading(false);
   }
@@ -38,14 +38,14 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-zinc-600 uppercase tracking-wide mb-1">Όνομα χρήστη</label>
+            <label className="block text-xs font-semibold text-zinc-600 uppercase tracking-wide mb-1">Email</label>
             <input
-              type="text"
+              type="email"
               required
-              value={form.username}
-              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className="w-full px-4 py-2.5 border border-zinc-200 rounded-xl bg-zinc-50 focus:outline-none focus:border-[#009DF8] focus:ring-1 focus:ring-[#009DF8] text-sm"
-              placeholder="username"
+              placeholder="email@example.com"
             />
           </div>
           <div>
@@ -70,11 +70,6 @@ export default function LoginPage() {
             {loading ? "Σύνδεση..." : "Σύνδεση"}
           </button>
         </form>
-
-        <p className="text-center text-xs text-zinc-400 mt-6">
-          Δεν έχεις λογαριασμό;{" "}
-          <a href="/signup" className="text-[#009DF8] hover:underline">Εγγραφή</a>
-        </p>
       </div>
     </div>
   );

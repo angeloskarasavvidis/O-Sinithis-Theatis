@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (username: string, password: string) => boolean;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<string | null>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -14,23 +15,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("osth_session"));
+    supabase.auth.getSession().then(({ data }) => {
+      setIsLoggedIn(!!data.session);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(!!session);
+    });
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  function login(username: string, password: string) {
-    const validUser = process.env.NEXT_PUBLIC_ADMIN_USERNAME;
-    const validPass = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
-    if (username === validUser && password === validPass) {
-      localStorage.setItem("osth_session", "active");
-      setIsLoggedIn(true);
-      return true;
-    }
-    return false;
+  async function login(email: string, password: string): Promise<string | null> {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return error.message;
+    return null;
   }
 
-  function logout() {
-    localStorage.removeItem("osth_session");
-    setIsLoggedIn(false);
+  async function logout() {
+    await supabase.auth.signOut();
   }
 
   return (
