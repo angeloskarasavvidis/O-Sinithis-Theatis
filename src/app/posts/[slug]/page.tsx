@@ -1,14 +1,15 @@
 "use client";
 
-import { use, useMemo } from "react";
-import DOMPurify from "dompurify";
+import { use, useMemo, useState } from "react";
+import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Calendar, Clock, Star, Trash2, User, Film, Tag } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Star, Trash2, Pencil, User, Film, Tag } from "lucide-react";
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
 import PostCard from "@/components/PostCard";
+import EditPostModal from "@/components/admin/EditPostModal";
 
 const postTypeColors: Record<string, string> = {
   Κριτική: "bg-blue-100 text-blue-700",
@@ -22,8 +23,11 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
   const { posts, removePost } = usePosts();
   const { isLoggedIn } = useAuth();
   const router = useRouter();
+  const [showEdit, setShowEdit] = useState(false);
 
   const post = posts.find((p) => p.slug === slug);
+
+  const safeContent = useMemo(() => DOMPurify.sanitize(post?.content ?? ""), [post?.content]);
 
   if (!post) {
     return (
@@ -35,8 +39,6 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
   }
 
   const related = posts.filter((p) => p.id !== post.id && p.genre.some((g) => post.genre.includes(g))).slice(0, 3);
-
-  const safeContent = useMemo(() => DOMPurify.sanitize(post.content), [post.content]);
 
   function handleDelete() {
     if (confirm(`Διαγραφή: "${post!.title}";`)) {
@@ -53,10 +55,16 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
           Επιστροφή
         </Link>
         {isLoggedIn && (
-          <button onClick={handleDelete} className="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors">
-            <Trash2 className="w-4 h-4" />
-            Διαγραφή Ανάρτησης
-          </button>
+          <div className="flex gap-2">
+            <button onClick={() => setShowEdit(true)} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-800 border border-zinc-200 hover:border-zinc-400 px-3 py-1.5 rounded-lg transition-colors">
+              <Pencil className="w-4 h-4" />
+              Επεξεργασία
+            </button>
+            <button onClick={handleDelete} className="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors">
+              <Trash2 className="w-4 h-4" />
+              Διαγραφή
+            </button>
+          </div>
         )}
       </div>
 
@@ -125,6 +133,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
           </div>
         </section>
       )}
+      {showEdit && <EditPostModal post={post} onClose={() => setShowEdit(false)} />}
     </div>
   );
 }
