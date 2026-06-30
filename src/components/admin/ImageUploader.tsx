@@ -61,7 +61,15 @@ export default function ImageUploader({ value, onChange }: Props) {
       <div className="flex gap-2">
         <input
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            const url = e.target.value;
+            if (url === "" || url.startsWith("https://")) {
+              setError("");
+              onChange(url);
+            } else {
+              setError("Το URL πρέπει να ξεκινά με https://");
+            }
+          }}
           placeholder="https://... ή ανέβασε φωτογραφία →"
           className="w-full px-3 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-[#009DF8] bg-zinc-50"
         />
