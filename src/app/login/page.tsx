@@ -45,7 +45,7 @@ export default function LoginPage() {
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
               className="w-full px-4 py-2.5 border border-zinc-200 rounded-xl bg-zinc-50 focus:outline-none focus:border-[#009DF8] focus:ring-1 focus:ring-[#009DF8] text-sm"
-              placeholder="adminangelos"
+              placeholder="username"
             />
           </div>
           <div>
