@@ -18,7 +18,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   function login(username: string, password: string) {
-    if (username === "adminangelos" && password === "adminangelos") {
+    const validUser = process.env.NEXT_PUBLIC_ADMIN_USERNAME;
+    const validPass = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+    if (username === validUser && password === validPass) {
       localStorage.setItem("osth_session", "active");
       setIsLoggedIn(true);
       return true;

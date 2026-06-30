@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Serif_Display, Press_Start_2P, Inter } from "next/font/google";
+import { Noto_Serif_Display, Press_Start_2P, Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { PostsProvider } from "@/context/PostsContext";
@@ -24,6 +24,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const manrope = Manrope({
+  subsets: ["latin", "greek"],
+  variable: "--font-manrope",
+});
+
 export const metadata: Metadata = {
   title: "Ο Συνήθης Θεατής",
   description: "Κριτικές, αφιερώματα και νέα κινηματογράφου",
@@ -32,7 +37,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="el">
-      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} font-serif bg-[#EBEBEB] text-zinc-900 antialiased`}>
+      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} ${manrope.variable} font-serif bg-[#EBEBEB] text-zinc-900 antialiased`}>
         <AuthProvider>
           <PostsProvider>
             <Navbar />

@@ -43,7 +43,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 font-manrope font-medium">
       <div className="flex items-center justify-between mb-6">
         <Link href="/posts" className="flex items-center gap-1 text-sm text-zinc-500 hover:text-[#009DF8] transition-colors">
           <ArrowLeft className="w-4 h-4" />

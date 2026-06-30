@@ -4,11 +4,13 @@
   --font-serif: var(--font-serif);
   --font-pixel: var(--font-pixel);
   --font-inter: var(--font-inter);
+  --font-manrope: var(--font-manrope);
 }
 
 .font-serif   { font-family: var(--font-serif), serif; }
 .font-pixel   { font-family: var(--font-pixel), monospace; }
 .font-inter   { font-family: var(--font-inter), sans-serif; }
+.font-manrope { font-family: var(--font-manrope), sans-serif; }
 
 @keyframes marquee {
   0%   { transform: translateX(0); }
