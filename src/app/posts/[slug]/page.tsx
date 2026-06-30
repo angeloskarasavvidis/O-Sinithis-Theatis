@@ -1,6 +1,7 @@
 "use client";
 
-import { use } from "react";
+import { use, useMemo } from "react";
+import DOMPurify from "dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,6 +35,8 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
   }
 
   const related = posts.filter((p) => p.id !== post.id && p.genre.some((g) => post.genre.includes(g))).slice(0, 3);
+
+  const safeContent = useMemo(() => DOMPurify.sanitize(post.content), [post.content]);
 
   function handleDelete() {
     if (confirm(`Διαγραφή: "${post!.title}";`)) {
@@ -99,7 +102,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
       <div
         className="prose prose-zinc max-w-none mb-8 [&_blockquote]:border-l-4 [&_blockquote]:border-[#009DF8] [&_blockquote]:pl-4 [&_blockquote]:text-zinc-500 [&_blockquote]:italic [&_strong]:text-zinc-900 [&_em]:text-zinc-700 [&_p]:leading-relaxed [&_p]:mb-4 text-zinc-700"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        dangerouslySetInnerHTML={{ __html: safeContent }}
       />
 
       {post.tags.length > 0 && (

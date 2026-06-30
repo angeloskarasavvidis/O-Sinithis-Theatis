@@ -23,6 +23,18 @@ export default function ImageUploader({ value, onChange }: Props) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    const MAX_SIZE_MB = 5;
+
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      setError("Μη αποδεκτός τύπος αρχείου. Επιτρέπονται μόνο JPEG, PNG, WebP και GIF.");
+      return;
+    }
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setError(`Το αρχείο δεν πρέπει να υπερβαίνει τα ${MAX_SIZE_MB}MB.`);
+      return;
+    }
+
     setUploading(true);
     setError("");
 
