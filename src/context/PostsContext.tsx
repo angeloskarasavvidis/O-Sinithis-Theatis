@@ -105,9 +105,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
       tags:         post.tags,
       badge:        post.badge ?? null,
     };
-    console.log("[updatePost] updating id:", post.id, "row:", row);
     const { data, error } = await supabase.from("posts").update(row).eq("id", post.id).select();
-    console.log("[updatePost] result error:", error, "rows updated:", data);
     if (!error) setPosts((prev) => prev.map((p) => (p.id === post.id ? post : p)));
     return error ? error.message : null;
   }

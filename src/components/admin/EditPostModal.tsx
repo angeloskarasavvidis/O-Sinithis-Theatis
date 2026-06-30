@@ -66,7 +66,6 @@ export default function EditPostModal({ post, onClose }: Props) {
       genre: form.genre,
       readingTime: Math.max(1, Math.ceil(form.content.length / 1000)),
     };
-    console.log("[EditPostModal] image at submit:", form.image);
     setSaving(true);
     setError("");
     const err = await updatePost(updated);
