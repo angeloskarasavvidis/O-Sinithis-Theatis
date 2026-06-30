@@ -39,9 +39,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="shrink-0">
-            <span className="font-pixel text-[14px] md:text-[17px] text-white leading-tight tracking-tight">
-              Ο ΣΥΝΗΘΗΣ <span className="text-[#009DF8]">ΘΕΑΤΗΣ</span>
-            </span>
+            <img src="/logo_new.svg" alt="Ο Συνήθης Θεατής" className="h-16 md:h-20 w-auto" />
           </Link>
 
           {/* Divider */}

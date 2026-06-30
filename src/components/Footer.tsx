@@ -6,9 +6,7 @@ export default function Footer() {
     <footer className="bg-zinc-900 text-zinc-400 mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
-          <h3 className="font-serif font-black italic text-2xl text-white mb-3">
-            Ο Συνήθης <span className="text-[#009DF8]">Θεατής</span>
-          </h3>
+          <img src="/second_logo.svg" alt="Ο Συνήθης Θεατής" className="h-24 w-auto mb-3" />
           <p className="font-inter text-sm leading-relaxed text-zinc-500">
             Κριτικές, αφιερώματα και νέα κινηματογράφου από παθιασμένους θεατές για παθιασμένους θεατές.
           </p>
