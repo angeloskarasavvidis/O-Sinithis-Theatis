@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Noto_Serif_Display, Press_Start_2P, Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </PostsProvider>
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
