@@ -1,7 +1,7 @@
 "use client";
 
 import { use, useMemo, useState } from "react";
-import DOMPurify from "isomorphic-dompurify";
+import DOMPurify from "dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,10 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
   const post = posts.find((p) => p.slug === slug);
 
-  const safeContent = useMemo(() => DOMPurify.sanitize(post?.content ?? ""), [post?.content]);
+  const safeContent = useMemo(() => {
+    if (typeof window === "undefined") return post?.content ?? "";
+    return DOMPurify.sanitize(post?.content ?? "");
+  }, [post?.content]);
 
   if (!post) {
     return (
