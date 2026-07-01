@@ -50,6 +50,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </PostsProvider>
         </AuthProvider>
         <Analytics />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3765295950990693"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );
