@@ -84,7 +84,7 @@ export default function Navbar() {
               </button>
             )}
 
-            {isLoggedIn ? (
+            {isLoggedIn && (
               <>
                 <span className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-emerald-400">
                   <ShieldCheck className="w-3 h-3" />
@@ -98,13 +98,6 @@ export default function Navbar() {
                   Έξοδος
                 </button>
               </>
-            ) : (
-              <Link
-                href="/login"
-                className="hidden md:block font-pixel text-[11px] text-zinc-400 hover:text-white transition-colors"
-              >
-                Σύνδεση
-              </Link>
             )}
 
             <button
@@ -135,15 +128,6 @@ export default function Navbar() {
               {l.label}
             </Link>
           ))}
-          {!isLoggedIn && (
-            <Link
-              href="/login"
-              onClick={() => setOpen(false)}
-              className="block px-4 py-3 font-condensed text-sm font-semibold uppercase tracking-widest text-zinc-500 border-l-4 border-transparent"
-            >
-              Σύνδεση
-            </Link>
-          )}
         </div>
       )}
     </nav>
