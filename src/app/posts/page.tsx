@@ -135,7 +135,7 @@ function PostsContent() {
   const panelProps = { filters, setFilters, setPage, allGenres, allDirectors, allYears };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 font-manrope">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-serif font-bold text-zinc-800">Όλα τα Άρθρα</h1>
         <div className="flex gap-2">

@@ -10,7 +10,7 @@ export default function AboutPage() {
  ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="max-w-4xl mx-auto px-4 py-12 font-manrope">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-serif font-bold text-zinc-800 mb-4">
           Σχετικά με τον <span className="text-[#009DF8]">Συνήθη Θεατή</span>
@@ -20,14 +20,14 @@ export default function AboutPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {stats.map((s) => (
           <div key={s.label} className="bg-white border border-zinc-200 rounded-xl p-5 text-center shadow-sm">
             <div className="text-3xl font-bold text-[#009DF8] mb-1">{s.value}</div>
             <div className="text-sm text-zinc-500">{s.label}</div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <section className="mb-12">
         <h2 className="text-2xl font-serif font-bold text-zinc-800 mb-6">Η Ομάδα μας</h2>
