@@ -32,6 +32,9 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   title: "Ο Συνήθης Θεατής",
   description: "Κριτικές, αφιερώματα και νέα κινηματογράφου",
+  icons: {
+    icon: "/small_logo.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
