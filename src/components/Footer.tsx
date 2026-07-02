@@ -48,17 +48,7 @@ export default function Footer() {
 
         <div>
           <h4 className="font-inter text-xs uppercase tracking-[0.2em] text-zinc-500 mb-4">Newsletter</h4>
-          <p className="font-inter text-sm mb-4 text-zinc-500">Λάβετε τις τελευταίες κριτικές απευθείας στο inbox σας.</p>
-          <div className="flex gap-0">
-            <input
-              type="email"
-              placeholder="email@example.com"
-              className="flex-1 font-inter text-sm px-3 py-2.5 bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-600 focus:outline-none focus:border-[#009DF8]"
-            />
-            <button className="font-inter text-xs font-semibold uppercase tracking-widest bg-[#009DF8] text-white px-4 py-2.5 hover:bg-white hover:text-zinc-900 transition-colors">
-              OK
-            </button>
-          </div>
+          <p className="font-inter text-sm text-zinc-500 italic">Έρχεται σύντομα...</p>
         </div>
       </div>
 
