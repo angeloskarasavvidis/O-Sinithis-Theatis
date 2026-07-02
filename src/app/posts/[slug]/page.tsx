@@ -112,7 +112,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
       </div>
 
       <div
-        className="prose prose-zinc max-w-none mb-8 [&_blockquote]:border-l-4 [&_blockquote]:border-[#009DF8] [&_blockquote]:pl-4 [&_blockquote]:text-zinc-500 [&_blockquote]:italic [&_strong]:text-zinc-900 [&_em]:text-zinc-700 [&_p]:leading-relaxed [&_p]:mb-4 text-zinc-700"
+        className="prose prose-lg prose-zinc max-w-none mb-8 [&_blockquote]:border-l-4 [&_blockquote]:border-[#009DF8] [&_blockquote]:pl-4 [&_blockquote]:text-zinc-500 [&_blockquote]:italic [&_strong]:text-zinc-900 [&_em]:text-zinc-700 [&_p]:leading-relaxed [&_p]:mb-4 text-zinc-700"
         dangerouslySetInnerHTML={{ __html: safeContent }}
       />
 

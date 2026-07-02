@@ -60,7 +60,10 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      {!loading && featured.length > 0 && <HeroSlider posts={featured} />}
+      {loading
+        ? <div className="h-[480px] md:h-[580px] bg-zinc-800 animate-pulse" />
+        : featured.length > 0 && <HeroSlider posts={featured} />
+      }
 
       <div className="max-w-7xl mx-auto px-4 py-12">
 
