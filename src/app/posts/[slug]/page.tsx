@@ -92,24 +92,34 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
         )}
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-8 flex flex-wrap gap-6 text-sm">
-        <div>
-          <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide flex items-center gap-1 mb-1"><Film className="w-3 h-3" />Σκηνοθέτης</span>
-          <span className="font-medium text-zinc-800">{post.director}</span>
+      {(post.director || post.year || post.genre.length > 0 || post.postType) && (
+        <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-8 flex flex-wrap gap-6 text-sm">
+          {post.director && (
+            <div>
+              <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide flex items-center gap-1 mb-1"><Film className="w-3 h-3" />Σκηνοθέτης</span>
+              <span className="font-medium text-zinc-800">{post.director}</span>
+            </div>
+          )}
+          {post.year && (
+            <div>
+              <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide mb-1 block">Έτος</span>
+              <span className="font-medium text-zinc-800">{post.year}</span>
+            </div>
+          )}
+          {post.genre.length > 0 && (
+            <div>
+              <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide mb-1 block">Είδος</span>
+              <span className="font-medium text-zinc-800">{post.genre.join(", ")}</span>
+            </div>
+          )}
+          {post.postType && (
+            <div>
+              <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide mb-1 block">Τύπος</span>
+              <span className="font-medium text-zinc-800">{post.postType}</span>
+            </div>
+          )}
         </div>
-        <div>
-          <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide mb-1 block">Έτος</span>
-          <span className="font-medium text-zinc-800">{post.year}</span>
-        </div>
-        <div>
-          <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide mb-1 block">Είδος</span>
-          <span className="font-medium text-zinc-800">{post.genre.join(", ")}</span>
-        </div>
-        <div>
-          <span className="text-zinc-400 uppercase text-xs font-semibold tracking-wide mb-1 block">Τύπος</span>
-          <span className="font-medium text-zinc-800">{post.postType}</span>
-        </div>
-      </div>
+      )}
 
       <div
         className="prose prose-lg prose-zinc max-w-none mb-8 [&_blockquote]:border-l-4 [&_blockquote]:border-[#009DF8] [&_blockquote]:pl-4 [&_blockquote]:text-zinc-500 [&_blockquote]:italic [&_strong]:text-zinc-900 [&_em]:text-zinc-700 [&_p]:leading-relaxed [&_p]:mb-4 text-zinc-700"
