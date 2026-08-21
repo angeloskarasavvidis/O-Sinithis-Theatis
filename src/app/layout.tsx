@@ -36,6 +36,7 @@ export const metadata: Metadata = {
   description: "Κριτικές, αφιερώματα και νέα κινηματογράφου",
   icons: {
     icon: "/small_logo.svg",
+    apple: "/apple-icon.png",
   },
 };
 
