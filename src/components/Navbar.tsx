@@ -8,11 +8,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 const links = [
-  { href: "/", label: "Αρχική" },
-  { href: "/posts", label: "Άρθρα" },
-  { href: "/posts?postType=Κριτική", label: "Κριτικές" },
-  { href: "/posts?postType=Αφιέρωμα", label: "Αφιερώματα" },
-  { href: "/about", label: "Σχετικά" },
+  { href: "/", label: "Αρχική", img: "/arxiki_rebrand.png" },
+  { href: "/posts", label: "Άρθρα", img: "/arthra_rebrand.png" },
+  { href: "/posts?postType=Κριτική", label: "Κριτικές", img: "/kritikes_rebrand.png" },
+  { href: "/posts?postType=Αφιέρωμα", label: "Αφιερώματα", img: "/afieromata_rebrand.png" },
+  { href: "/about", label: "Σχετικά", img: "/sxetika_rebrand.png" },
 ];
 
 export default function Navbar() {
@@ -33,17 +33,17 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-zinc-900 text-white sticky top-0 z-50 border-b-4 border-[#009DF8]">
+    <nav className="bg-[#009DF8] text-white sticky top-0 z-50 border-b-4 border-black">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-6 h-24">
 
           {/* Logo */}
           <Link href="/" className="shrink-0">
-            <img src="/logo_new.svg" alt="Ο Συνήθης Θεατής" className="h-16 md:h-20 w-auto" />
+            <img src="/main_logo_rebrand.png" alt="Ο Συνήθης Θεατής" className="h-16 md:h-20 w-auto" />
           </Link>
 
           {/* Divider */}
-          <span className="hidden md:block w-px h-6 bg-zinc-700 shrink-0" />
+          <span className="hidden md:block w-px h-6 bg-white/30 shrink-0" />
 
           {/* Nav links */}
           <div className="hidden md:flex items-center gap-0 flex-1">
@@ -51,13 +51,11 @@ export default function Navbar() {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`font-pixel text-[11px] px-4 py-6 transition-colors border-b-4 hover:text-[#009DF8] ${
-                  pathname === l.href
-                    ? "text-[#009DF8] border-[#009DF8]"
-                    : "text-zinc-300 border-transparent"
+                className={`px-3 py-6 transition-opacity border-b-4 hover:opacity-80 ${
+                  pathname === l.href ? "border-black" : "border-transparent opacity-90"
                 }`}
               >
-                {l.label}
+                <img src={l.img} alt={l.label} className="h-8" />
               </Link>
             ))}
           </div>
@@ -72,27 +70,27 @@ export default function Navbar() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Αναζήτηση..."
-                  className="bg-zinc-800 text-white placeholder-zinc-500 text-sm px-3 py-1.5 rounded focus:outline-none focus:ring-1 focus:ring-[#009DF8] w-44"
+                  className="bg-white/10 text-white placeholder-white/60 text-sm px-3 py-1.5 rounded focus:outline-none focus:ring-1 focus:ring-black w-44"
                 />
-                <button type="button" onClick={() => setSearchOpen(false)} className="text-zinc-400 hover:text-white">
+                <button type="button" onClick={() => setSearchOpen(false)} className="text-white/80 hover:text-white">
                   <X className="w-4 h-4" />
                 </button>
               </form>
             ) : (
-              <button onClick={() => setSearchOpen(true)} className="text-zinc-400 hover:text-[#009DF8] transition-colors">
+              <button onClick={() => setSearchOpen(true)} className="text-white/80 hover:text-white transition-colors">
                 <Search className="w-4 h-4" />
               </button>
             )}
 
             {isLoggedIn && (
               <>
-                <span className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-emerald-400">
+                <span className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-emerald-300">
                   <ShieldCheck className="w-3 h-3" />
                   Admin
                 </span>
                 <button
                   onClick={logout}
-                  className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-zinc-500 hover:text-white transition-colors"
+                  className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-white/70 hover:text-white transition-colors"
                 >
                   <LogOut className="w-3 h-3" />
                   Έξοδος
@@ -101,7 +99,7 @@ export default function Navbar() {
             )}
 
             <button
-              className="md:hidden p-1 text-zinc-400 hover:text-white"
+              className="md:hidden p-1 text-white/80 hover:text-white"
               onClick={() => setOpen(!open)}
               aria-label="Toggle menu"
             >
@@ -113,19 +111,19 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-zinc-800">
+        <div className="md:hidden border-t border-black/20">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className={`block px-4 py-4 font-pixel text-[9px] border-l-4 transition-colors ${
+              className={`flex px-4 py-3 border-l-4 transition-colors ${
                 pathname === l.href
-                  ? "text-[#009DF8] border-[#009DF8] bg-zinc-800"
-                  : "text-zinc-300 border-transparent hover:text-white hover:bg-zinc-800"
+                  ? "border-black bg-black/10"
+                  : "border-transparent hover:bg-black/10"
               }`}
             >
-              {l.label}
+              <img src={l.img} alt={l.label} className="h-7" />
             </Link>
           ))}
         </div>
