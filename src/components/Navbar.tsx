@@ -74,7 +74,7 @@ export default function Navbar() {
           </Link>
 
           {/* Divider */}
-          <span className="hidden md:block w-px h-6 bg-white/30 shrink-0" />
+          <span className="hidden md:block w-1 h-8 bg-[#F2AA48] shrink-0 rounded-full" />
 
           {/* Nav links */}
           <div className="hidden md:flex items-center gap-0 flex-1">
@@ -108,8 +108,8 @@ export default function Navbar() {
                 </button>
               </form>
             ) : (
-              <button onClick={() => setSearchOpen(true)} className="text-white/80 hover:text-white transition-colors">
-                <Search className="w-4 h-4" />
+              <button onClick={() => setSearchOpen(true)} className="text-[#F2AA48] hover:text-white transition-colors">
+                <Search className="w-6 h-6" strokeWidth={3} />
               </button>
             )}
 
