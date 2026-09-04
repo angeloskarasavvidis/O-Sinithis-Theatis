@@ -61,7 +61,7 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
         </p>
         <Link
           href={`/posts/${post.slug}`}
-          className="inline-block font-inter text-sm font-semibold uppercase tracking-widest bg-[#009DF8] hover:bg-white hover:text-zinc-900 text-white px-6 py-3 transition-colors"
+          className="inline-block font-inter text-sm font-semibold uppercase tracking-widest bg-[#009DF8] hover:bg-white hover:text-zinc-900 text-white px-6 py-3 transition-colors duration-300"
         >
           Διαβάστε Περισσότερα →
         </Link>
@@ -70,13 +70,13 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
       {/* Arrows */}
       <button
         onClick={() => setCurrent((c) => (c - 1 + posts.length) % posts.length)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 bg-zinc-900/60 hover:bg-zinc-900 text-white p-3 transition-colors"
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-zinc-900/60 hover:bg-zinc-900 text-white p-3 transition-colors duration-300"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
       <button
         onClick={() => setCurrent((c) => (c + 1) % posts.length)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-900/60 hover:bg-zinc-900 text-white p-3 transition-colors"
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-zinc-900/60 hover:bg-zinc-900 text-white p-3 transition-colors duration-300"
       >
         <ChevronRight className="w-5 h-5" />
       </button>

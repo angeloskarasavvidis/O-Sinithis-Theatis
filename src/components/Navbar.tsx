@@ -108,7 +108,7 @@ export default function Navbar() {
                 </button>
               </form>
             ) : (
-              <button onClick={() => setSearchOpen(true)} className="text-[#F2AA48] hover:text-white transition-colors">
+              <button onClick={() => setSearchOpen(true)} className="text-[#F2AA48] hover:text-white transition-colors duration-300">
                 <Search className="w-6 h-6" strokeWidth={3} />
               </button>
             )}
@@ -121,7 +121,7 @@ export default function Navbar() {
                 </span>
                 <button
                   onClick={logout}
-                  className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-white/70 hover:text-white transition-colors"
+                  className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-white/70 hover:text-white transition-colors duration-300"
                 >
                   <LogOut className="w-3 h-3" />
                   Έξοδος

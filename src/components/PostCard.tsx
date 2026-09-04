@@ -29,7 +29,7 @@ export default function PostCard({ post }: { post: Post }) {
   }
 
   return (
-    <div className="group bg-white overflow-hidden relative flex flex-col border border-zinc-300 hover:border-zinc-500 hover:bg-zinc-50 transition-colors">
+    <div className="group bg-white overflow-hidden relative flex flex-col border border-zinc-300 hover:border-zinc-500 hover:bg-zinc-50 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 ease-out">
       <Link href={`/posts/${post.slug}`} className="block relative aspect-[16/10] overflow-hidden">
         <Image
           src={post.image}

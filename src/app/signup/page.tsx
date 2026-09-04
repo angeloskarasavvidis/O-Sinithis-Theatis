@@ -11,7 +11,7 @@ export default function SignupPage() {
         <p className="text-zinc-500 text-sm leading-relaxed mb-6">
           Η εγγραφή νέων χρηστών θα είναι σύντομα διαθέσιμη. Μείνετε συντονισμένοι!
         </p>
-        <a href="/login" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-[#007fd0] transition-colors">
+        <a href="/login" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold text-sm hover:bg-[#007fd0] transition-colors duration-300">
           Σύνδεση
         </a>
       </div>

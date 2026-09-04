@@ -166,7 +166,7 @@ export default function AddPostModal({ onClose }: Props) {
             <button type="submit" disabled={saving} className="flex-1 bg-[#009DF8] text-white py-2.5 rounded-xl font-semibold hover:bg-[#007fd0] transition-colors disabled:opacity-50">
               {saving ? "Αποθήκευση…" : "Δημιουργία"}
             </button>
-            <button type="button" onClick={onClose} className="px-6 py-2.5 border border-zinc-300 rounded-xl text-zinc-700 hover:border-zinc-500 transition-colors">
+            <button type="button" onClick={onClose} className="px-6 py-2.5 border border-zinc-300 rounded-xl text-zinc-700 hover:border-zinc-500 transition-colors duration-300">
               Ακύρωση
             </button>
           </div>

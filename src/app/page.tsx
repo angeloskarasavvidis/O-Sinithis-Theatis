@@ -15,10 +15,10 @@ function SectionTitle({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4 mb-8">
       <span className="w-1 h-8 bg-[#009DF8] shrink-0" />
-      <h2 className="font-serif font-black italic text-4xl md:text-5xl text-zinc-900 leading-none">
+      <h2 className="font-serif font-black italic text-4xl md:text-5xl text-zinc-100 leading-none">
         {label}
       </h2>
-      <span className="flex-1 h-px bg-zinc-200" />
+      <span className="flex-1 h-px bg-zinc-800" />
     </div>
   );
 }
@@ -34,14 +34,14 @@ function PostGrid({ posts, cols = 4 }: { posts: ReturnType<typeof usePosts>["pos
 
 function CardSkeleton() {
   return (
-    <div className="bg-white border border-zinc-200 animate-pulse">
-      <div className="aspect-[16/10] bg-zinc-200" />
+    <div className="bg-zinc-900 border border-zinc-800 animate-pulse">
+      <div className="aspect-[16/10] bg-zinc-800" />
       <div className="p-5 space-y-3">
-        <div className="h-3 bg-zinc-200 rounded w-1/3" />
-        <div className="h-5 bg-zinc-200 rounded w-full" />
-        <div className="h-5 bg-zinc-200 rounded w-3/4" />
-        <div className="h-3 bg-zinc-200 rounded w-full" />
-        <div className="h-3 bg-zinc-200 rounded w-2/3" />
+        <div className="h-3 bg-zinc-800 rounded w-1/3" />
+        <div className="h-5 bg-zinc-800 rounded w-full" />
+        <div className="h-5 bg-zinc-800 rounded w-3/4" />
+        <div className="h-3 bg-zinc-800 rounded w-full" />
+        <div className="h-3 bg-zinc-800 rounded w-2/3" />
       </div>
     </div>
   );
@@ -72,7 +72,7 @@ export default function HomePage() {
           <div className="mb-8 flex justify-end">
             <button
               onClick={() => setShowModal(true)}
-              className="flex items-center gap-2 font-inter text-sm font-semibold uppercase tracking-widest bg-zinc-900 text-white px-5 py-2.5 hover:bg-[#009DF8] transition-colors"
+              className="flex items-center gap-2 font-inter text-sm font-semibold uppercase tracking-widest bg-zinc-800 border border-zinc-700 text-white px-5 py-2.5 hover:bg-[#009DF8] hover:border-[#009DF8] transition-all duration-300"
             >
               <Plus className="w-4 h-4" />
               Νέα Ανάρτηση
@@ -118,7 +118,7 @@ export default function HomePage() {
                 <Link
                   key={g}
                   href={`/posts?genre=${encodeURIComponent(g)}`}
-                  className="font-inter text-sm font-semibold uppercase tracking-widest px-5 py-2.5 border border-zinc-700 text-zinc-300 hover:bg-[#009DF8] hover:border-[#009DF8] hover:text-white transition-colors"
+                  className="font-inter text-sm font-semibold uppercase tracking-widest px-5 py-2.5 border border-zinc-700 text-zinc-300 hover:bg-[#009DF8] hover:border-[#009DF8] hover:text-white transition-colors duration-300"
                 >
                   {g}
                 </Link>

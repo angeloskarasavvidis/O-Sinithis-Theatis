@@ -43,7 +43,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
   if (!post) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-zinc-800 mb-4">Το άρθρο δεν βρέθηκε</h1>
+        <h1 className="text-2xl font-bold text-zinc-100 mb-4">Το άρθρο δεν βρέθηκε</h1>
         <Link href="/posts" className="text-[#009DF8] hover:underline">← Επιστροφή στα άρθρα</Link>
       </div>
     );
@@ -109,10 +109,10 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
               )}
               {isLoggedIn && (
                 <>
-                  <button onClick={() => setShowEdit(true)} className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-400 px-3 py-1.5 rounded-lg transition-colors">
+                  <button onClick={() => setShowEdit(true)} className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-400 px-3 py-1.5 rounded-lg transition-colors duration-300">
                     <Pencil className="w-3 h-3" />Επεξεργασία
                   </button>
-                  <button onClick={handleDelete} className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors">
+                  <button onClick={handleDelete} className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors duration-300">
                     <Trash2 className="w-3 h-3" />Διαγραφή
                   </button>
                 </>
@@ -126,20 +126,20 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
                 <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="text-xs font-semibold text-zinc-400 hover:text-[#1877F2] border border-zinc-700 hover:border-[#1877F2] px-3 py-1.5 rounded-lg transition-colors"
+                  className="text-xs font-semibold text-zinc-400 hover:text-[#1877F2] border border-zinc-700 hover:border-[#1877F2] px-3 py-1.5 rounded-lg transition-colors duration-300"
                 >
                   Facebook
                 </a>
                 <a
                   href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="text-xs font-semibold text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-400 px-3 py-1.5 rounded-lg transition-colors"
+                  className="text-xs font-semibold text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-400 px-3 py-1.5 rounded-lg transition-colors duration-300"
                 >
                   X / Twitter
                 </a>
                 <button
                   onClick={handleCopy}
-                  className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-[#009DF8] border border-zinc-700 hover:border-[#009DF8] px-3 py-1.5 rounded-lg transition-colors"
+                  className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-[#009DF8] border border-zinc-700 hover:border-[#009DF8] px-3 py-1.5 rounded-lg transition-colors duration-300"
                 >
                   {copied ? <><Check className="w-3 h-3" />Αντιγράφηκε!</> : <><Copy className="w-3 h-3" />Αντιγραφή</>}
                 </button>
@@ -189,17 +189,17 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
         {/* Article content */}
         <div
-          className="prose prose-lg prose-zinc max-w-none mb-8 prose-drop-cap [&_blockquote]:border-l-4 [&_blockquote]:border-[#009DF8] [&_blockquote]:pl-4 [&_blockquote]:text-zinc-500 [&_blockquote]:italic [&_strong]:text-zinc-900 [&_em]:text-zinc-700 [&_p]:leading-relaxed [&_p]:mb-4 text-zinc-700"
+          className="prose prose-lg prose-invert max-w-none mb-8 prose-drop-cap [&_blockquote]:border-l-4 [&_blockquote]:border-[#009DF8] [&_blockquote]:pl-4 [&_blockquote]:text-zinc-400 [&_blockquote]:italic [&_strong]:text-white [&_em]:text-zinc-300 [&_p]:leading-relaxed [&_p]:mb-4 text-zinc-300"
           dangerouslySetInnerHTML={{ __html: safeContent }}
         />
 
         {/* Tags */}
         {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-12 pt-6 border-t border-zinc-200">
-            <Tag className="w-4 h-4 text-zinc-400 mt-0.5" />
+          <div className="flex flex-wrap gap-2 mb-12 pt-6 border-t border-zinc-800">
+            <Tag className="w-4 h-4 text-zinc-500 mt-0.5" />
             {post.tags.map((t) => (
               <Link key={t} href={`/posts?search=${encodeURIComponent(t)}`}
-                className="text-xs px-3 py-1 border border-zinc-200 rounded-full text-zinc-600 hover:border-[#009DF8] hover:text-[#009DF8] transition-colors">
+                className="text-xs px-3 py-1 border border-zinc-700 rounded-full text-zinc-400 hover:border-[#009DF8] hover:text-[#009DF8] transition-colors duration-300">
                 {t}
               </Link>
             ))}
@@ -209,7 +209,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
         {/* Related posts */}
         {related.length > 0 && (
           <section>
-            <h2 className="text-2xl font-serif font-bold text-zinc-800 mb-6">Σχετικά Άρθρα</h2>
+            <h2 className="text-2xl font-serif font-bold text-zinc-100 mb-6">Σχετικά Άρθρα</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {related.map((p) => <PostCard key={p.id} post={p} />)}
             </div>

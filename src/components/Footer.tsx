@@ -12,7 +12,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-4 mt-5">
             {[Share2, Rss, MessageCircle, Mail].map((Icon, i) => (
-              <Icon key={i} className="w-4 h-4 hover:text-[#009DF8] cursor-pointer transition-colors" />
+              <Icon key={i} className="w-4 h-4 hover:text-[#009DF8] cursor-pointer transition-colors duration-300" />
             ))}
           </div>
         </div>
@@ -22,7 +22,7 @@ export default function Footer() {
           <ul className="space-y-2">
             {[["Αρχική", "/"], ["Άρθρα", "/posts"], ["Σχετικά", "/about"], ["Σύνδεση", "/login"]].map(([label, href]) => (
               <li key={href}>
-                <Link href={href} className="font-inter text-sm font-semibold uppercase tracking-wide text-zinc-400 hover:text-white transition-colors">
+                <Link href={href} className="font-inter text-sm font-semibold uppercase tracking-wide text-zinc-400 hover:text-white transition-colors duration-300">
                   {label}
                 </Link>
               </li>
@@ -37,7 +37,7 @@ export default function Footer() {
               <li key={g}>
                 <Link
                   href={`/posts?genre=${encodeURIComponent(g)}`}
-                  className="font-inter text-sm font-semibold uppercase tracking-wide text-zinc-400 hover:text-white transition-colors"
+                  className="font-inter text-sm font-semibold uppercase tracking-wide text-zinc-400 hover:text-white transition-colors duration-300"
                 >
                   {g}
                 </Link>

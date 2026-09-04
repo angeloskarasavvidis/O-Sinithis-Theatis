@@ -12,10 +12,10 @@ export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 font-manrope">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-serif font-bold text-zinc-800 mb-4">
+        <h1 className="text-4xl font-serif font-bold text-zinc-100 mb-4">
           Σχετικά με τον <span className="text-[#009DF8]">Συνήθη Θεατή</span>
         </h1>
-        <p className="text-lg text-zinc-500 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
           Μια σελίδα για όσους θέλουν να έρθουν πιο κοντά στο σινεμά.
         </p>
       </div>
@@ -30,7 +30,7 @@ export default function AboutPage() {
       </div> */}
 
       <section className="mb-12">
-        <h2 className="text-2xl font-serif font-bold text-zinc-800 mb-6">Η Ομάδα μας</h2>
+        <h2 className="text-2xl font-serif font-bold text-zinc-100 mb-6">Η Ομάδα μας</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {team.map((m) => (
             <div key={m.name} className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
@@ -45,10 +45,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-[#009DF8]/5 border border-[#009DF8]/20 rounded-2xl p-8 text-center">
-        <h2 className="text-xl font-bold text-zinc-800 mb-3">Επικοινωνία</h2>
-        <p className="text-zinc-500 mb-4">Θέλεις να συνεργαστείς μαζί μας ή να μοιραστείς τις απόψεις σου;</p>
-        <a href="mailto:osinithistheatis@gmail.com" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#007fd0] transition-colors">
+      <section className="bg-[#009DF8]/10 border border-[#009DF8]/20 rounded-2xl p-8 text-center">
+        <h2 className="text-xl font-bold text-zinc-100 mb-3">Επικοινωνία</h2>
+        <p className="text-zinc-400 mb-4">Θέλεις να συνεργαστείς μαζί μας ή να μοιραστείς τις απόψεις σου;</p>
+        <a href="mailto:osinithistheatis@gmail.com" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#007fd0] transition-colors duration-300">
           Επικοινωνήστε μαζί μας
         </a>
       </section>

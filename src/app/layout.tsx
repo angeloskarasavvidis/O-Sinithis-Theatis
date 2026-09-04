@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="el">
-      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} ${manrope.variable} font-serif bg-[#C7C9CC] text-zinc-900 antialiased`}>
+    <html lang="el" className="scroll-smooth">
+      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} ${manrope.variable} font-serif bg-zinc-950 text-zinc-200 antialiased`}>
         <AuthProvider>
           <PostsProvider>
             <Navbar />
