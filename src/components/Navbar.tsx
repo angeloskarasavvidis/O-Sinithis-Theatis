@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X, Search, ShieldCheck, LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,33 @@ export default function Navbar() {
   const [query, setQuery] = useState("");
   const { isLoggedIn, logout } = useAuth();
   const router = useRouter();
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY.current;
+
+      if (currentScrollY < 80 || delta < 0) {
+        setVisible(true);
+      } else if (delta > 0) {
+        setVisible(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // keep navbar visible while mobile menu or search is open
+  useEffect(() => {
+    if (open || searchOpen) setVisible(true);
+  }, [open, searchOpen]);
 
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -33,7 +60,11 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="bg-[#009DF8] text-white sticky top-0 z-50 border-b-4 border-black">
+    <nav
+      className={`bg-[#009DF8] text-white sticky top-0 z-50 border-b-4 border-black transition-transform duration-300 ${
+        visible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-6 h-24">
 
