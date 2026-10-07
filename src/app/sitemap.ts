@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { fetchPostSummaries } from "@/lib/posts";
+import { isPlayable, QUIZZES } from "@/lib/quizzes";
 import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 3600;
@@ -10,6 +11,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: SITE_URL, changeFrequency: "daily", priority: 1 },
     { url: `${SITE_URL}/posts`, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/about`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/quiz`, changeFrequency: "monthly", priority: 0.6 },
+    ...QUIZZES.filter(isPlayable).map((quiz) => ({ url: `${SITE_URL}/quiz/${quiz.slug}`, changeFrequency: "monthly" as const, priority: 0.5 })),
     ...posts.map((post) => ({
       url: `${SITE_URL}/posts/${encodeURIComponent(post.slug)}`,
       lastModified: new Date(post.date),

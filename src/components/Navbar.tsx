@@ -13,7 +13,8 @@ const links = [
   { href: "/posts?postType=Κριτική", path: "/posts", postType: "Κριτική", label: "Κριτικές" },
   { href: "/posts?postType=Αφιέρωμα", path: "/posts", postType: "Αφιέρωμα", label: "Αφιερώματα" },
   { href: "/about", path: "/about", label: "Σχετικά" },
-];
+  { href: "/quiz", path: "/quiz", label: "Κουίζ", isNew: true },
+] as { href: string; path: string; label: string; postType?: string; isNew?: boolean }[];
 
 const linkedPostTypes = links.flatMap((l) => (l.postType ? [l.postType] : []));
 
@@ -64,6 +65,8 @@ function NavbarBar({ postType }: { postType: string | null }) {
 
   // "Άρθρα" is active on /posts unless one of the post-type links is
   function isActive(l: (typeof links)[number]) {
+    // the quiz tab stays lit on every page of the quiz section
+    if (l.path === "/quiz") return pathname.startsWith("/quiz");
     if (pathname !== l.path) return false;
     if (l.path !== "/posts") return true;
     return l.postType ? l.postType === postType : !linkedPostTypes.includes(postType ?? "");
@@ -123,16 +126,21 @@ function NavbarBar({ postType }: { postType: string | null }) {
                 key={l.href}
                 href={l.href}
                 aria-current={isActive(l) ? "page" : undefined}
-                className="group flex items-center px-0.5 lg:px-1"
+                className={`group flex items-center px-0.5 lg:px-1 ${l.isNew ? "mr-4" : ""}`}
               >
                 <span
-                  className={`font-display uppercase font-black text-xl lg:text-2xl xl:text-3xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
+                  className={`relative font-display uppercase font-black text-xl lg:text-2xl xl:text-3xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
                     isActive(l)
                       ? "bg-[#F2AA48] text-black"
                       : "text-[#F2AA48] group-hover:bg-[#F2AA48] group-hover:text-black"
                   }`}
                 >
                   {l.label}
+                  {l.isNew && (
+                    <span className="absolute -top-2 -right-4 rotate-[9deg] bg-[#FFD60A] text-black font-sans text-[10px] font-bold tracking-widest leading-none px-1.5 py-1 border-2 border-black outline-2 outline-[#FFD60A]">
+                      ΝΕΟ
+                    </span>
+                  )}
                 </span>
               </Link>
             ))}
@@ -229,13 +237,18 @@ function NavbarBar({ postType }: { postType: string | null }) {
               className="group flex px-4 py-2"
             >
               <span
-                className={`font-display uppercase font-black text-4xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
+                className={`relative font-display uppercase font-black text-4xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
                   isActive(l)
                     ? "bg-[#F2AA48] text-black"
                     : "text-[#F2AA48] group-hover:bg-[#F2AA48] group-hover:text-black"
                 }`}
               >
                 {l.label}
+                  {l.isNew && (
+                    <span className="absolute -top-2 -right-4 rotate-[9deg] bg-[#FFD60A] text-black font-sans text-[10px] font-bold tracking-widest leading-none px-1.5 py-1 border-2 border-black outline-2 outline-[#FFD60A]">
+                      ΝΕΟ
+                    </span>
+                  )}
               </span>
             </Link>
           ))}
