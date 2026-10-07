@@ -208,11 +208,11 @@ function PostsContent() {
           <h1 className="font-display uppercase font-black text-5xl md:text-6xl bg-black text-[#F2AA48] px-3 pt-1.5 pb-1 leading-none">{heading}</h1>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => setDrawerOpen(true)} className="md:hidden flex items-center gap-1 px-3 py-2 border-[3px] border-black bg-[#F2AA48] text-sm font-semibold text-black">
+          <button onClick={() => setDrawerOpen(true)} className="md:hidden flex items-center gap-1 px-3 py-2 border-[3px] border-black bg-[#F2AA48] text-sm font-semibold text-black press">
             <SlidersHorizontal className="w-4 h-4" /> Φίλτρα
           </button>
           {isLoggedIn && (
-            <button onClick={() => setShowModal(true)} className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-5 py-2.5 transition-colors duration-300">
+            <button onClick={() => setShowModal(true)} className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-5 py-2.5">
               <Plus className="w-4 h-4" /> Νέα Ανάρτηση
             </button>
           )}
@@ -250,7 +250,7 @@ function PostsContent() {
               </div>
               {hasMore && (
                 <div className="text-center mt-8">
-                  <button onClick={() => setPage((p) => p + 1)} className="px-8 py-3 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black transition-colors duration-300">
+                  <button onClick={() => setPage((p) => p + 1)} className="px-8 py-3 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press">
                     Φόρτωση Περισσότερων
                   </button>
                 </div>

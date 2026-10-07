@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Post } from "@/types";
+import RatingStub from "@/components/RatingStub";
 
 const SLIDE_DURATION = 10000;
 
@@ -49,10 +50,7 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
             {post.postType}
           </span>
           {post.rating && (
-            <span className="flex items-center gap-1 font-sans text-sm font-semibold text-[#F2AA48]">
-              <Star className="w-3.5 h-3.5 fill-[#F2AA48]" />
-              {post.rating}/10
-            </span>
+            <RatingStub rating={post.rating} size="md" />
           )}
           {post.genre?.[0] && (
             <span className="font-sans text-xs uppercase tracking-widest text-zinc-300">
@@ -69,7 +67,7 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
         </p>
         <Link
           href={`/posts/${post.slug}`}
-          className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-6 py-3 transition-colors duration-300"
+          className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-6 py-3"
         >
           Διαβάστε Περισσότερα →
         </Link>

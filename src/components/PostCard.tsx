@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil } from "lucide-react";
 import { Post } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { usePosts } from "@/context/PostsContext";
 import EditPostModal from "@/components/admin/EditPostModal";
+import RatingStub from "@/components/RatingStub";
 
 const postTypeColors: Record<string, string> = {
   Κριτική: "bg-black text-white",
@@ -43,10 +44,7 @@ export default function PostCard({ post }: { post: Post }) {
           {post.postType}
         </span>
         {post.rating && (
-          <span className="absolute bottom-2 right-2 flex items-center gap-1 bg-black text-[#F2AA48] font-sans text-sm font-semibold px-2 py-0.5">
-            <Star className="w-3.5 h-3.5 fill-[#F2AA48]" />
-            {post.rating}
-          </span>
+          <RatingStub rating={post.rating} className="absolute bottom-2 right-2" />
         )}
       </Link>
 

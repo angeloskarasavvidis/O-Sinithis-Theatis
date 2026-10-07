@@ -37,3 +37,35 @@
 @media (prefers-reduced-motion: reduce) {
   .animate-hero-in { animation: none; }
 }
+
+/* Buttons: hard shadow at rest, lift on hover, sink into the shadow when pressed */
+@utility press {
+  box-shadow: 4px 4px 0 0 #000;
+  transition: translate 150ms ease-out, box-shadow 150ms ease-out;
+
+  &:hover {
+    translate: -2px -2px;
+    box-shadow: 6px 6px 0 0 #000;
+  }
+
+  &:active {
+    translate: 4px 4px;
+    box-shadow: 0 0 0 0 #000;
+  }
+
+  &:disabled {
+    translate: none;
+    box-shadow: 4px 4px 0 0 #000;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+/* Rating ticket stub: a semicircle notch bitten out of the left and right edges */
+@utility ticket {
+  mask:
+    radial-gradient(circle 0.35em at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 0.35em at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+}

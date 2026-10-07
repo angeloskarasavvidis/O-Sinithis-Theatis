@@ -11,7 +11,7 @@ export default function SignupPage() {
         <p className="text-black/80 text-sm leading-relaxed mb-6">
           Η εγγραφή νέων χρηστών θα είναι σύντομα διαθέσιμη. Μείνετε συντονισμένοι!
         </p>
-        <a href="/login" className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-6 py-3 transition-colors duration-300">
+        <a href="/login" className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-white text-black border-[3px] border-black press px-6 py-3">
           Σύνδεση
         </a>
       </div>

@@ -65,7 +65,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black py-3 transition-colors disabled:opacity-60"
+            className="w-full font-sans text-sm font-semibold uppercase tracking-widest bg-white text-black border-[3px] border-black press py-3 disabled:opacity-60"
           >
             {loading ? "Σύνδεση..." : "Σύνδεση"}
           </button>

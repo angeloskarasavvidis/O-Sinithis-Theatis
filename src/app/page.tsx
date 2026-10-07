@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Plus, Star } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Post } from "@/types";
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
 import HeroSlider from "@/components/HeroSlider";
 import AddPostModal from "@/components/admin/AddPostModal";
+import RatingStub from "@/components/RatingStub";
 
 const postTypeColors: Record<string, string> = {
   Κριτική: "bg-black text-white",
@@ -73,10 +74,7 @@ function LatestPosts({ posts }: { posts: Post[] }) {
           <div className="flex items-center gap-3 mb-4">
             <TypeLabel post={lead} />
             {lead.rating && (
-              <span className="flex items-center gap-1 font-sans text-sm font-semibold text-[#F2AA48]">
-                <Star className="w-3.5 h-3.5 fill-[#F2AA48]" />
-                {lead.rating}/10
-              </span>
+              <RatingStub rating={lead.rating} size="md" />
             )}
           </div>
           <h3 className="font-display uppercase font-black text-4xl md:text-6xl leading-tight text-white group-hover:text-[#F2AA48] transition-colors duration-300 text-balance mb-3">
@@ -222,7 +220,7 @@ export default function HomePage() {
           <div className="mb-8 flex justify-end">
             <button
               onClick={() => setShowModal(true)}
-              className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-5 py-2.5 transition-colors duration-300"
+              className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-5 py-2.5"
             >
               <Plus className="w-4 h-4" />
               Νέα Ανάρτηση

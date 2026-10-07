@@ -5,11 +5,12 @@ import DOMPurify from "dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Star, Trash2, Pencil, Film, Tag, Copy, Check } from "lucide-react";
+import { ArrowLeft, Trash2, Pencil, Film, Tag, Copy, Check } from "lucide-react";
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
 import PostCard from "@/components/PostCard";
 import EditPostModal from "@/components/admin/EditPostModal";
+import RatingStub from "@/components/RatingStub";
 
 const postTypeColors: Record<string, string> = {
   Κριτική: "bg-white text-black",
@@ -95,9 +96,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
             <div className="flex items-center gap-3 flex-wrap mb-6">
               {post.rating && (
-                <span className="flex items-center gap-1 text-[#F2AA48] font-semibold text-sm">
-                  <Star className="w-4 h-4 fill-[#F2AA48]" />{post.rating}/10
-                </span>
+                <RatingStub rating={post.rating} size="md" />
               )}
               {isLoggedIn && (
                 <>

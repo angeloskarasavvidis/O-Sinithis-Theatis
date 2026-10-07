@@ -164,7 +164,7 @@ export default function AddPostModal({ onClose }: Props) {
           {error && <p className="text-sm font-semibold text-red-700 bg-white border-2 border-red-700 px-3 py-2">{error}</p>}
 
           <div className="flex gap-3 pt-2">
-            <button type="submit" disabled={saving} className="flex-1 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black py-2.5 hover:bg-white hover:text-black transition-colors disabled:opacity-50">
+            <button type="submit" disabled={saving} className="flex-1 font-sans text-sm font-semibold uppercase tracking-widest bg-white text-black border-[3px] border-black py-2.5 press disabled:opacity-50">
               {saving ? "Αποθήκευση…" : "Δημιουργία"}
             </button>
             <button type="button" onClick={onClose} className="px-6 py-2.5 font-sans text-sm font-semibold uppercase tracking-widest border-[3px] border-black text-black hover:bg-black hover:text-white transition-colors duration-300">

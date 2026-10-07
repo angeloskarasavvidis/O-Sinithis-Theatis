@@ -38,7 +38,7 @@ export default function AboutPage() {
       <section className="bg-[#F2AA48] border-[3px] border-black p-8 md:p-10 text-center">
         <h2 className="font-display uppercase font-black text-4xl text-black mb-3">Επικοινωνία</h2>
         <p className="text-black/80 mb-6">Θέλεις να συνεργαστείς μαζί μας ή να μοιραστείς τις απόψεις σου;</p>
-        <a href="mailto:osinithistheatis@gmail.com" className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-6 py-3 transition-colors duration-300">
+        <a href="mailto:osinithistheatis@gmail.com" className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-white text-black border-[3px] border-black press px-6 py-3">
           Επικοινωνήστε μαζί μας
         </a>
       </section>
