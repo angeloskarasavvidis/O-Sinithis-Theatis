@@ -22,7 +22,7 @@ export default function Header() {
     <header className="bg-white border-b border-zinc-200 py-4 px-4">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
         <Link href="/" className="text-center sm:text-left">
-          <h1 className="text-2xl md:text-3xl font-serif font-bold text-zinc-800">
+          <h1 className="text-3xl md:text-4xl font-display uppercase font-bold text-zinc-800">
             Ο Συνήθης{" "}
             <span className="text-[#009DF8]">Θεατής</span>
           </h1>

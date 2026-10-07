@@ -1,54 +1,44 @@
 export default function AboutPage() {
-  const stats = [
-    { label: "Κριτικές", value: "10+" },
-    { label: "Σκηνοθέτες", value: "80+" },
-    { label: "Χρόνια Online", value: "< 1" },
+  const team = [
+    { name: "Άγγελος Καρασαββίδης", role: "Ιδρυτής & Αρχισυντάκτης", bio: "Δήθεν σινεφίλ με ειδίκευση στο να το παίζει ψαγμένος." },
   ];
 
-  const team = [
-    { name: "Αγγελος Καρασαββίδης", role: "Ιδρυτής & Αρχισυντάκτης", bio: "Δήθεν σινεφίλ με ειδίκευση στο να το παίζει ψαγμένος." },
- ];
-
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 font-manrope">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-serif font-bold text-zinc-100 mb-4">
-          Σχετικά με τον <span className="text-[#009DF8]">Συνήθη Θεατή</span>
+    <div className="max-w-3xl mx-auto px-4 py-12 md:py-16 font-sans">
+      <div className="text-center mb-14">
+        <h1 className="text-5xl md:text-6xl font-display uppercase font-black text-black text-balance mb-4">
+          Σχετικά με τον <span className="text-white">Συνήθη Θεατή</span>
         </h1>
-        <p className="text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg text-black/80 max-w-2xl mx-auto leading-relaxed">
           Μια σελίδα για όσους θέλουν να έρθουν πιο κοντά στο σινεμά.
         </p>
       </div>
 
-      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-        {stats.map((s) => (
-          <div key={s.label} className="bg-white border border-zinc-200 rounded-xl p-5 text-center shadow-sm">
-            <div className="text-3xl font-bold text-[#009DF8] mb-1">{s.value}</div>
-            <div className="text-sm text-zinc-500">{s.label}</div>
-          </div>
-        ))}
-      </div> */}
-
-      <section className="mb-12">
-        <h2 className="text-2xl font-serif font-bold text-zinc-100 mb-6">Η Ομάδα μας</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section className="mb-14">
+        <div className="flex items-center gap-4 mb-2">
+          <h2 className="font-display uppercase font-black text-4xl md:text-5xl bg-black text-[#F2AA48] px-3 pt-1.5 pb-1 leading-none">Η Ομάδα μας</h2>
+          <span className="flex-1 h-[3px] bg-black" />
+        </div>
+        <ul className="divide-y-[3px] divide-black">
           {team.map((m) => (
-            <div key={m.name} className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm">
-              <div className="w-14 h-14 rounded-full bg-[#009DF8]/10 flex items-center justify-center text-2xl font-bold text-[#009DF8] mb-4">
+            <li key={m.name} className="flex items-center gap-5 md:gap-8 py-8">
+              <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-black flex items-center justify-center font-display uppercase font-black text-6xl md:text-8xl text-[#F2AA48]">
                 {m.name[0]}
               </div>
-              <h3 className="font-bold text-zinc-800 mb-1">{m.name}</h3>
-              <p className="text-xs text-[#009DF8] font-semibold mb-3">{m.role}</p>
-              <p className="text-sm text-zinc-500 leading-relaxed">{m.bio}</p>
-            </div>
+              <div>
+                <p className="font-sans text-xs uppercase tracking-[0.2em] text-black font-bold mb-2">{m.role}</p>
+                <h3 className="font-display uppercase font-black text-3xl md:text-4xl text-black leading-tight mb-2">{m.name}</h3>
+                <p className="text-black/80 leading-relaxed">{m.bio}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <section className="bg-[#009DF8]/10 border border-[#009DF8]/20 rounded-2xl p-8 text-center">
-        <h2 className="text-xl font-bold text-zinc-100 mb-3">Επικοινωνία</h2>
-        <p className="text-zinc-400 mb-4">Θέλεις να συνεργαστείς μαζί μας ή να μοιραστείς τις απόψεις σου;</p>
-        <a href="mailto:osinithistheatis@gmail.com" className="inline-block bg-[#009DF8] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#007fd0] transition-colors duration-300">
+      <section className="bg-[#F2AA48] border-[3px] border-black p-8 md:p-10 text-center">
+        <h2 className="font-display uppercase font-black text-4xl text-black mb-3">Επικοινωνία</h2>
+        <p className="text-black/80 mb-6">Θέλεις να συνεργαστείς μαζί μας ή να μοιραστείς τις απόψεις σου;</p>
+        <a href="mailto:osinithistheatis@gmail.com" className="inline-block font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-6 py-3 transition-colors duration-300">
           Επικοινωνήστε μαζί μας
         </a>
       </section>

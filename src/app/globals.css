@@ -1,16 +1,10 @@
 @import "tailwindcss";
 
-@theme {
-  --font-serif: var(--font-serif);
-  --font-pixel: var(--font-pixel);
-  --font-inter: var(--font-inter);
-  --font-manrope: var(--font-manrope);
+@theme inline {
+  --font-sans: var(--font-sofia), system-ui, sans-serif;
+  --font-display: var(--font-sofia-condensed), "Arial Narrow", sans-serif;
+  --font-pixel: var(--font-press-start), monospace;
 }
-
-.font-serif   { font-family: var(--font-serif), serif; }
-.font-pixel   { font-family: var(--font-pixel), monospace; }
-.font-inter   { font-family: var(--font-inter), sans-serif; }
-.font-manrope { font-family: var(--font-manrope), sans-serif; }
 
 @keyframes marquee {
   0%   { transform: translateX(0); }
@@ -26,13 +20,20 @@
 
 .animate-marquee-slow { animation: marquee-slow 60s linear infinite; }
 
-.prose-drop-cap > p:first-of-type::first-letter {
-  font-family: var(--font-serif);
-  font-size: 4.5em;
-  font-weight: 900;
-  float: left;
-  line-height: 0.75;
-  margin-right: 8px;
-  margin-top: 6px;
-  color: #009DF8;
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-hero-in { animation: hero-in 700ms ease-out both; }
+
+@keyframes hero-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.animate-hero-progress { animation: hero-progress linear both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-in { animation: none; }
 }

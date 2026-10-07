@@ -46,9 +46,7 @@ export default function Navbar() {
   }, []);
 
   // keep navbar visible while mobile menu or search is open
-  useEffect(() => {
-    if (open || searchOpen) setVisible(true);
-  }, [open, searchOpen]);
+  const shown = visible || open || searchOpen;
 
   function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -61,32 +59,32 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`bg-[#009DF8] text-white sticky top-0 z-50 border-b-4 border-black transition-transform duration-300 ${
-        visible ? "translate-y-0" : "-translate-y-full"
+      className={`bg-black text-white sticky top-0 z-50 transition-transform duration-300 ${
+        shown ? "translate-y-0" : "-translate-y-full"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center gap-6 h-24">
+        <div className="flex items-center gap-4 lg:gap-6 h-16 md:h-20 xl:h-24">
 
           {/* Logo */}
           <Link href="/" className="shrink-0">
-            <img src="/main_logo_rebrand.png" alt="Ο Συνήθης Θεατής" className="h-16 md:h-20 w-auto" />
+            <img src="/main_logo_rebrand.png" alt="Ο Συνήθης Θεατής" className="h-11 md:h-14 lg:h-16 xl:h-20 w-auto" />
           </Link>
 
           {/* Divider */}
-          <span className="hidden md:block w-1 h-8 bg-[#F2AA48] shrink-0 rounded-full" />
+          <span className="hidden md:block w-1 h-8 bg-[#F2AA48] shrink-0" />
 
           {/* Nav links */}
-          <div className="hidden md:flex items-center gap-0 flex-1">
+          <div className="hidden md:flex items-stretch gap-0 flex-1 h-full">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`px-3 py-6 transition-opacity border-b-4 hover:opacity-80 ${
-                  pathname === l.href ? "border-black" : "border-transparent opacity-90"
+                className={`flex items-center px-2 lg:px-3 transition-opacity border-b-4 hover:opacity-80 ${
+                  pathname === l.href ? "border-[#F2AA48]" : "border-transparent opacity-90"
                 }`}
               >
-                <img src={l.img} alt={l.label} className="h-8" />
+                <img src={l.img} alt={l.label} className="h-6 lg:h-7 xl:h-9 w-auto" />
               </Link>
             ))}
           </div>
@@ -101,7 +99,7 @@ export default function Navbar() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Αναζήτηση..."
-                  className="bg-white/10 text-white placeholder-white/60 text-sm px-3 py-1.5 rounded focus:outline-none focus:ring-1 focus:ring-black w-44"
+                  className="bg-white/10 text-white placeholder-white/60 text-sm px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-[#F2AA48] w-44"
                 />
                 <button type="button" onClick={() => setSearchOpen(false)} className="text-white/80 hover:text-white">
                   <X className="w-4 h-4" />
@@ -130,11 +128,11 @@ export default function Navbar() {
             )}
 
             <button
-              className="md:hidden p-1 text-white/80 hover:text-white"
+              className="md:hidden p-1 text-white hover:text-[#F2AA48] transition-colors duration-300"
               onClick={() => setOpen(!open)}
               aria-label="Toggle menu"
             >
-              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
@@ -142,7 +140,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-black/20">
+        <div className="md:hidden border-t border-white/20">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -150,8 +148,8 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
               className={`flex px-4 py-3 border-l-4 transition-colors ${
                 pathname === l.href
-                  ? "border-black bg-black/10"
-                  : "border-transparent hover:bg-black/10"
+                  ? "border-[#F2AA48] bg-white/10"
+                  : "border-transparent hover:bg-white/10"
               }`}
             >
               <img src={l.img} alt={l.label} className="h-7" />

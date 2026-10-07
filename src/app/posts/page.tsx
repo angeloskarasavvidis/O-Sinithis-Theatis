@@ -35,50 +35,50 @@ function FilterPanel({ filters, setFilters, setPage, allGenres, allDirectors, al
   return (
     <div className="space-y-5 text-sm">
       <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Αναζήτηση</label>
+        <label className="block font-sans font-bold text-black uppercase text-xs tracking-[0.2em] mb-1.5">Αναζήτηση</label>
         <input
           value={filters.search}
           onChange={(e) => update("search", e.target.value)}
           placeholder="Τίτλος, περιεχόμενο..."
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]"
+          className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black"
         />
       </div>
       <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Είδος</label>
+        <label className="block font-sans font-bold text-black uppercase text-xs tracking-[0.2em] mb-1.5">Είδος</label>
         <select value={filters.genre} onChange={(e) => update("genre", e.target.value)}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black">
           <option value="">Όλα</option>
           {allGenres.map((g) => <option key={g} value={g}>{g}</option>)}
         </select>
       </div>
       <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Σκηνοθέτης</label>
+        <label className="block font-sans font-bold text-black uppercase text-xs tracking-[0.2em] mb-1.5">Σκηνοθέτης</label>
         <select value={filters.director} onChange={(e) => update("director", e.target.value)}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black">
           <option value="">Όλοι</option>
           {allDirectors.map((d) => <option key={d} value={d}>{d}</option>)}
         </select>
       </div>
       <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Έτος</label>
+        <label className="block font-sans font-bold text-black uppercase text-xs tracking-[0.2em] mb-1.5">Έτος</label>
         <select value={filters.year} onChange={(e) => update("year", e.target.value)}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black">
           <option value="">Όλα</option>
           {allYears.map((y) => <option key={y} value={y}>{y}</option>)}
         </select>
       </div>
       <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Τύπος</label>
+        <label className="block font-sans font-bold text-black uppercase text-xs tracking-[0.2em] mb-1.5">Τύπος</label>
         <select value={filters.postType} onChange={(e) => update("postType", e.target.value)}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black">
           <option value="">Όλοι</option>
           {["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"].map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
       <div>
-        <label className="block font-semibold text-zinc-600 uppercase text-xs tracking-wide mb-1.5">Ταξινόμηση</label>
+        <label className="block font-sans font-bold text-black uppercase text-xs tracking-[0.2em] mb-1.5">Ταξινόμηση</label>
         <select value={filters.sort} onChange={(e) => update("sort", e.target.value)}
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg bg-white focus:outline-none focus:border-[#009DF8]">
+          className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black">
           <option value="date">Ημερομηνία</option>
           <option value="rating">Βαθμολογία</option>
         </select>
@@ -135,15 +135,17 @@ function PostsContent() {
   const panelProps = { filters, setFilters, setPage, allGenres, allDirectors, allYears };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 font-manrope">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-serif font-bold text-zinc-100">Όλα τα Άρθρα</h1>
+    <div className="max-w-7xl mx-auto px-4 py-8 font-sans">
+      <div className="flex items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-4">
+          <h1 className="font-display uppercase font-black text-5xl md:text-6xl bg-black text-[#F2AA48] px-3 pt-1.5 pb-1 leading-none">Όλα τα Άρθρα</h1>
+        </div>
         <div className="flex gap-2">
-          <button onClick={() => setDrawerOpen(true)} className="md:hidden flex items-center gap-1 px-3 py-2 border border-zinc-700 rounded-lg text-sm text-zinc-300">
+          <button onClick={() => setDrawerOpen(true)} className="md:hidden flex items-center gap-1 px-3 py-2 border-[3px] border-black bg-[#F2AA48] text-sm font-semibold text-black">
             <SlidersHorizontal className="w-4 h-4" /> Φίλτρα
           </button>
           {isLoggedIn && (
-            <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-[#009DF8] text-white px-4 py-2 rounded-full font-semibold text-sm hover:bg-[#007fd0] transition-colors duration-300">
+            <button onClick={() => setShowModal(true)} className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black px-5 py-2.5 transition-colors duration-300">
               <Plus className="w-4 h-4" /> Νέα Ανάρτηση
             </button>
           )}
@@ -153,27 +155,27 @@ function PostsContent() {
       {activeFilters.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {activeFilters.map(({ key, value }) => (
-            <span key={key} className="flex items-center gap-1 bg-[#009DF8]/10 text-[#009DF8] text-xs px-3 py-1 rounded-full">
+            <span key={key} className="flex items-center gap-1 font-sans uppercase tracking-widest bg-[#F2AA48] border-2 border-black text-black font-semibold text-xs px-3 py-1">
               {value}
               <button onClick={() => clearFilter(key)}><X className="w-3 h-3" /></button>
             </span>
           ))}
           <button onClick={() => setFilters({ search: "", genre: "", director: "", year: "", postType: "", sort: "date" })}
-            className="text-xs text-zinc-400 hover:text-white underline transition-colors duration-300">Καθαρισμός</button>
+            className="text-xs font-semibold text-black hover:text-white underline transition-colors duration-300">Καθαρισμός</button>
         </div>
       )}
 
       <div className="flex gap-6">
         <aside className="hidden md:block w-56 flex-shrink-0">
-          <div className="bg-white border border-zinc-200 rounded-xl p-5 sticky top-4">
+          <div className="bg-[#F2AA48] border-[3px] border-black p-5 sticky top-4">
             <FilterPanel {...panelProps} />
           </div>
         </aside>
 
         <div className="flex-1">
-          <p className="text-sm text-zinc-400 mb-4">{filtered.length} αποτελέσματα</p>
+          <p className="text-sm text-black/75 mb-4">{filtered.length} αποτελέσματα</p>
           {filtered.length === 0 ? (
-            <div className="text-center py-20 text-zinc-400">Δεν βρέθηκαν αποτελέσματα.</div>
+            <div className="text-center py-20 text-black/75">Δεν βρέθηκαν αποτελέσματα.</div>
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -181,7 +183,7 @@ function PostsContent() {
               </div>
               {hasMore && (
                 <div className="text-center mt-8">
-                  <button onClick={() => setPage((p) => p + 1)} className="px-8 py-3 bg-[#009DF8] text-white rounded-full font-semibold hover:bg-[#007fd0] transition-colors duration-300">
+                  <button onClick={() => setPage((p) => p + 1)} className="px-8 py-3 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black hover:bg-[#F2AA48] hover:text-black transition-colors duration-300">
                     Φόρτωση Περισσότερων
                   </button>
                 </div>
@@ -193,11 +195,11 @@ function PostsContent() {
 
       {drawerOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setDrawerOpen(false)} />
-          <div className="absolute right-0 top-0 bottom-0 w-72 bg-white p-6 overflow-y-auto">
+          <div className="absolute inset-0 bg-black/70" onClick={() => setDrawerOpen(false)} />
+          <div className="absolute right-0 top-0 bottom-0 w-72 bg-[#F2AA48] border-l-[3px] border-black p-6 overflow-y-auto">
             <div className="flex justify-between mb-4">
-              <h2 className="font-bold text-zinc-800">Φίλτρα</h2>
-              <button onClick={() => setDrawerOpen(false)}><X className="w-5 h-5 text-zinc-500" /></button>
+              <h2 className="font-bold text-black">Φίλτρα</h2>
+              <button onClick={() => setDrawerOpen(false)}><X className="w-5 h-5 text-black" /></button>
             </div>
             <FilterPanel {...panelProps} />
           </div>

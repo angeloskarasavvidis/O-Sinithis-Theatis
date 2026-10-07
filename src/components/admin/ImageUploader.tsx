@@ -71,23 +71,23 @@ export default function ImageUploader({ value, onChange }: Props) {
             }
           }}
           placeholder="https://... ή ανέβασε φωτογραφία →"
-          className="w-full px-3 py-2 border border-zinc-200 rounded-lg text-sm focus:outline-none focus:border-[#009DF8] bg-zinc-50"
+          className="w-full px-3 py-2 border border-zinc-700 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#009DF8] bg-zinc-950"
         />
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 text-white text-sm rounded-lg hover:bg-[#009DF8] transition-colors disabled:opacity-50 whitespace-nowrap"
+          className="flex items-center gap-1.5 px-3 py-2 bg-zinc-700 text-white text-sm hover:bg-[#009DF8] transition-colors disabled:opacity-50 whitespace-nowrap"
         >
           {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
           {uploading ? "Ανέβασμα…" : "Επιλογή"}
         </button>
         <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
       </div>
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
       {value && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={value} alt="preview" className="h-24 w-full object-cover rounded-lg border border-zinc-200" />
+        <img src={value} alt="preview" className="h-24 w-full object-cover border border-zinc-700" />
       )}
     </div>
   );

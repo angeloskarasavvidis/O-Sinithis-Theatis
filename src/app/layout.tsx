@@ -1,34 +1,30 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Noto_Serif_Display, Press_Start_2P, Inter, Manrope } from "next/font/google";
+import { Sofia_Sans, Sofia_Sans_Extra_Condensed, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { PostsProvider } from "@/context/PostsContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const notoSerifDisplay = Noto_Serif_Display({
+// headings
+const sofiaCondensed = Sofia_Sans_Extra_Condensed({
   subsets: ["latin", "greek"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-sofia-condensed",
+});
+
+// body text and UI labels
+const sofiaSans = Sofia_Sans({
+  subsets: ["latin", "greek"],
   style: ["normal", "italic"],
-  variable: "--font-serif",
+  variable: "--font-sofia",
 });
 
 const pressStart = Press_Start_2P({
   subsets: ["latin", "greek"],
   weight: "400",
-  variable: "--font-pixel",
-});
-
-const inter = Inter({
-  subsets: ["latin", "greek"],
-  variable: "--font-inter",
-});
-
-const manrope = Manrope({
-  subsets: ["latin", "greek"],
-  variable: "--font-manrope",
+  variable: "--font-press-start",
 });
 
 export const metadata: Metadata = {
@@ -43,7 +39,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="el" className="scroll-smooth">
-      <body className={`${notoSerifDisplay.variable} ${pressStart.variable} ${inter.variable} ${manrope.variable} font-serif bg-zinc-950 text-zinc-200 antialiased`}>
+      <body className={`${sofiaCondensed.variable} ${sofiaSans.variable} ${pressStart.variable} font-sans bg-[#009DF8] text-black antialiased`}>
         <AuthProvider>
           <PostsProvider>
             <Navbar />

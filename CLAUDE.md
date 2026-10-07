@@ -52,11 +52,23 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 
 ## Design
 
-- Brand blue `#009DF8` (navbar, links, accents), orange `#F2AA48` (navbar divider and search icon), black borders on the navbar. Colours are written as Tailwind arbitrary values (`bg-[#009DF8]`), not theme tokens.
-- Dark theme: page background `bg-zinc-950`, text `text-zinc-200`. Several surfaces (post cards, modals, login, About cards, filter panel) are still styled for the old light theme.
-- Fonts via `next/font`, exposed as utility classes: `font-serif` (Noto Serif Display, headings, usually bold italic), `font-inter` (UI labels, usually small uppercase with wide tracking), `font-manrope` (article and inner pages), `font-pixel` (Press Start 2P, tiny admin labels).
-- Navbar links and the logo are PNG wordmarks in `public/*_rebrand.png`, not text.
-- Square corners on the home page and cards; rounded corners remain on older inner pages and modals.
+- The site is the logo turned into a page: blue `#009DF8` ground, orange `#F2AA48` panels, black text and thick black outlines. Colours are written as Tailwind arbitrary values (`bg-[#009DF8]`), not theme tokens.
+- Page background is blue with black text (`text-black`, `text-black/75` for secondary). Cards, the filter sidebar, forms and the contact panel are orange with `border-[3px] border-black`. Form inputs are white with `border-2 border-black`.
+- Navbar, footer, the genre strip and the left panel of the article page are black, with orange or white text.
+- Section headings are black slabs with orange text (`bg-black text-[#F2AA48] px-3 pt-1.5 pb-1`). Buttons are the same pair and invert on hover (`hover:bg-[#F2AA48] hover:text-black`, keeping a 3px black border). Type labels and rating chips are black with orange or white text.
+- Never put blue text or blue controls on the page, they disappear into the background. Text over photos stays white on a dark gradient.
+- The admin add/edit modals are still dark (zinc) panels.
+- Square corners everywhere. Do not add `rounded-*` classes.
+- Headings use `font-display` (Sofia Sans Extra Condensed): `font-display uppercase font-black`, upright, never italic. Because the face is very narrow, headings are set one size step larger than a normal-width font would need.
+- Everything else uses `font-sans` (Sofia Sans), the body default. Buttons and labels are small, uppercase, `tracking-widest`. `font-pixel` (Press Start 2P) is only for the tiny admin labels in the navbar.
+- Fonts are loaded with `next/font` in `src/app/layout.tsx` and mapped to those utilities in the `@theme inline` block of `src/app/globals.css`. Any new font must include the `greek` subset. `<html lang="el">` makes `uppercase` drop Greek accents correctly.
+- Navbar links and the logo are PNG wordmarks in `public/*_rebrand.png`, not text. Their sizes are set per breakpoint so the row fits; re-measure at 768, 1024 and 1280 if you change them.
+- The home page sections each have their own layout, defined in `src/app/page.tsx` (lead story plus list, numbered ranking, image tiles). `PostCard` is used on `/posts` and for related articles, and is the only card with inline admin edit/delete buttons.
+- Article body HTML is styled with `[&_tag]:` variants on the container in `src/app/posts/[slug]/page.tsx`; the Tailwind typography plugin is not installed.
+
+## Dev server
+
+If a change to `src/app/globals.css` does not show up locally, stop the dev server, delete `.next/dev`, and start it again.
 
 ## Housekeeping
 
