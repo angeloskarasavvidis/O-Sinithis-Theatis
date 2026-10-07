@@ -7,7 +7,7 @@ export default function AboutPage() {
     <div className="max-w-3xl mx-auto px-4 py-12 md:py-16 font-sans">
       <div className="text-center mb-14">
         <h1 className="text-5xl md:text-6xl font-display uppercase font-black text-black text-balance mb-4">
-          Σχετικά με τον <span className="text-white">Συνήθη Θεατή</span>
+          Σχετικά με τον <span className="text-[#F2AA48]">Συνήθη Θεατή</span>
         </h1>
         <p className="text-lg text-black/80 max-w-2xl mx-auto leading-relaxed">
           Μια σελίδα για όσους θέλουν να έρθουν πιο κοντά στο σινεμά.
