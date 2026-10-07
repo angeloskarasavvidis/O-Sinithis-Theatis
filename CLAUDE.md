@@ -47,7 +47,7 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 - **CSP**: `next.config.ts` sets a strict Content-Security-Policy on every route. Any new external script, font, image host or API endpoint must be added there or the browser blocks it silently.
 - **Access control lives in Supabase**: the browser writes straight to the `posts` table with the anon key, so Row Level Security policies in the Supabase dashboard are the only thing stopping anonymous writes. Hiding a button behind `isLoggedIn` is not security.
 - **Slugs**: `AddPostModal` builds the slug with an ASCII-only regex, so Greek titles are stripped down to just the timestamp suffix.
-- **URL filters**: `/posts` reads only `search` and `genre` from the query string, and only on first render.
+- **URL filters**: on `/posts` the query string is the single source of truth for the filters (`search`, `genre`, `director`, `year`, `postType`, `sort`). Do not copy them into component state; change a filter by navigating with `router.push`. Only the search box keeps a local draft, written to the URL after a short pause. The navbar reads `postType` to highlight the right link, which is why it is wrapped in `Suspense`.
 - **SEO**: because posts load client-side, article pages have no per-post metadata and no server-rendered content.
 
 ## Design

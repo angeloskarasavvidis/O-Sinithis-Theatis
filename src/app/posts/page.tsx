@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState, useMemo, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Plus, SlidersHorizontal, X } from "lucide-react";
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
@@ -9,6 +9,16 @@ import PostCard from "@/components/PostCard";
 import AddPostModal from "@/components/admin/AddPostModal";
 
 const PAGE_SIZE = 9;
+const SEARCH_DEBOUNCE_MS = 300;
+
+const POST_TYPES = ["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"];
+
+const HEADINGS: Record<string, string> = {
+  Κριτική: "Κριτικές",
+  Αφιέρωμα: "Αφιερώματα",
+  Νέα: "Νέα",
+  Συνέντευξη: "Συνεντεύξεις",
+};
 
 type Filters = {
   search: string;
@@ -19,18 +29,34 @@ type Filters = {
   sort: string;
 };
 
-function FilterPanel({ filters, setFilters, setPage, allGenres, allDirectors, allYears }: {
+// The URL query string is the single source of truth for the filters.
+function filtersFromParams(params: URLSearchParams): Filters {
+  return {
+    search: params.get("search") ?? "",
+    genre: params.get("genre") ?? "",
+    director: params.get("director") ?? "",
+    year: params.get("year") ?? "",
+    postType: params.get("postType") ?? "",
+    sort: params.get("sort") === "rating" ? "rating" : "date",
+  };
+}
+
+function filtersToHref(filters: Filters) {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(filters)) {
+    if (value && !(key === "sort" && value === "date")) params.set(key, value);
+  }
+  const query = params.toString();
+  return query ? `/posts?${query}` : "/posts";
+}
+
+function FilterPanel({ filters, update, allGenres, allDirectors, allYears }: {
   filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  update: (key: keyof Filters, value: string) => void;
   allGenres: string[];
   allDirectors: string[];
   allYears: number[];
 }) {
-  function update(key: keyof Filters, value: string) {
-    setFilters((f) => ({ ...f, [key]: value }));
-    if (key !== "sort") setPage(1);
-  }
 
   return (
     <div className="space-y-5 text-sm">
@@ -72,7 +98,7 @@ function FilterPanel({ filters, setFilters, setPage, allGenres, allDirectors, al
         <select value={filters.postType} onChange={(e) => update("postType", e.target.value)}
           className="w-full px-3 py-2 border-2 border-black bg-white text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black">
           <option value="">Όλοι</option>
-          {["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"].map((t) => <option key={t} value={t}>{t}</option>)}
+          {POST_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
       <div>
@@ -91,18 +117,62 @@ function PostsContent() {
   const { posts } = usePosts();
   const { isLoggedIn } = useAuth();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [page, setPage] = useState(1);
 
-  const [filters, setFilters] = useState({
-    search: searchParams.get("search") || "",
-    genre: searchParams.get("genre") || "",
-    director: "",
-    year: "",
-    postType: "",
-    sort: "date",
-  });
+  const query = searchParams.toString();
+  const urlFilters = useMemo(() => filtersFromParams(new URLSearchParams(query)), [query]);
+
+  // The search box filters as you type and is written to the URL after a short pause.
+  // `written` is the last search text this page put in the URL, so any other value
+  // arriving there (navbar search, back button, a link) is adopted as the new text.
+  const [draft, setDraft] = useState(urlFilters.search);
+  const [written, setWritten] = useState(urlFilters.search);
+  const [seenQuery, setSeenQuery] = useState(query);
+  if (seenQuery !== query) {
+    setSeenQuery(query);
+    setPage(1);
+    if (urlFilters.search !== written) {
+      setDraft(urlFilters.search);
+      setWritten(urlFilters.search);
+    }
+  }
+
+  useEffect(() => {
+    if (draft === written) return;
+    const timer = setTimeout(() => {
+      setWritten(draft);
+      router.replace(filtersToHref({ ...urlFilters, search: draft }), { scroll: false });
+    }, SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [draft, written, urlFilters, router]);
+
+  const filters = useMemo(() => ({ ...urlFilters, search: draft }), [urlFilters, draft]);
+
+  function update(key: keyof Filters, value: string) {
+    if (key === "search") {
+      setDraft(value);
+      setPage(1);
+      return;
+    }
+    setWritten(draft);
+    router.push(filtersToHref({ ...filters, [key]: value }), { scroll: false });
+  }
+
+  function clearFilter(key: keyof Filters) {
+    const next = { ...filters, [key]: "" };
+    setDraft(next.search);
+    setWritten(next.search);
+    router.push(filtersToHref(next), { scroll: false });
+  }
+
+  function clearAll() {
+    setDraft("");
+    setWritten("");
+    router.push("/posts", { scroll: false });
+  }
 
   const allGenres = useMemo(() => [...new Set(posts.flatMap((p) => p.genre))].sort(), [posts]);
   const allDirectors = useMemo(() => [...new Set(posts.map((p) => p.director))].sort(), [posts]);
@@ -123,22 +193,19 @@ function PostsContent() {
   const paginated = filtered.slice(0, page * PAGE_SIZE);
   const hasMore = paginated.length < filtered.length;
 
-  const activeFilters = Object.entries(filters)
-    .filter(([k, v]) => v && k !== "sort")
-    .map(([k, v]) => ({ key: k, value: v }));
+  const activeFilters = (Object.keys(filters) as (keyof Filters)[])
+    .filter((key) => filters[key] && key !== "sort")
+    .map((key) => ({ key, value: filters[key] }));
 
-  function clearFilter(key: string) {
-    setFilters((f) => ({ ...f, [key]: "" }));
-    setPage(1);
-  }
+  const heading = HEADINGS[filters.postType] ?? "Όλα τα Άρθρα";
 
-  const panelProps = { filters, setFilters, setPage, allGenres, allDirectors, allYears };
+  const panelProps = { filters, update, allGenres, allDirectors, allYears };
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 font-sans">
       <div className="flex items-center justify-between gap-4 mb-8">
         <div className="flex items-center gap-4">
-          <h1 className="font-display uppercase font-black text-5xl md:text-6xl bg-black text-[#F2AA48] px-3 pt-1.5 pb-1 leading-none">Όλα τα Άρθρα</h1>
+          <h1 className="font-display uppercase font-black text-5xl md:text-6xl bg-black text-[#F2AA48] px-3 pt-1.5 pb-1 leading-none">{heading}</h1>
         </div>
         <div className="flex gap-2">
           <button onClick={() => setDrawerOpen(true)} className="md:hidden flex items-center gap-1 px-3 py-2 border-[3px] border-black bg-[#F2AA48] text-sm font-semibold text-black">
@@ -160,7 +227,7 @@ function PostsContent() {
               <button onClick={() => clearFilter(key)}><X className="w-3 h-3" /></button>
             </span>
           ))}
-          <button onClick={() => setFilters({ search: "", genre: "", director: "", year: "", postType: "", sort: "date" })}
+          <button onClick={clearAll}
             className="text-xs font-semibold text-black hover:text-white underline transition-colors duration-300">Καθαρισμός</button>
         </div>
       )}
