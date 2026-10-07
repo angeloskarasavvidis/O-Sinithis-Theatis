@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import HeroSlider from "@/components/HeroSlider";
 import AddPostModal from "@/components/admin/AddPostModal";
 import RatingStub from "@/components/RatingStub";
+import TheaterSign from "@/components/TheaterSign";
 import TitleMarquee from "@/components/TitleMarquee";
 import TypeStamp from "@/components/TypeStamp";
 import { formatDate } from "@/lib/format";
@@ -267,6 +268,25 @@ export default function HomePage() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
+
+        {/* About panel with the theatre sign */}
+        <section className="mb-16 bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000] p-6 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14 items-center">
+          <div className="flex flex-col items-start gap-5 min-w-0">
+            <h2 className="font-display uppercase font-black text-5xl md:text-6xl leading-none bg-black text-[#F2AA48] px-3 pt-1.5 pb-1 text-balance">
+              Ποιος είναι ο Συνήθης Θεατής;
+            </h2>
+            <p className="font-sans text-lg leading-relaxed text-black/85 max-w-md">
+              Μια σελίδα για όσους θέλουν να έρθουν πιο κοντά στο σινεμά. Κριτικές και αφιερώματα, γραμμένα από έναν θεατή για θεατές.
+            </p>
+            <Link
+              href="/about"
+              className="font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-6 py-3"
+            >
+              Σχετικά →
+            </Link>
+          </div>
+          <TheaterSign className="max-w-md mx-auto" />
+        </section>
 
         {/* Editorials */}
         {!loading && editorials.length > 0 && (

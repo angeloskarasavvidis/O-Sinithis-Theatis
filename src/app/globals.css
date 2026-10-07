@@ -85,3 +85,16 @@
 .bg-black:focus-visible {
   outline-color: #f2aa48;
 }
+
+/* Theatre sign bulbs: two alternating groups swap brightness */
+@keyframes sign-bulb-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.32; }
+}
+
+.sign-bulb { animation: sign-bulb-blink 1.1s steps(1) infinite; }
+.sign-bulb-alt { animation-delay: -0.55s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sign-bulb { animation: none; }
+}

@@ -65,6 +65,7 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 - `src/app/not-found.tsx` and the missing-article state both render `src/components/NotFoundPanel.tsx`. The article page shows a skeleton while posts load, so the panel only appears once loading has finished.
 - Article pages show `src/components/ReadingProgress.tsx`, an orange bar fixed to the top of the window that tracks the element with id `article-text`.
 - `globals.css` sets the text selection colours (black with orange text) and the keyboard focus outline (3px black, orange inside any `.bg-black` surface). Form inputs keep their own `focus:ring`.
+- `src/components/TheaterSign.tsx` is the site's theatre sign, an SVG with blinking bulbs (`sign-bulb` classes in `globals.css`). On the home page it sits in a white outlined About panel between the genre strip and the features.
 - Under the home page hero, `src/components/TitleMarquee.tsx` scrolls the latest titles on a black band. It pauses on hover and becomes a manually scrollable row when the visitor prefers reduced motion.
 - Never put blue text or blue controls on the page, they disappear into the background. Text over photos stays white on a dark gradient.
 - Long-form article text sits on a white panel (`bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000]`) that also holds the info strip and tags; it is the only white surface besides form inputs. Do not set article text directly on the blue page.
