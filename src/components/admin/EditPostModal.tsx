@@ -76,10 +76,10 @@ export default function EditPostModal({ post, onClose }: Props) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 overflow-y-auto py-8 px-4">
-      <div className="bg-zinc-900 border border-zinc-800 shadow-2xl w-full max-w-2xl">
-        <div className="flex items-center justify-between p-6 border-b border-zinc-800">
-          <h2 className="text-xl font-bold text-zinc-100">✏️ Επεξεργασία Ανάρτησης</h2>
-          <button onClick={onClose} className="text-zinc-400 hover:text-zinc-100">
+      <div className="bg-[#F2AA48] text-black border-[3px] border-black shadow-[10px_10px_0_0_#000] w-full max-w-2xl">
+        <div className="flex items-center justify-between px-6 py-4 bg-black">
+          <h2 className="font-display uppercase font-black text-4xl leading-none text-[#F2AA48]">Επεξεργασία Ανάρτησης</h2>
+          <button onClick={onClose} className="text-[#F2AA48] hover:text-white">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -116,7 +116,7 @@ export default function EditPostModal({ post, onClose }: Props) {
             <div className="flex flex-wrap gap-2">
               {POST_TYPES.map((t) => (
                 <button key={t} type="button" onClick={() => set("postType", t)}
-                  className={`px-3 py-1 text-sm border transition-colors ${form.postType === t ? "bg-[#009DF8] text-white border-[#009DF8]" : "border-zinc-700 text-zinc-300 hover:border-[#009DF8]"}`}>
+                  className={`px-3 py-1 text-sm font-semibold border-2 transition-colors ${form.postType === t ? "bg-black text-[#F2AA48] border-black" : "bg-white border-black text-black hover:bg-black hover:text-white"}`}>
                   {t}
                 </button>
               ))}
@@ -127,7 +127,7 @@ export default function EditPostModal({ post, onClose }: Props) {
             <div className="flex flex-wrap gap-2">
               {ALL_GENRES.map((g) => (
                 <button key={g} type="button" onClick={() => toggleGenre(g)}
-                  className={`px-3 py-1 text-sm border transition-colors ${form.genre.includes(g) ? "bg-[#009DF8] text-white border-[#009DF8]" : "border-zinc-700 text-zinc-300 hover:border-[#009DF8]"}`}>
+                  className={`px-3 py-1 text-sm font-semibold border-2 transition-colors ${form.genre.includes(g) ? "bg-black text-[#F2AA48] border-black" : "bg-white border-black text-black hover:bg-black hover:text-white"}`}>
                   {g}
                 </button>
               ))}
@@ -138,7 +138,7 @@ export default function EditPostModal({ post, onClose }: Props) {
             <div className="flex flex-wrap gap-2">
               {["", ...BADGES].map((b) => (
                 <button key={b} type="button" onClick={() => set("badge", b as Post["badge"] | "")}
-                  className={`px-3 py-1 text-sm border transition-colors ${form.badge === b ? "bg-zinc-100 text-zinc-900 border-zinc-100" : "border-zinc-700 text-zinc-300"}`}>
+                  className={`px-3 py-1 text-sm font-semibold border-2 transition-colors ${form.badge === b ? "bg-black text-[#F2AA48] border-black" : "bg-white border-black text-black hover:bg-black hover:text-white"}`}>
                   {b || "Κανένα"}
                 </button>
               ))}
@@ -155,17 +155,17 @@ export default function EditPostModal({ post, onClose }: Props) {
 
           <label className="flex items-center gap-2 cursor-pointer">
             <input type="checkbox" checked={form.featured} onChange={(e) => set("featured", e.target.checked)}
-              className="w-4 h-4 accent-[#009DF8]" />
-            <span className="text-sm text-zinc-300">Προβολή στο Hero Slider</span>
+              className="w-4 h-4 accent-black" />
+            <span className="text-sm font-semibold text-black">Προβολή στο Hero Slider</span>
           </label>
 
-          {error && <p className="text-sm text-red-300 bg-red-950/60 border border-red-900 px-3 py-2">{error}</p>}
+          {error && <p className="text-sm font-semibold text-red-700 bg-white border-2 border-red-700 px-3 py-2">{error}</p>}
 
           <div className="flex gap-3 pt-2">
-            <button type="submit" disabled={saving} className="flex-1 bg-[#009DF8] text-white py-2.5 font-semibold hover:bg-[#007fd0] transition-colors disabled:opacity-50">
+            <button type="submit" disabled={saving} className="flex-1 font-sans text-sm font-semibold uppercase tracking-widest bg-black text-[#F2AA48] border-[3px] border-black py-2.5 hover:bg-white hover:text-black transition-colors disabled:opacity-50">
               {saving ? "Αποθήκευση…" : "Αποθήκευση"}
             </button>
-            <button type="button" onClick={onClose} className="px-6 py-2.5 border border-zinc-700 text-zinc-300 hover:border-zinc-500 transition-colors duration-300">
+            <button type="button" onClick={onClose} className="px-6 py-2.5 font-sans text-sm font-semibold uppercase tracking-widest border-[3px] border-black text-black hover:bg-black hover:text-white transition-colors duration-300">
               Ακύρωση
             </button>
           </div>
@@ -175,12 +175,12 @@ export default function EditPostModal({ post, onClose }: Props) {
   );
 }
 
-const input = "w-full px-3 py-2 border border-zinc-700 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:border-[#009DF8] bg-zinc-950";
+const input = "w-full px-3 py-2 border-2 border-black text-sm text-black placeholder-black/40 focus:outline-none focus:ring-2 focus:ring-black bg-white";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-zinc-400 mb-1 uppercase tracking-wide">{label}</label>
+      <label className="block text-xs font-bold text-black mb-1 uppercase tracking-[0.2em]">{label}</label>
       {children}
     </div>
   );
