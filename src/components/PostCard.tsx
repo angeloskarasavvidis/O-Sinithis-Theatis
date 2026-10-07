@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Trash2, Pencil } from "lucide-react";
 import { Post } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { usePosts } from "@/context/PostsContext";
-import EditPostModal from "@/components/admin/EditPostModal";
 import RatingStub from "@/components/RatingStub";
 import TypeStamp from "@/components/TypeStamp";
 import { formatDate } from "@/lib/format";
@@ -15,7 +13,6 @@ import { formatDate } from "@/lib/format";
 export default function PostCard({ post }: { post: Post }) {
   const { isLoggedIn } = useAuth();
   const { ready, removePost } = usePosts();
-  const [showEdit, setShowEdit] = useState(false);
 
   function handleDelete(e: React.MouseEvent) {
     e.preventDefault();
@@ -25,7 +22,6 @@ export default function PostCard({ post }: { post: Post }) {
   }
 
   return (
-    <>
     <div className="group bg-[#F2AA48] text-black overflow-hidden relative flex flex-col border-[3px] border-black hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#000] transition-all duration-300 ease-out">
       <div className="relative">
         {/* stamped across the bottom edge of the photo */}
@@ -71,13 +67,9 @@ export default function PostCard({ post }: { post: Post }) {
 
       {isLoggedIn && ready && (
         <div className="absolute top-8 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            onClick={(e) => { e.preventDefault(); setShowEdit(true); }}
-            className="p-1.5 bg-black text-white hover:bg-white hover:text-black"
-            title="Επεξεργασία"
-          >
+          <Link href={`/admin/edit/${post.id}`} className="p-1.5 bg-black text-white hover:bg-white hover:text-black" title="Επεξεργασία">
             <Pencil className="w-3 h-3" />
-          </button>
+          </Link>
           <button
             onClick={handleDelete}
             className="p-1.5 bg-red-600 text-white hover:bg-red-700"
@@ -88,9 +80,5 @@ export default function PostCard({ post }: { post: Post }) {
         </div>
       )}
     </div>
-
-    {/* Outside the card: its hover translate would otherwise trap the fixed overlay inside it. */}
-    {showEdit && <EditPostModal post={post} onClose={() => setShowEdit(false)} />}
-    </>
   );
 }

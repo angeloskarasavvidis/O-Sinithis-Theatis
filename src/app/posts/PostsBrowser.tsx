@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState, useMemo, Suspense } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Plus, SlidersHorizontal, X } from "lucide-react";
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
 import PostCard from "@/components/PostCard";
-import AddPostModal from "@/components/admin/AddPostModal";
 
 const PAGE_SIZE = 9;
 const SEARCH_DEBOUNCE_MS = 300;
@@ -118,7 +118,6 @@ function PostsContent() {
   const { isLoggedIn } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [showModal, setShowModal] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -212,9 +211,9 @@ function PostsContent() {
             <SlidersHorizontal className="w-4 h-4" /> Φίλτρα
           </button>
           {isLoggedIn && (
-            <button onClick={() => setShowModal(true)} className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-5 py-2.5">
+            <Link href="/admin/new" className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-5 py-2.5">
               <Plus className="w-4 h-4" /> Νέα Ανάρτηση
-            </button>
+            </Link>
           )}
         </div>
       </div>
@@ -272,8 +271,6 @@ function PostsContent() {
           </div>
         </div>
       )}
-
-      {showModal && <AddPostModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }

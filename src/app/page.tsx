@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Plus } from "lucide-react";
@@ -8,7 +7,6 @@ import { Post } from "@/types";
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
 import HeroSlider from "@/components/HeroSlider";
-import AddPostModal from "@/components/admin/AddPostModal";
 import RatingStub from "@/components/RatingStub";
 import TheaterSign from "@/components/TheaterSign";
 import TitleMarquee from "@/components/TitleMarquee";
@@ -180,7 +178,6 @@ function EditorialTiles({ posts }: { posts: Post[] }) {
 export default function HomePage() {
   const { posts, loading } = usePosts();
   const { isLoggedIn } = useAuth();
-  const [showModal, setShowModal] = useState(false);
 
   const featured = posts.slice(0, 4);
   const topRated = posts
@@ -205,13 +202,10 @@ export default function HomePage() {
         {/* Admin button */}
         {isLoggedIn && (
           <div className="mb-8 flex justify-end">
-            <button
-              onClick={() => setShowModal(true)}
-              className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-5 py-2.5"
-            >
+            <Link href="/admin/new" className="flex items-center gap-2 font-sans text-sm font-semibold uppercase tracking-widest bg-[#F2AA48] text-black border-[3px] border-black press px-5 py-2.5">
               <Plus className="w-4 h-4" />
               Νέα Ανάρτηση
-            </button>
+            </Link>
           </div>
         )}
 
@@ -296,8 +290,6 @@ export default function HomePage() {
           </section>
         )}
       </div>
-
-      {showModal && <AddPostModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }

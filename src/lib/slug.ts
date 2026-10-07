@@ -37,12 +37,15 @@ export function slugify(title: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-// Addresses that early posts were published under, before Greek titles were transliterated,
-// mapped to the post id. A visit to one of them is redirected to that post's current address.
+// Addresses that posts used to be published under, mapped to the post id. A visit to one of
+// them is redirected to that post's current address. Add an entry here before renaming a post
+// whose links have been shared.
 export const RETIRED_SLUGS: Record<string, string> = {
   "--horror---1787314355391": "1787314355391",
   "--spider-man----1785493568507": "1785493568506",
   "--1784647058409": "1784647058409",
+  "in-the-mood-for-love": "1782754351770",
+  "lost-highway": "4",
 };
 
 // Appends -2, -3, ... until the slug is not in `taken`.

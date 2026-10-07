@@ -9,11 +9,11 @@ import { ArrowLeft, Trash2, Pencil, Film, Tag, Copy, Check } from "lucide-react"
 import { usePosts } from "@/context/PostsContext";
 import { useAuth } from "@/context/AuthContext";
 import PostCard from "@/components/PostCard";
-import EditPostModal from "@/components/admin/EditPostModal";
 import RatingStub from "@/components/RatingStub";
 import TypeStamp from "@/components/TypeStamp";
 import NotFoundPanel from "@/components/NotFoundPanel";
 import ReadingProgress from "@/components/ReadingProgress";
+import { ARTICLE_BODY } from "@/lib/articleStyles";
 import { formatDate } from "@/lib/format";
 import { Post } from "@/types";
 
@@ -23,7 +23,6 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
   const { posts, ready, removePost } = usePosts();
   const { isLoggedIn } = useAuth();
   const router = useRouter();
-  const [showEdit, setShowEdit] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const livePost = ready ? posts.find((p) => p.id === initialPost.id) : undefined;
@@ -100,9 +99,9 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
               )}
               {isLoggedIn && ready && (
                 <>
-                  <button onClick={() => setShowEdit(true)} className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-400 px-3 py-1.5 transition-colors duration-300">
+                  <Link href={`/admin/edit/${post.id}`} className="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-400 px-3 py-1.5 transition-colors duration-300">
                     <Pencil className="w-3 h-3" />Επεξεργασία
-                  </button>
+                  </Link>
                   <button onClick={handleDelete} className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 border border-red-900 hover:border-red-400 px-3 py-1.5 transition-colors duration-300">
                     <Trash2 className="w-3 h-3" />Διαγραφή
                   </button>
@@ -180,7 +179,7 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
 
           {/* Article content */}
           <div
-            className="mb-10 text-lg leading-[1.8] text-black [&_p]:mb-6 [&>p:first-of-type]:text-xl [&>p:first-of-type]:md:text-2xl [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-black [&_strong]:text-black [&_b]:text-black [&_em]:text-black [&_a]:text-black [&_a]:underline [&_a]:font-semibold [&_a]:underline-offset-4 [&_h2]:font-display [&_h2]:font-black [&_h2]:uppercase [&_h2]:text-4xl [&_h2]:leading-tight [&_h2]:text-black [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:font-display [&_h3]:font-bold [&_h3]:uppercase [&_h3]:text-3xl [&_h3]:text-black [&_h3]:mt-10 [&_h3]:mb-3 [&_blockquote]:border-l-4 [&_blockquote]:border-black [&_blockquote]:pl-5 [&_blockquote]:my-8 [&_blockquote]:italic [&_blockquote]:text-2xl [&_blockquote]:leading-snug [&_blockquote]:text-black [&_img]:w-full [&_img]:my-8 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6"
+            className={`mb-10 ${ARTICLE_BODY}`}
             dangerouslySetInnerHTML={{ __html: safeContent }}
           />
 
@@ -211,8 +210,6 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
           </div>
         </section>
       )}
-
-      {showEdit && <EditPostModal post={post} onClose={() => setShowEdit(false)} />}
     </div>
   );
 }
