@@ -57,7 +57,9 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 - Navbar, footer, the genre strip and the left panel of the article page are black, with orange or white text.
 - Section headings are black slabs with orange text (`bg-black text-[#F2AA48] px-3 pt-1.5 pb-1`).
 - Primary buttons use the `press` utility from `globals.css` with a 3px black border: a hard black shadow at rest, a small lift on hover, and sinking into the shadow when pressed. They are orange with black text on the blue page and over photos, and white with black text on orange panels. Do not add `transition-*` classes to them; `press` sets its own.
-- Ratings are shown with `src/components/RatingStub.tsx`, an orange ticket stub (the `ticket` utility cuts the notches). The numbered ranking on the home page is the one place that shows the score as a plain number. Type labels are black with orange or white text.
+- Ratings are shown with `src/components/RatingStub.tsx`, an orange ticket stub (the `ticket` utility cuts the notches). The numbered ranking on the home page is the one place that shows the score as a plain number.
+- Post type labels are shown with `src/components/TypeStamp.tsx`, a slightly tilted stamp with a thin frame in its text colour. It holds the one colour map for the four post types; do not restyle type labels per page. On post cards it straddles the bottom edge of the photo.
+- Under the home page hero, `src/components/TitleMarquee.tsx` scrolls the latest titles on a black band. It pauses on hover and becomes a manually scrollable row when the visitor prefers reduced motion.
 - Never put blue text or blue controls on the page, they disappear into the background. Text over photos stays white on a dark gradient.
 - Long-form article text sits on a white panel (`bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000]`) that also holds the info strip and tags; it is the only white surface besides form inputs. Do not set article text directly on the blue page.
 - The admin add/edit modals are orange panels with a black title bar, white inputs, and white chips that turn black with orange text when selected.
@@ -77,5 +79,5 @@ If a change to `src/app/globals.css` does not show up locally, stop the dev serv
 
 ## Housekeeping
 
-- `src/components/Header.tsx` and `src/components/AnnouncementBar.tsx` are not imported anywhere.
+- `src/components/Header.tsx` is not imported anywhere.
 - `src/data/posts.json` is seed data only; the live site never reads it.

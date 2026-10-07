@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Post } from "@/types";
 import RatingStub from "@/components/RatingStub";
+import TypeStamp from "@/components/TypeStamp";
 
 const SLIDE_DURATION = 10000;
 
@@ -45,10 +46,8 @@ export default function HeroSlider({ posts }: { posts: Post[] }) {
 
       {/* Content */}
       <div key={post.id} className="animate-hero-in absolute bottom-0 left-0 right-0 px-6 pt-6 pb-16 md:px-12 md:pt-12 md:pb-14 text-white">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="font-sans text-xs font-semibold uppercase tracking-[0.2em] bg-black text-white px-3 py-1.5">
-            {post.postType}
-          </span>
+        <div className="flex items-center gap-4 mb-5">
+          <TypeStamp postType={post.postType} />
           {post.rating && (
             <RatingStub rating={post.rating} size="md" />
           )}

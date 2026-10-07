@@ -11,13 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import PostCard from "@/components/PostCard";
 import EditPostModal from "@/components/admin/EditPostModal";
 import RatingStub from "@/components/RatingStub";
-
-const postTypeColors: Record<string, string> = {
-  Κριτική: "bg-white text-black",
-  Αφιέρωμα: "bg-[#F2AA48] text-black",
-  Νέα: "bg-white text-black",
-  Συνέντευξη: "bg-[#F2AA48] text-black",
-};
+import TypeStamp from "@/components/TypeStamp";
 
 export default function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -72,9 +66,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
               <ArrowLeft className="w-4 h-4" />
               Επιστροφή
             </Link>
-            <span className={`inline-block font-sans text-xs font-semibold uppercase tracking-widest px-3 py-1.5 mb-6 ${postTypeColors[post.postType] || "bg-zinc-800 text-zinc-200"}`}>
-              {post.postType}
-            </span>
+            <TypeStamp postType={post.postType} className="mb-7 ml-1" />
             <h1 className="text-5xl lg:text-7xl font-display uppercase font-black leading-[0.95] mb-5">{post.title}</h1>
             {post.subtitle && <p className="text-zinc-400 text-lg leading-relaxed">{post.subtitle}</p>}
           </div>

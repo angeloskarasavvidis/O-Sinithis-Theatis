@@ -10,13 +10,8 @@ import { useAuth } from "@/context/AuthContext";
 import HeroSlider from "@/components/HeroSlider";
 import AddPostModal from "@/components/admin/AddPostModal";
 import RatingStub from "@/components/RatingStub";
-
-const postTypeColors: Record<string, string> = {
-  Κριτική: "bg-black text-white",
-  Αφιέρωμα: "bg-black text-[#F2AA48]",
-  Νέα: "bg-white text-black",
-  Συνέντευξη: "bg-[#F2AA48] text-black",
-};
+import TitleMarquee from "@/components/TitleMarquee";
+import TypeStamp from "@/components/TypeStamp";
 
 const ALL_GENRES = ["Δράμα", "Θρίλερ", "Επιστημονική Φαντασία", "Κωμωδία", "Βιογραφία", "Ιστορική", "Φαντασία", "Ρομαντική", "Εγκληματική", "Φεστιβάλ"];
 
@@ -43,14 +38,6 @@ function formatDate(date: string) {
   return new Date(date).toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" });
 }
 
-function TypeLabel({ post }: { post: Post }) {
-  return (
-    <span className={`font-sans text-xs font-semibold uppercase tracking-widest px-3 py-1.5 ${postTypeColors[post.postType] ?? "bg-zinc-700 text-white"}`}>
-      {post.postType}
-    </span>
-  );
-}
-
 /* Latest: one large lead story next to a compact list */
 function LatestPosts({ posts }: { posts: Post[] }) {
   const [lead, ...rest] = posts;
@@ -72,7 +59,7 @@ function LatestPosts({ posts }: { posts: Post[] }) {
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
           <div className="flex items-center gap-3 mb-4">
-            <TypeLabel post={lead} />
+            <TypeStamp postType={lead.postType} />
             {lead.rating && (
               <RatingStub rating={lead.rating} size="md" />
             )}
@@ -212,6 +199,8 @@ export default function HomePage() {
         ? <div className="h-[480px] md:h-[580px] bg-black/20 animate-pulse" />
         : featured.length > 0 && <HeroSlider posts={featured} />
       }
+
+      {!loading && <TitleMarquee posts={posts.slice(0, 8)} />}
 
       <div className="max-w-7xl mx-auto px-4 pt-12">
 
