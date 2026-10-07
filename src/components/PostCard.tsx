@@ -29,6 +29,7 @@ export default function PostCard({ post }: { post: Post }) {
   }
 
   return (
+    <>
     <div className="group bg-[#F2AA48] text-black overflow-hidden relative flex flex-col border-[3px] border-black hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#000] transition-all duration-300 ease-out">
       <Link href={`/posts/${post.slug}`} className="block relative aspect-[16/10] overflow-hidden border-b-[3px] border-black">
         <Image
@@ -92,8 +93,10 @@ export default function PostCard({ post }: { post: Post }) {
           </button>
         </div>
       )}
-
-      {showEdit && <EditPostModal post={post} onClose={() => setShowEdit(false)} />}
     </div>
+
+    {/* Outside the card: its hover translate would otherwise trap the fixed overlay inside it. */}
+    {showEdit && <EditPostModal post={post} onClose={() => setShowEdit(false)} />}
+    </>
   );
 }
