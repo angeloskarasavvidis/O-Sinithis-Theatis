@@ -8,11 +8,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 const links = [
-  { href: "/", path: "/", label: "Αρχική", img: "/arxiki_rebrand.png" },
-  { href: "/posts", path: "/posts", label: "Άρθρα", img: "/arthra_rebrand.png" },
-  { href: "/posts?postType=Κριτική", path: "/posts", postType: "Κριτική", label: "Κριτικές", img: "/kritikes_rebrand.png" },
-  { href: "/posts?postType=Αφιέρωμα", path: "/posts", postType: "Αφιέρωμα", label: "Αφιερώματα", img: "/afieromata_rebrand.png" },
-  { href: "/about", path: "/about", label: "Σχετικά", img: "/sxetika_rebrand.png" },
+  { href: "/", path: "/", label: "Αρχική" },
+  { href: "/posts", path: "/posts", label: "Άρθρα" },
+  { href: "/posts?postType=Κριτική", path: "/posts", postType: "Κριτική", label: "Κριτικές" },
+  { href: "/posts?postType=Αφιέρωμα", path: "/posts", postType: "Αφιέρωμα", label: "Αφιερώματα" },
+  { href: "/about", path: "/about", label: "Σχετικά" },
 ];
 
 const linkedPostTypes = links.flatMap((l) => (l.postType ? [l.postType] : []));
@@ -122,11 +122,18 @@ function NavbarBar({ postType }: { postType: string | null }) {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`flex items-center px-2 lg:px-3 transition-opacity border-b-4 hover:opacity-80 ${
-                  isActive(l) ? "border-[#F2AA48]" : "border-transparent opacity-90"
-                }`}
+                aria-current={isActive(l) ? "page" : undefined}
+                className="group flex items-center px-0.5 lg:px-1"
               >
-                <img src={l.img} alt={l.label} className="h-6 lg:h-7 xl:h-9 w-auto" />
+                <span
+                  className={`font-display uppercase font-black text-xl lg:text-2xl xl:text-3xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
+                    isActive(l)
+                      ? "bg-[#F2AA48] text-black"
+                      : "text-[#F2AA48] group-hover:bg-[#F2AA48] group-hover:text-black"
+                  }`}
+                >
+                  {l.label}
+                </span>
               </Link>
             ))}
           </div>
@@ -212,19 +219,24 @@ function NavbarBar({ postType }: { postType: string | null }) {
           </button>
         </div>
 
-        <div className="flex flex-col py-2">
+        <div className="flex flex-col py-4">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className={`flex px-4 py-4 border-l-4 transition-colors ${
-                isActive(l)
-                  ? "border-[#F2AA48] bg-white/10"
-                  : "border-transparent hover:bg-white/10"
-              }`}
+              aria-current={isActive(l) ? "page" : undefined}
+              className="group flex px-4 py-2"
             >
-              <img src={l.img} alt={l.label} className="h-8 w-auto" />
+              <span
+                className={`font-display uppercase font-black text-4xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
+                  isActive(l)
+                    ? "bg-[#F2AA48] text-black"
+                    : "text-[#F2AA48] group-hover:bg-[#F2AA48] group-hover:text-black"
+                }`}
+              >
+                {l.label}
+              </span>
             </Link>
           ))}
         </div>

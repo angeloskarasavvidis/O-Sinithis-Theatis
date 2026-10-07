@@ -142,7 +142,7 @@ function TopRatedList({ posts }: { posts: Post[] }) {
               <span className="font-sans text-[11px] md:text-xs uppercase tracking-[0.2em] text-black/60">
                 {[p.director, p.year].filter(Boolean).join(" · ")}
               </span>
-              <h3 className="font-display uppercase font-bold text-2xl md:text-4xl leading-tight text-black group-hover:text-white transition-colors duration-300 line-clamp-2 mt-1">
+              <h3 className="font-display uppercase font-bold text-2xl md:text-4xl leading-tight text-black group-hover:underline underline-offset-4 decoration-[3px] line-clamp-2 mt-1">
                 {p.title}
               </h3>
               <p className="hidden md:block font-sans text-sm text-black/75 line-clamp-1 mt-2">{p.subtitle || p.excerpt}</p>
@@ -215,7 +215,7 @@ export default function HomePage() {
         : featured.length > 0 && <HeroSlider posts={featured} />
       }
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 pt-12">
 
         {/* Admin button */}
         {isLoggedIn && (
@@ -243,40 +243,46 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* Top rated */}
-        {!loading && topRated.length > 0 && (
-          <section className="mb-16">
+      </div>
+
+      {/* Top rated: full-width orange band */}
+      {!loading && topRated.length > 0 && (
+        <section className="bg-[#F2AA48] border-y-[3px] border-black py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-4">
             <SectionTitle label="Κορυφαίες Επιλογές" />
             <TopRatedList posts={topRated} />
-          </section>
-        )}
-
-        {/* Genre strip */}
-        <section className="mb-16 -mx-4 overflow-hidden relative bg-black py-10">
-          {/* Typographic watermark */}
-          <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
-            <div className="flex whitespace-nowrap animate-marquee-slow opacity-[0.07]">
-              {[...ALL_GENRES, ...ALL_GENRES, ...ALL_GENRES].map((g, i) => (
-                <span key={i} className="font-display uppercase font-black text-[90px] text-white mx-6">{g}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative z-10 px-8">
-            <h2 className="font-display font-bold text-3xl uppercase tracking-widest text-[#F2AA48] mb-6">Είδη</h2>
-            <div className="flex flex-wrap gap-2">
-              {ALL_GENRES.map((g) => (
-                <Link
-                  key={g}
-                  href={`/posts?genre=${encodeURIComponent(g)}`}
-                  className="font-sans text-sm font-semibold uppercase tracking-widest px-5 py-2.5 border-2 border-[#F2AA48] text-[#F2AA48] hover:bg-[#F2AA48] hover:text-black transition-colors duration-300"
-                >
-                  {g}
-                </Link>
-              ))}
-            </div>
           </div>
         </section>
+      )}
+
+      {/* Genre strip */}
+      <section className="overflow-hidden relative bg-black py-10 md:py-12">
+        {/* Typographic watermark */}
+        <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none select-none">
+          <div className="flex whitespace-nowrap animate-marquee-slow opacity-[0.07]">
+            {[...ALL_GENRES, ...ALL_GENRES, ...ALL_GENRES].map((g, i) => (
+              <span key={i} className="font-display uppercase font-black text-[90px] text-white mx-6">{g}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4">
+          <h2 className="font-display font-bold text-3xl uppercase tracking-widest text-[#F2AA48] mb-6">Είδη</h2>
+          <div className="flex flex-wrap gap-2">
+            {ALL_GENRES.map((g) => (
+              <Link
+                key={g}
+                href={`/posts?genre=${encodeURIComponent(g)}`}
+                className="font-sans text-sm font-semibold uppercase tracking-widest px-5 py-2.5 border-2 border-[#F2AA48] text-[#F2AA48] hover:bg-[#F2AA48] hover:text-black transition-colors duration-300"
+              >
+                {g}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
 
         {/* Editorials */}
         {!loading && editorials.length > 0 && (

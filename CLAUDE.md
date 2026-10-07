@@ -64,7 +64,8 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 - Headings use `font-display` (Sofia Sans Extra Condensed): `font-display uppercase font-black`, upright, never italic. Because the face is very narrow, headings are set one size step larger than a normal-width font would need.
 - Everything else uses `font-sans` (Sofia Sans), the body default. Buttons and labels are small, uppercase, `tracking-widest`. `font-pixel` (Press Start 2P) is only for the tiny admin labels in the navbar.
 - Fonts are loaded with `next/font` in `src/app/layout.tsx` and mapped to those utilities in the `@theme inline` block of `src/app/globals.css`. Any new font must include the `greek` subset. `<html lang="el">` makes `uppercase` drop Greek accents correctly.
-- Navbar links and the logo are PNG wordmarks in `public/*_rebrand.png`, not text. Their sizes are set per breakpoint so the row fits; re-measure at 768, 1024 and 1280 if you change them.
+- The navbar logo is a PNG (`public/main_logo_rebrand.png`). The navbar links are live text in `font-display`, orange on black, turning into an orange slab with black text on hover and for the current page. Their sizes are set per breakpoint so the row fits; re-measure at 768, 1024 and 1280 if you change them. The `public/*_rebrand.png` word images are no longer used.
+- On the home page, "Κορυφαίες Επιλογές" is a full-width orange band and the genre strip a full-width black band; both sit outside the `max-w-7xl` container and hold their own inner container.
 - The home page sections each have their own layout, defined in `src/app/page.tsx` (lead story plus list, numbered ranking, image tiles). `PostCard` is used on `/posts` and for related articles, and is the only card with inline admin edit/delete buttons.
 - Article body HTML is styled with `[&_tag]:` variants on the container in `src/app/posts/[slug]/page.tsx`; the Tailwind typography plugin is not installed.
 
