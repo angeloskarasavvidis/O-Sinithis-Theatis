@@ -98,3 +98,14 @@
 @media (prefers-reduced-motion: reduce) {
   .sign-bulb { animation: none; }
 }
+
+/* Editor only: prompt for a caption under an image that has none yet */
+.ProseMirror figcaption:has(> br.ProseMirror-trailingBreak:only-child)::before {
+  content: "Λεζάντα (προαιρετικά)";
+  color: rgb(0 0 0 / 0.4);
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+.ProseMirror figure.ProseMirror-selectednode img { outline: 3px solid #f2aa48; }

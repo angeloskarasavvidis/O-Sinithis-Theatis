@@ -8,6 +8,7 @@ export function sanitizePostHtml(html: string): string {
       ...sanitizeHtml.defaults.allowedAttributes,
       a: ["href", "name", "target", "rel"],
       img: ["src", "alt", "title", "width", "height", "loading"],
+      div: ["data-gallery"], // marks a row of images written in the editor
     },
     allowedSchemes: ["http", "https", "mailto"],
   });

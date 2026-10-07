@@ -13,6 +13,7 @@ import RatingStub from "@/components/RatingStub";
 import TypeStamp from "@/components/TypeStamp";
 import NotFoundPanel from "@/components/NotFoundPanel";
 import ReadingProgress from "@/components/ReadingProgress";
+import ImageLightbox, { LightboxImage, lightboxFromClick } from "@/components/ImageLightbox";
 import { ARTICLE_BODY } from "@/lib/articleStyles";
 import { formatDate } from "@/lib/format";
 import { Post } from "@/types";
@@ -24,6 +25,7 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
   const { isLoggedIn } = useAuth();
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [lightbox, setLightbox] = useState<{ images: LightboxImage[]; index: number } | null>(null);
 
   const livePost = ready ? posts.find((p) => p.id === initialPost.id) : undefined;
   const post = ready ? livePost : initialPost;
@@ -179,7 +181,11 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
 
           {/* Article content */}
           <div
-            className={`mb-10 ${ARTICLE_BODY}`}
+            className={`mb-10 [&_img]:cursor-zoom-in ${ARTICLE_BODY}`}
+            onClick={(e) => {
+              const opened = lightboxFromClick(e.target);
+              if (opened) setLightbox(opened);
+            }}
             dangerouslySetInnerHTML={{ __html: safeContent }}
           />
 
@@ -209,6 +215,15 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
             {related.map((p) => <PostCard key={p.id} post={p} />)}
           </div>
         </section>
+      )}
+
+      {lightbox && (
+        <ImageLightbox
+          images={lightbox.images}
+          index={lightbox.index}
+          onIndex={(index) => setLightbox({ ...lightbox, index })}
+          onClose={() => setLightbox(null)}
+        />
       )}
     </div>
   );

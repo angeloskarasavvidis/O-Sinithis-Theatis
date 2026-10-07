@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Bold, Heading2, Heading3, Italic, Link2, List, ListOrdered, Minus, Quote, Redo2, Underline, Undo2 } from "lucide-react";
+import { Bold, Heading2, Heading3, ImagePlus, ImageMinus, Italic, Link2, List, ListOrdered, Loader2, Minus, Quote, Redo2, Underline, Undo2 } from "lucide-react";
+import { Figure, Gallery } from "@/components/admin/editorImages";
+import { uploadImage } from "@/lib/uploadImage";
 import { ARTICLE_BODY } from "@/lib/articleStyles";
 
 interface Props {
@@ -17,6 +19,9 @@ interface Props {
 export default function RichTextEditor({ initialHtml, onChange }: Props) {
   const [linkOpen, setLinkOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
+  const fileInputId = useId();
+  const [uploading, setUploading] = useState(false);
+  const [imageError, setImageError] = useState("");
 
   const editor = useEditor({
     immediatelyRender: false, // this page is rendered on the server first
@@ -28,6 +33,8 @@ export default function RichTextEditor({ initialHtml, onChange }: Props) {
         strike: false,
         link: { openOnClick: false, autolink: true, HTMLAttributes: { target: "_blank", rel: "noopener noreferrer" } },
       }),
+      Figure,
+      Gallery,
     ],
     content: initialHtml,
     editorProps: {
@@ -51,6 +58,8 @@ export default function RichTextEditor({ initialHtml, onChange }: Props) {
             bullets: editor.isActive("bulletList"),
             numbers: editor.isActive("orderedList"),
             link: editor.isActive("link"),
+            figure: editor.isActive("figure"),
+            gallery: editor.isActive("gallery"),
             canUndo: editor.can().undo(),
             canRedo: editor.can().redo(),
           }
@@ -76,6 +85,38 @@ export default function RichTextEditor({ initialHtml, onChange }: Props) {
     setLinkOpen(false);
   }
 
+  function openFilePicker() {
+    document.getElementById(fileInputId)?.click();
+  }
+
+  // one file becomes an image with a caption, several become a gallery
+  async function addImages(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    if (!editor || files.length === 0) return;
+
+    setUploading(true);
+    setImageError("");
+    const results = await Promise.all(files.map(uploadImage));
+    setUploading(false);
+
+    const failed = results.find((r) => "error" in r);
+    if (failed && "error" in failed) setImageError(failed.error);
+    const figures = results.flatMap((r) => ("url" in r ? [{ type: "figure", attrs: { src: r.url, alt: "" } }] : []));
+    if (figures.length === 0) return;
+
+    editor.chain().focus().insertContent(figures.length === 1 ? figures[0] : { type: "gallery", content: figures }).run();
+  }
+
+  // removes the image the cursor is in; the last image of a gallery takes the gallery with it
+  function removeImage() {
+    if (!editor) return;
+    const { $from } = editor.state.selection;
+    const inGallery = $from.depth >= 2 && $from.node($from.depth - 1).type.name === "gallery";
+    const lastOne = inGallery && $from.node($from.depth - 1).childCount === 1;
+    editor.chain().focus().deleteNode(lastOne ? "gallery" : "figure").run();
+  }
+
   const chain = () => editor!.chain().focus();
   const tools = [
     { label: "Έντονα", icon: Bold, on: active?.bold, run: () => chain().toggleBold().run() },
@@ -90,6 +131,9 @@ export default function RichTextEditor({ initialHtml, onChange }: Props) {
     { label: "Αριθμημένη λίστα", icon: ListOrdered, on: active?.numbers, run: () => chain().toggleOrderedList().run() },
     { label: "Διαχωριστική γραμμή", icon: Minus, on: false, run: () => chain().setHorizontalRule().run() },
     { label: "Σύνδεσμος", icon: Link2, on: active?.link || linkOpen, run: openLink },
+    null,
+    { label: "Προσθήκη εικόνων", icon: uploading ? Loader2 : ImagePlus, on: false, disabled: uploading, run: openFilePicker },
+    { label: "Αφαίρεση εικόνας", icon: ImageMinus, on: false, disabled: !active?.figure, run: removeImage },
     null,
     { label: "Αναίρεση", icon: Undo2, on: false, disabled: !active?.canUndo, run: () => chain().undo().run() },
     { label: "Επανάληψη", icon: Redo2, on: false, disabled: !active?.canRedo, run: () => chain().redo().run() },
@@ -121,6 +165,9 @@ export default function RichTextEditor({ initialHtml, onChange }: Props) {
             )
           )}
         </div>
+
+        <input id={fileInputId} type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple className="hidden" onChange={addImages} />
+        {imageError && <p className="px-3 pb-2 text-sm font-semibold text-red-300">{imageError}</p>}
 
         {linkOpen && (
           <div className="flex flex-wrap items-center gap-2 px-2 pb-2">
