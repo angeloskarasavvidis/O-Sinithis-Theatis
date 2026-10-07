@@ -57,7 +57,9 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 - Navbar, footer, the genre strip and the left panel of the article page are black, with orange or white text.
 - Section headings are black slabs with orange text (`bg-black text-[#F2AA48] px-3 pt-1.5 pb-1`). Buttons are the same pair and invert on hover (`hover:bg-[#F2AA48] hover:text-black`, keeping a 3px black border). Type labels and rating chips are black with orange or white text.
 - Never put blue text or blue controls on the page, they disappear into the background. Text over photos stays white on a dark gradient.
-- The admin add/edit modals are still dark (zinc) panels.
+- Long-form article text sits on a white panel (`bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000]`) that also holds the info strip and tags; it is the only white surface besides form inputs. Do not set article text directly on the blue page.
+- The admin add/edit modals are orange panels with a black title bar, white inputs, and white chips that turn black with orange text when selected.
+- On phones the navbar menu is a drawer that slides in from the right. It is rendered outside `<nav>`, because the bar's hide-on-scroll translate would otherwise trap `fixed` children.
 - Square corners everywhere. Do not add `rounded-*` classes.
 - Headings use `font-display` (Sofia Sans Extra Condensed): `font-display uppercase font-black`, upright, never italic. Because the face is very narrow, headings are set one size step larger than a normal-width font would need.
 - Everything else uses `font-sans` (Sofia Sans), the body default. Buttons and labels are small, uppercase, `tracking-widest`. `font-pixel` (Press Start 2P) is only for the tiny admin labels in the navbar.
