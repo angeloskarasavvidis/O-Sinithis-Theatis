@@ -147,56 +147,57 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
       </div>
 
       {/* Article body */}
-      <div className="max-w-2xl mx-auto px-4 pt-10 md:pt-14 pb-12">
+      <div className="max-w-3xl mx-auto px-4 pt-10 md:pt-14 pb-12">
+        <div className="bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000] px-5 py-8 md:px-12 md:py-12">
+          {/* Metadata strip */}
+          {(post.director || post.year || post.genre.length > 0 || post.postType) && (
+            <div className="border-y-[3px] border-black py-5 mb-10 flex flex-wrap gap-x-10 gap-y-4 text-sm">
+              {post.director && (
+                <div>
+                  <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] flex items-center gap-1 mb-1"><Film className="w-3 h-3" />Σκηνοθέτης</span>
+                  <span className="font-semibold text-black">{post.director}</span>
+                </div>
+              )}
+              {post.year && (
+                <div>
+                  <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] mb-1 block">Έτος</span>
+                  <span className="font-semibold text-black">{post.year}</span>
+                </div>
+              )}
+              {post.genre.length > 0 && (
+                <div>
+                  <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] mb-1 block">Είδος</span>
+                  <span className="font-semibold text-black">{post.genre.join(", ")}</span>
+                </div>
+              )}
+              {post.postType && (
+                <div>
+                  <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] mb-1 block">Τύπος</span>
+                  <span className="font-semibold text-black">{post.postType}</span>
+                </div>
+              )}
+            </div>
+          )}
 
-        {/* Metadata strip */}
-        {(post.director || post.year || post.genre.length > 0 || post.postType) && (
-          <div className="border-y-[3px] border-black py-5 mb-10 flex flex-wrap gap-x-10 gap-y-4 text-sm">
-            {post.director && (
-              <div>
-                <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] flex items-center gap-1 mb-1"><Film className="w-3 h-3" />Σκηνοθέτης</span>
-                <span className="font-semibold text-black">{post.director}</span>
-              </div>
-            )}
-            {post.year && (
-              <div>
-                <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] mb-1 block">Έτος</span>
-                <span className="font-semibold text-black">{post.year}</span>
-              </div>
-            )}
-            {post.genre.length > 0 && (
-              <div>
-                <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] mb-1 block">Είδος</span>
-                <span className="font-semibold text-black">{post.genre.join(", ")}</span>
-              </div>
-            )}
-            {post.postType && (
-              <div>
-                <span className="font-sans text-black/70 uppercase text-xs font-bold tracking-[0.2em] mb-1 block">Τύπος</span>
-                <span className="font-semibold text-black">{post.postType}</span>
-              </div>
-            )}
-          </div>
-        )}
+          {/* Article content */}
+          <div
+            className="mb-10 text-lg leading-[1.8] text-black [&_p]:mb-6 [&>p:first-of-type]:text-xl [&>p:first-of-type]:md:text-2xl [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-black [&_strong]:text-black [&_b]:text-black [&_em]:text-black [&_a]:text-black [&_a]:underline [&_a]:font-semibold [&_a]:underline-offset-4 [&_h2]:font-display [&_h2]:font-black [&_h2]:uppercase [&_h2]:text-4xl [&_h2]:leading-tight [&_h2]:text-black [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:font-display [&_h3]:font-bold [&_h3]:uppercase [&_h3]:text-3xl [&_h3]:text-black [&_h3]:mt-10 [&_h3]:mb-3 [&_blockquote]:border-l-4 [&_blockquote]:border-black [&_blockquote]:pl-5 [&_blockquote]:my-8 [&_blockquote]:italic [&_blockquote]:text-2xl [&_blockquote]:leading-snug [&_blockquote]:text-black [&_img]:w-full [&_img]:my-8 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6"
+            dangerouslySetInnerHTML={{ __html: safeContent }}
+          />
 
-        {/* Article content */}
-        <div
-          className="mb-10 text-lg leading-[1.8] text-black [&_p]:mb-6 [&>p:first-of-type]:text-xl [&>p:first-of-type]:md:text-2xl [&>p:first-of-type]:leading-relaxed [&>p:first-of-type]:text-black [&_strong]:text-black [&_b]:text-black [&_em]:text-black [&_a]:text-black [&_a]:underline [&_a]:font-semibold [&_a]:underline-offset-4 [&_h2]:font-display [&_h2]:font-black [&_h2]:uppercase [&_h2]:text-4xl [&_h2]:leading-tight [&_h2]:text-black [&_h2]:mt-12 [&_h2]:mb-4 [&_h3]:font-display [&_h3]:font-bold [&_h3]:uppercase [&_h3]:text-3xl [&_h3]:text-black [&_h3]:mt-10 [&_h3]:mb-3 [&_blockquote]:border-l-4 [&_blockquote]:border-black [&_blockquote]:pl-5 [&_blockquote]:my-8 [&_blockquote]:italic [&_blockquote]:text-2xl [&_blockquote]:leading-snug [&_blockquote]:text-black [&_img]:w-full [&_img]:my-8 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6"
-          dangerouslySetInnerHTML={{ __html: safeContent }}
-        />
-
-        {/* Tags */}
-        {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-6 border-t-[3px] border-black">
-            <Tag className="w-4 h-4 text-black mt-1" />
-            {post.tags.map((t) => (
-              <Link key={t} href={`/posts?search=${encodeURIComponent(t)}`}
-                className="font-sans text-xs uppercase tracking-widest px-3 py-1 border-2 border-black font-semibold text-black hover:bg-black hover:text-[#F2AA48] transition-colors duration-300">
-                {t}
-              </Link>
-            ))}
-          </div>
-        )}
+          {/* Tags */}
+          {post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-6 border-t-[3px] border-black">
+              <Tag className="w-4 h-4 text-black mt-1" />
+              {post.tags.map((t) => (
+                <Link key={t} href={`/posts?search=${encodeURIComponent(t)}`}
+                  className="font-sans text-xs uppercase tracking-widest px-3 py-1 border-2 border-black font-semibold text-black hover:bg-black hover:text-[#F2AA48] transition-colors duration-300">
+                  {t}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Related posts */}
