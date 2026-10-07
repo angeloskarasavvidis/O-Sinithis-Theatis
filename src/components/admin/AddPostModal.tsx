@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Post } from "@/types";
 import { usePosts } from "@/context/PostsContext";
 import ImageUploader from "@/components/admin/ImageUploader";
+import { uniqueSlug } from "@/lib/slug";
 
 const ALL_GENRES = ["Δράμα", "Θρίλερ", "Επιστημονική Φαντασία", "Κωμωδία", "Βιογραφία", "Ιστορική", "Φαντασία", "Ρομαντική", "Εγκληματική", "Φεστιβάλ", "Ειδήσεις"];
 const POST_TYPES = ["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"] as const;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export default function AddPostModal({ onClose }: Props) {
-  const { addPost } = usePosts();
+  const { posts, addPost } = usePosts();
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
@@ -49,7 +50,7 @@ export default function AddPostModal({ onClose }: Props) {
     e.preventDefault();
     const post: Post = {
       id: Date.now().toString(),
-      slug: form.title.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "") + "-" + Date.now(),
+      slug: uniqueSlug(form.title, posts.map((p) => p.slug)),
       title: form.title,
       subtitle: form.subtitle,
       excerpt: form.excerpt,
