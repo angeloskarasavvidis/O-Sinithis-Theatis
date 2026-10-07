@@ -266,20 +266,6 @@ export const QUIZZES: Quiz[] = [
     meta: "Σύντομα",
     color: "bg-[#FF7AB6]",
   },
-  {
-    slug: "sinefil-bingo",
-    title: "Σινεφίλ μπίνγκο",
-    blurb: "Μια κάρτα με κλισέ για την επόμενη φεστιβαλική ταινία που θα δεις.",
-    meta: "Σύντομα",
-    color: "bg-[#009DF8]",
-  },
-  {
-    slug: "ti-na-do-apopse",
-    title: "Τι να δω απόψε;",
-    blurb: "Τρεις ερωτήσεις για τη διάθεσή σου και σου βγάζω μία ταινία.",
-    meta: "Σύντομα",
-    color: "bg-white",
-  },
 ];
 
 export function isPlayable(quiz: Quiz): quiz is Quiz & { questions: QuizQuestion[] } {

@@ -18,7 +18,7 @@ export default function QuizHubPage() {
           <QuizSign />
         </h1>
         <p className="text-center text-lg md:text-xl font-semibold text-black max-w-xl mx-auto">
-          Διάλεξε παιχνίδι. Οι απαντήσεις δεν βαθμολογούνται, η αξιοπρέπειά σου ναι.
+          Διάλεξε παιχνίδι και μάθε πράγματα ώστε να το παίζεις μάγκας στους φίλους σου.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
