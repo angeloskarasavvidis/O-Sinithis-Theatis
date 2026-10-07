@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import QuizPlayer from "@/components/quiz/QuizPlayer";
+import TriviaPlayer from "@/components/quiz/TriviaPlayer";
 import QuizSign from "@/components/quiz/QuizSign";
 import { isPlayable, QUIZZES } from "@/lib/quizzes";
 import { SITE_URL } from "@/lib/site";
@@ -39,7 +40,11 @@ export default async function QuizPage({ params }: Props) {
             {quiz.title}
           </h1>
         </div>
-        <QuizPlayer title={quiz.title} questions={quiz.questions} results={quiz.results} shareUrl={`${SITE_URL}/quiz/${quiz.slug}`} />
+        {quiz.kind === "trivia" ? (
+          <TriviaPlayer title={quiz.title} prompt={quiz.prompt} questions={quiz.questions} tiers={quiz.tiers ?? []} shareUrl={`${SITE_URL}/quiz/${quiz.slug}`} />
+        ) : (
+          <QuizPlayer title={quiz.title} questions={quiz.questions} results={quiz.results ?? {}} shareUrl={`${SITE_URL}/quiz/${quiz.slug}`} />
+        )}
       </div>
     </div>
   );

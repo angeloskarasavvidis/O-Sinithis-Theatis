@@ -85,7 +85,7 @@ export default function QuizPlayer({ title, questions, results, shareUrl }: Prop
         {answers.map((answer) => (
           <button
             key={answer.text}
-            onClick={() => setPicks([...picks, answer.result])}
+            onClick={() => setPicks([...picks, answer.result ?? ""])}
             className="text-left font-sans text-base md:text-lg font-semibold text-black bg-white hover:bg-[#FFD60A] border-[3px] border-black press px-5 py-4"
           >
             {answer.text}

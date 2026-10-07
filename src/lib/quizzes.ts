@@ -2,8 +2,17 @@
 
 export interface QuizAnswer {
   text: string;
-  /** which result this answer counts towards */
-  result: string;
+  /** personality quizzes: which result this answer counts towards */
+  result?: string;
+  /** trivia quizzes: marks the right answer */
+  correct?: boolean;
+}
+
+/** Trivia quizzes: the verdict for a score of at least `min` right answers. */
+export interface QuizTier {
+  min: number;
+  title: string;
+  text: string;
 }
 
 export interface QuizQuestion {
@@ -24,8 +33,13 @@ export interface Quiz {
   /** background of the quiz's card on the hub; literal class names so Tailwind picks them up */
   color: string;
   isNew?: boolean;
+  /** "personality": answers add up to one of `results`. "trivia": answers are right or wrong and the score picks a tier. */
+  kind?: "personality" | "trivia";
+  /** trivia quizzes: a line shown above every question */
+  prompt?: string;
   questions?: QuizQuestion[];
   results?: Record<string, QuizResult>;
+  tiers?: QuizTier[];
 }
 
 export const QUIZZES: Quiz[] = [
@@ -36,6 +50,7 @@ export const QUIZZES: Quiz[] = [
     meta: "8 ερωτήσεις · 2 λεπτά",
     color: "bg-[#FFD60A]",
     isNew: true,
+    kind: "personality",
     results: {
       tarkovsky: {
         title: "Ο Ταρκοφσκικός",
@@ -133,8 +148,109 @@ export const QUIZZES: Quiz[] = [
     slug: "mantepse-tin-ataka",
     title: "Μάντεψε την ατάκα",
     blurb: "Μια φράση, τέσσερις ταινίες. Πόσες βρίσκεις χωρίς να γκουγκλάρεις;",
-    meta: "Σύντομα",
+    meta: "10 ερωτήσεις · 3 λεπτά",
     color: "bg-[#34D399]",
+    isNew: true,
+    kind: "trivia",
+    prompt: "Από ποια ταινία είναι η ατάκα;",
+    tiers: [
+      { min: 10, title: "Κινηματογραφική μνήμη", text: "Δέκα στις δέκα. Ή έχεις δει τα πάντα, ή έχεις πολύ καλό ίντερνετ. Σε πιστεύω." },
+      { min: 7, title: "Ο σινεφίλ της παρέας", text: "Είσαι αυτός που ψιθυρίζει τις ατάκες μισό δευτερόλεπτο πριν τις πει ο ηθοποιός. Η παρέα σε αντέχει, με το ζόρι." },
+      { min: 4, title: "Κυριακάτικος θεατής", text: "Τις έχεις ακούσει όλες, απλώς δεν θυμάσαι πού. Μια επανάληψη στα κλασικά δεν έβλαψε ποτέ κανέναν." },
+      { min: 0, title: "Μόνο τα τρέιλερ", text: "Δεν πειράζει. Έχεις μπροστά σου δέκα σπουδαίες ταινίες να δεις για πρώτη φορά, και σε ζηλεύω λίγο." },
+    ],
+    questions: [
+      {
+        text: "«I'm gonna make him an offer he can't refuse.»",
+        answers: [
+          { text: "The Godfather", correct: true },
+          { text: "Scarface" },
+          { text: "Goodfellas" },
+          { text: "Casino" },
+        ],
+      },
+      {
+        text: "«Keep your friends close, but your enemies closer.»",
+        answers: [
+          { text: "The Godfather" },
+          { text: "The Godfather Part II", correct: true },
+          { text: "The Godfather Part III" },
+          { text: "Goodfellas" },
+        ],
+      },
+      {
+        text: "«You talkin' to me?»",
+        answers: [
+          { text: "Raging Bull" },
+          { text: "Mean Streets" },
+          { text: "Taxi Driver", correct: true },
+          { text: "Goodfellas" },
+        ],
+      },
+      {
+        text: "«Here's Johnny!»",
+        answers: [
+          { text: "Psycho" },
+          { text: "Misery" },
+          { text: "Halloween" },
+          { text: "The Shining", correct: true },
+        ],
+      },
+      {
+        text: "«Hasta la vista, baby.»",
+        answers: [
+          { text: "The Terminator" },
+          { text: "Terminator 2: Judgment Day", correct: true },
+          { text: "Predator" },
+          { text: "Total Recall" },
+        ],
+      },
+      {
+        text: "«You're gonna need a bigger boat.»",
+        answers: [
+          { text: "Jaws", correct: true },
+          { text: "Titanic" },
+          { text: "The Abyss" },
+          { text: "The Perfect Storm" },
+        ],
+      },
+      {
+        text: "«I love the smell of napalm in the morning.»",
+        answers: [
+          { text: "Platoon" },
+          { text: "Full Metal Jacket" },
+          { text: "Apocalypse Now", correct: true },
+          { text: "The Deer Hunter" },
+        ],
+      },
+      {
+        text: "«Why so serious?»",
+        answers: [
+          { text: "Batman Begins" },
+          { text: "Joker" },
+          { text: "The Dark Knight Rises" },
+          { text: "The Dark Knight", correct: true },
+        ],
+      },
+      {
+        text: "«You can't handle the truth!»",
+        answers: [
+          { text: "A Few Good Men", correct: true },
+          { text: "JFK" },
+          { text: "The Firm" },
+          { text: "Philadelphia" },
+        ],
+      },
+      {
+        text: "«Here's looking at you, kid.»",
+        answers: [
+          { text: "Gone with the Wind" },
+          { text: "Casablanca", correct: true },
+          { text: "The Maltese Falcon" },
+          { text: "Citizen Kane" },
+        ],
+      },
+    ],
   },
   {
     slug: "alitheia-i-dithen",
@@ -166,6 +282,7 @@ export const QUIZZES: Quiz[] = [
   },
 ];
 
-export function isPlayable(quiz: Quiz): quiz is Quiz & { questions: QuizQuestion[]; results: Record<string, QuizResult> } {
-  return !!quiz.questions?.length && !!quiz.results;
+export function isPlayable(quiz: Quiz): quiz is Quiz & { questions: QuizQuestion[] } {
+  if (!quiz.questions?.length) return false;
+  return quiz.kind === "trivia" ? !!quiz.tiers?.length : !!quiz.results;
 }

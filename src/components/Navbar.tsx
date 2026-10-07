@@ -126,7 +126,7 @@ function NavbarBar({ postType }: { postType: string | null }) {
                 key={l.href}
                 href={l.href}
                 aria-current={isActive(l) ? "page" : undefined}
-                className={`group flex items-center px-0.5 lg:px-1 ${l.isNew ? "mr-4" : ""}`}
+                className={`group flex items-center px-0.5 lg:px-1 ${l.isNew ? "mr-5" : ""}`}
               >
                 <span
                   className={`relative font-display uppercase font-black text-xl lg:text-2xl xl:text-3xl leading-none px-2 pt-1.5 pb-1 transition-colors duration-200 ${
@@ -137,7 +137,7 @@ function NavbarBar({ postType }: { postType: string | null }) {
                 >
                   {l.label}
                   {l.isNew && (
-                    <span className="absolute -top-2 -right-4 rotate-[9deg] bg-[#FFD60A] text-black font-sans text-[10px] font-bold tracking-widest leading-none px-1.5 py-1 border-2 border-black outline-2 outline-[#FFD60A]">
+                    <span className="absolute -top-2.5 -right-5 rotate-[9deg] bg-[#FFD60A] text-black font-sans text-[8px] font-bold tracking-wider leading-none px-1 py-0.5 border border-black">
                       ΝΕΟ
                     </span>
                   )}
@@ -245,7 +245,7 @@ function NavbarBar({ postType }: { postType: string | null }) {
               >
                 {l.label}
                   {l.isNew && (
-                    <span className="absolute -top-2 -right-4 rotate-[9deg] bg-[#FFD60A] text-black font-sans text-[10px] font-bold tracking-widest leading-none px-1.5 py-1 border-2 border-black outline-2 outline-[#FFD60A]">
+                    <span className="absolute -top-2.5 -right-5 rotate-[9deg] bg-[#FFD60A] text-black font-sans text-[8px] font-bold tracking-wider leading-none px-1 py-0.5 border border-black">
                       ΝΕΟ
                     </span>
                   )}
