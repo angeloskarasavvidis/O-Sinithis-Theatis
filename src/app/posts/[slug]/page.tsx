@@ -12,10 +12,12 @@ import PostCard from "@/components/PostCard";
 import EditPostModal from "@/components/admin/EditPostModal";
 import RatingStub from "@/components/RatingStub";
 import TypeStamp from "@/components/TypeStamp";
+import NotFoundPanel from "@/components/NotFoundPanel";
+import ReadingProgress from "@/components/ReadingProgress";
 
 export default function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
-  const { posts, removePost } = usePosts();
+  const { posts, loading, removePost } = usePosts();
   const { isLoggedIn } = useAuth();
   const router = useRouter();
   const [showEdit, setShowEdit] = useState(false);
@@ -28,13 +30,20 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
     return DOMPurify.sanitize(post?.content ?? "");
   }, [post?.content]);
 
-  if (!post) {
+  // posts load in the browser, so "not found" is only known once loading has finished
+  if (loading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-2xl font-bold text-black mb-4">Το άρθρο δεν βρέθηκε</h1>
-        <Link href="/posts" className="text-black font-semibold underline hover:text-white">← Επιστροφή στα άρθρα</Link>
+      <div className="animate-pulse" aria-busy="true">
+        <div className="grid md:grid-cols-[2fr_3fr] border-b-[3px] border-black">
+          <div className="bg-black min-h-[420px] md:min-h-[560px]" />
+          <div className="bg-black/20 min-h-[300px]" />
+        </div>
       </div>
     );
+  }
+
+  if (!post) {
+    return <NotFoundPanel message="Το άρθρο που ψάχνεις δεν υπάρχει ή έχει αφαιρεθεί." />;
   }
 
   const related = posts.filter((p) => p.id !== post.id && p.genre.some((g) => post.genre.includes(g))).slice(0, 3);
@@ -55,6 +64,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
   return (
     <div className="font-sans">
+      <ReadingProgress targetId="article-text" />
 
       {/* Hero: split layout */}
       <div className={`grid md:grid-cols-[2fr_3fr] border-b-[3px] border-black`}>
@@ -139,7 +149,7 @@ export default function PostPage({ params }: { params: Promise<{ slug: string }>
 
       {/* Article body */}
       <div className="max-w-3xl mx-auto px-4 pt-10 md:pt-14 pb-12">
-        <div className="bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000] px-5 py-8 md:px-12 md:py-12">
+        <div id="article-text" className="bg-white border-[3px] border-black shadow-[8px_8px_0_0_#000] px-5 py-8 md:px-12 md:py-12">
           {/* Metadata strip */}
           {(post.director || post.year || post.genre.length > 0 || post.postType) && (
             <div className="border-y-[3px] border-black py-5 mb-10 flex flex-wrap gap-x-10 gap-y-4 text-sm">

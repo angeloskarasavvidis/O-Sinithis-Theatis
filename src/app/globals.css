@@ -69,3 +69,19 @@
     radial-gradient(circle 0.35em at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
     radial-gradient(circle 0.35em at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
 }
+
+::selection {
+  background: #000;
+  color: #f2aa48;
+}
+
+/* Keyboard focus: a thick black outline, orange where the surface itself is black */
+:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+.bg-black :focus-visible,
+.bg-black:focus-visible {
+  outline-color: #f2aa48;
+}
