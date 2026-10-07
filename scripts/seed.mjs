@@ -32,6 +32,7 @@ const rows = posts.map((p) => ({
   featured:     p.featured,
   tags:         p.tags,
   badge:        p.badge ?? null,
+  status:       p.status ?? "published",
 }));
 
 const res = await fetch(`${SUPABASE_URL}/rest/v1/posts`, {

@@ -7,22 +7,40 @@ import { Post } from "@/types";
 import { usePosts } from "@/context/PostsContext";
 import ImageUploader from "@/components/admin/ImageUploader";
 import RichTextEditor from "@/components/admin/RichTextEditor";
+import { postState, PostState } from "@/lib/postStatus";
 import { RETIRED_SLUGS, slugify, uniqueSlug } from "@/lib/slug";
 
 const ALL_GENRES = ["Δράμα", "Θρίλερ", "Επιστημονική Φαντασία", "Κωμωδία", "Βιογραφία", "Ιστορική", "Φαντασία", "Ρομαντική", "Εγκληματική", "Φεστιβάλ", "Ειδήσεις"];
 const POST_TYPES = ["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"] as const;
 const BADGES = ["NEW REVIEW", "TRENDING", "EDITORIAL", "EXCLUSIVE"] as const;
+const STATES: { value: PostState; label: string }[] = [
+  { value: "live", label: "Δημοσιευμένο" },
+  { value: "scheduled", label: "Προγραμματισμένο" },
+  { value: "draft", label: "Πρόχειρο" },
+];
+
+// an ISO date as the value of a datetime-local input, in the browser's own time zone
+function toLocalInput(iso: string) {
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1200&q=80";
 
 // The full-page form for writing a new post (no `post`) or editing an existing one.
 export default function PostEditor({ post }: { post?: Post }) {
-  const { posts, addPost, updatePost } = usePosts();
+  const { allPosts, addPost, updatePost } = usePosts();
   const router = useRouter();
-  const otherSlugs = posts.filter((p) => p.id !== post?.id).map((p) => p.slug);
+  const otherSlugs = allPosts.filter((p) => p.id !== post?.id).map((p) => p.slug);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [dirty, setDirty] = useState(false);
+  // what the post was when the editor opened: a new post starts out as "publish now"
+  const [openedAs] = useState<PostState>(() => (post ? postState(post, Date.now()) : "live"));
+  const [state, setState] = useState<PostState>(openedAs);
+  const [scheduleAt, setScheduleAt] = useState(() => (post && openedAs === "scheduled" ? toLocalInput(post.date) : ""));
   const [form, setForm] = useState({
     title: post?.title ?? "",
     slug: post?.slug ?? "",
@@ -67,12 +85,25 @@ export default function PostEditor({ post }: { post?: Post }) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.content) { setError("Το κείμενο του άρθρου είναι κενό."); return; }
+    const now = Date.now();
+    if (state !== "draft" && !form.content) { setError("Το κείμενο του άρθρου είναι κενό."); return; }
+    if (state === "scheduled" && !(new Date(scheduleAt).getTime() > now)) {
+      setError("Διάλεξε ημερομηνία και ώρα στο μέλλον για τον προγραμματισμό.");
+      return;
+    }
+    // the date is when readers first see the post: kept for a post that is already live, the chosen
+    // moment when scheduling, and the moment of publishing otherwise. A draft keeps whatever it had.
+    const date =
+      state === "scheduled" ? new Date(scheduleAt).toISOString()
+      : post && (state === "draft" || openedAs === "live") ? post.date
+      : new Date(now).toISOString();
     if (!slug) { setError("Η διεύθυνση δεν μπορεί να είναι κενή."); return; }
     if (otherSlugs.includes(slug)) { setError("Υπάρχει ήδη άλλη ανάρτηση με αυτή τη διεύθυνση."); return; }
 
     const fields = {
       slug,
+      date,
+      status: state === "draft" ? ("draft" as const) : ("published" as const),
       title: form.title,
       subtitle: form.subtitle,
       excerpt: form.excerpt,
@@ -93,11 +124,12 @@ export default function PostEditor({ post }: { post?: Post }) {
     setError("");
     const err = post
       ? await updatePost({ ...post, ...fields, image: form.image || post.image })
-      : await addPost({ ...fields, id: Date.now().toString(), date: new Date().toISOString(), image: form.image || DEFAULT_IMAGE });
+      : await addPost({ ...fields, id: now.toString(), image: form.image || DEFAULT_IMAGE });
     setSaving(false);
     if (err) { setError(err); return; }
     setDirty(false);
-    router.push(`/posts/${encodeURIComponent(slug)}`);
+    // only a live post has a public page; drafts and scheduled posts are listed on the admin page
+    router.push(state === "live" ? `/posts/${encodeURIComponent(slug)}` : "/admin");
   }
 
   return (
@@ -126,8 +158,33 @@ export default function PostEditor({ post }: { post?: Post }) {
       </div>
 
       <aside className="bg-[#F2AA48] border-[3px] border-black p-5 space-y-4 lg:sticky lg:top-28">
-        <Field label="Σύνοψη *">
-          <textarea required value={form.excerpt} onChange={(e) => set("excerpt", e.target.value)} rows={3} className={input} />
+        <Field label="Κατάσταση">
+          <div className="flex flex-wrap gap-2">
+            {STATES.map((s) => (
+              <button key={s.value} type="button" onClick={() => { setState(s.value); setDirty(true); }} className={chip(state === s.value)}>
+                {s.label}
+              </button>
+            ))}
+          </div>
+          {state === "scheduled" && (
+            <input
+              type="datetime-local"
+              required
+              value={scheduleAt}
+              onChange={(e) => { setScheduleAt(e.target.value); setDirty(true); }}
+              aria-label="Ημερομηνία και ώρα δημοσίευσης"
+              className={`${input} mt-2`}
+            />
+          )}
+          <p className="mt-2 text-xs text-black/70">
+            {state === "draft" && "Το βλέπεις μόνο εσύ. Μπορείς να το αποθηκεύσεις μισοτελειωμένο."}
+            {state === "scheduled" && "Θα εμφανιστεί μόνο του στους αναγνώστες την ώρα που θα ορίσεις."}
+            {state === "live" && (openedAs === "live" && post ? "Είναι ορατό στους αναγνώστες." : "Θα γίνει ορατό στους αναγνώστες μόλις αποθηκεύσεις.")}
+          </p>
+        </Field>
+
+        <Field label={state === "draft" ? "Σύνοψη" : "Σύνοψη *"}>
+          <textarea required={state !== "draft"} value={form.excerpt} onChange={(e) => set("excerpt", e.target.value)} rows={3} className={input} />
         </Field>
 
         <Field label="Τύπος άρθρου">
@@ -147,8 +204,8 @@ export default function PostEditor({ post }: { post?: Post }) {
         </Field>
 
         <div className="grid grid-cols-2 gap-4">
-          <Field label="Συγγραφέας *">
-            <input required value={form.author} onChange={(e) => set("author", e.target.value)} className={input} />
+          <Field label={state === "draft" ? "Συγγραφέας" : "Συγγραφέας *"}>
+            <input required={state !== "draft"} value={form.author} onChange={(e) => set("author", e.target.value)} className={input} />
           </Field>
           <Field label="Σκηνοθέτης">
             <input value={form.director} onChange={(e) => set("director", e.target.value)} className={input} />
@@ -210,10 +267,15 @@ export default function PostEditor({ post }: { post?: Post }) {
 
         <div className="flex gap-3 pt-2">
           <button type="submit" disabled={saving} className="flex-1 font-sans text-sm font-semibold uppercase tracking-widest bg-white text-black border-[3px] border-black py-2.5 press disabled:opacity-50">
-            {saving ? "Αποθήκευση…" : post ? "Αποθήκευση" : "Δημοσίευση"}
+            {saving
+              ? "Αποθήκευση…"
+              : state === "draft" ? "Αποθήκευση πρόχειρου"
+              : state === "scheduled" ? "Προγραμματισμός"
+              : openedAs === "live" && post ? "Αποθήκευση"
+              : "Δημοσίευση"}
           </button>
           <Link
-            href={post ? `/posts/${encodeURIComponent(post.slug)}` : "/posts"}
+            href={post && openedAs === "live" ? `/posts/${encodeURIComponent(post.slug)}` : "/admin"}
             className="px-5 py-2.5 font-sans text-sm font-semibold uppercase tracking-widest border-[3px] border-black text-black hover:bg-black hover:text-white transition-colors duration-300"
           >
             Ακύρωση

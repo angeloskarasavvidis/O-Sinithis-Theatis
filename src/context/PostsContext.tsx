@@ -1,12 +1,16 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { Post } from "@/types";
 import { supabase } from "@/lib/supabase";
 import { rowToPost } from "@/lib/posts";
+import { postState } from "@/lib/postStatus";
 
 interface PostsContextType {
+  /** Posts readers can see: published, with a date that has passed. */
   posts: Post[];
+  /** Everything the logged-in admin can read, drafts and scheduled posts included. */
+  allPosts: Post[];
   /** true only when there is nothing to show yet */
   loading: boolean;
   /** true once the full posts (with article bodies) have been loaded in the browser */
@@ -21,7 +25,11 @@ const PostsContext = createContext<PostsContextType | null>(null);
 // `initialPosts` are rendered on the server (without article bodies) so pages have content in
 // their HTML. The browser then loads the full, current list and replaces them.
 export function PostsProvider({ children, initialPosts = [] }: { children: ReactNode; initialPosts?: Post[] }) {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [allPosts, setPosts] = useState<Post[]>(initialPosts);
+  // the moment the list was last loaded or changed; decides which scheduled posts count as live.
+  // The server only ever sends live posts, so everything passes until the browser has loaded its own.
+  const [checkedAt, setCheckedAt] = useState(Number.MAX_SAFE_INTEGER);
+  const posts = useMemo(() => allPosts.filter((p) => postState(p, checkedAt) === "live"), [allPosts, checkedAt]);
   const [loading, setLoading] = useState(initialPosts.length === 0);
   const [ready, setReady] = useState(false);
 
@@ -38,6 +46,7 @@ export function PostsProvider({ children, initialPosts = [] }: { children: React
           console.error("[PostsContext] Supabase error:", error.message);
         } else if (data) {
           setPosts(data.map(rowToPost));
+          setCheckedAt(Date.now());
           setReady(true);
         }
         setLoading(false);
@@ -64,9 +73,13 @@ export function PostsProvider({ children, initialPosts = [] }: { children: React
       featured:     post.featured,
       tags:         post.tags,
       badge:        post.badge ?? null,
+      status:       post.status,
     };
     const { error } = await supabase.from("posts").insert(row);
-    if (!error) setPosts((prev) => [post, ...prev]);
+    if (!error) {
+      setPosts((prev) => [post, ...prev]);
+      setCheckedAt(Date.now());
+    }
     return error ? error.message : null;
   }
 
@@ -89,9 +102,13 @@ export function PostsProvider({ children, initialPosts = [] }: { children: React
       featured:     post.featured,
       tags:         post.tags,
       badge:        post.badge ?? null,
+      status:       post.status,
     };
     const { data, error } = await supabase.from("posts").update(row).eq("id", post.id).select();
-    if (!error) setPosts((prev) => prev.map((p) => (p.id === post.id ? post : p)));
+    if (!error) {
+      setPosts((prev) => prev.map((p) => (p.id === post.id ? post : p)));
+      setCheckedAt(Date.now());
+    }
     return error ? error.message : null;
   }
 
@@ -101,7 +118,7 @@ export function PostsProvider({ children, initialPosts = [] }: { children: React
   }
 
   return (
-    <PostsContext.Provider value={{ posts, loading, ready, addPost, updatePost, removePost }}>
+    <PostsContext.Provider value={{ posts, allPosts, loading, ready, addPost, updatePost, removePost }}>
       {children}
     </PostsContext.Provider>
   );

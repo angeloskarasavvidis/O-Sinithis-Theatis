@@ -162,10 +162,10 @@ function NavbarBar({ postType }: { postType: string | null }) {
 
             {isLoggedIn && (
               <>
-                <span className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-emerald-300">
+                <Link href="/admin" className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-emerald-300 hover:text-white transition-colors duration-300">
                   <ShieldCheck className="w-3 h-3" />
                   Admin
-                </span>
+                </Link>
                 <button
                   onClick={logout}
                   className="hidden md:flex items-center gap-1 font-pixel text-[8px] text-white/70 hover:text-white transition-colors duration-300"
@@ -243,10 +243,14 @@ function NavbarBar({ postType }: { postType: string | null }) {
 
         {isLoggedIn && (
           <div className="mt-auto flex items-center justify-between gap-3 px-4 py-4 border-t border-white/20">
-            <span className="flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-widest text-emerald-300">
+            <Link
+              href="/admin"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-widest text-emerald-300 hover:text-white transition-colors duration-300"
+            >
               <ShieldCheck className="w-4 h-4" />
               Admin
-            </span>
+            </Link>
             <button
               onClick={() => { logout(); setOpen(false); }}
               className="flex items-center gap-1.5 font-sans text-xs font-semibold uppercase tracking-widest text-white hover:text-[#F2AA48] transition-colors duration-300"

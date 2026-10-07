@@ -8,8 +8,8 @@ import { usePosts } from "@/context/PostsContext";
 
 export default function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { posts, ready } = usePosts();
-  const post = posts.find((p) => p.id === decodeURIComponent(id));
+  const { allPosts, ready } = usePosts();
+  const post = allPosts.find((p) => p.id === decodeURIComponent(id));
 
   return (
     <AdminGate>

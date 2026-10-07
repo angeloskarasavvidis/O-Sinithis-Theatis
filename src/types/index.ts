@@ -17,4 +17,6 @@ export interface Post {
   featured: boolean;
   tags: string[];
   badge?: "NEW REVIEW" | "TRENDING" | "EDITORIAL" | "EXCLUSIVE";
+  /** A draft is only visible to the admin. A published post goes live once its `date` has passed. */
+  status: "draft" | "published";
 }

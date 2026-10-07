@@ -21,6 +21,8 @@ export function rowToPost(row: Record<string, unknown>): Post {
     featured:    row.featured as boolean,
     tags:        row.tags as string[],
     badge:       (row.badge as Post["badge"] | null) ?? undefined,
+    // server reads go through the public key, which can only see published posts
+    status:      row.status === "draft" ? "draft" : "published",
   };
 }
 
