@@ -37,6 +37,14 @@ export function slugify(title: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+// Addresses that early posts were published under, before Greek titles were transliterated,
+// mapped to the post id. A visit to one of them is redirected to that post's current address.
+export const RETIRED_SLUGS: Record<string, string> = {
+  "--horror---1787314355391": "1787314355391",
+  "--spider-man----1785493568507": "1785493568506",
+  "--1784647058409": "1784647058409",
+};
+
 // Appends -2, -3, ... until the slug is not in `taken`.
 export function uniqueSlug(title: string, taken: Iterable<string>): string {
   const used = new Set(taken);

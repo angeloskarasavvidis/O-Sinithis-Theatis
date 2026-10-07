@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Post } from "@/types";
 import { usePosts } from "@/context/PostsContext";
 import ImageUploader from "@/components/admin/ImageUploader";
+import { RETIRED_SLUGS, slugify, uniqueSlug } from "@/lib/slug";
 
 const ALL_GENRES = ["Δράμα", "Θρίλερ", "Επιστημονική Φαντασία", "Κωμωδία", "Βιογραφία", "Ιστορική", "Φαντασία", "Ρομαντική", "Εγκληματική", "Φεστιβάλ", "Ειδήσεις"];
 const POST_TYPES = ["Κριτική", "Αφιέρωμα", "Νέα", "Συνέντευξη"] as const;
@@ -16,11 +17,13 @@ interface Props {
 }
 
 export default function EditPostModal({ post, onClose }: Props) {
-  const { updatePost } = usePosts();
+  const { posts, updatePost } = usePosts();
+  const otherSlugs = posts.filter((p) => p.id !== post.id).map((p) => p.slug);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: post.title,
+    slug: post.slug,
     subtitle: post.subtitle ?? "",
     excerpt: post.excerpt,
     content: post.content,
@@ -48,8 +51,13 @@ export default function EditPostModal({ post, onClose }: Props) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // the address is kept exactly as it was unless the field was changed
+    const slug = form.slug === post.slug ? post.slug : slugify(form.slug);
+    if (!slug) { setError("Η διεύθυνση δεν μπορεί να είναι κενή."); return; }
+    if (otherSlugs.includes(slug)) { setError("Υπάρχει ήδη άλλη ανάρτηση με αυτή τη διεύθυνση."); return; }
     const updated: Post = {
       ...post,
+      slug,
       title: form.title,
       subtitle: form.subtitle,
       excerpt: form.excerpt,
@@ -87,6 +95,32 @@ export default function EditPostModal({ post, onClose }: Props) {
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <Field label="Τίτλος *">
             <input required value={form.title} onChange={(e) => set("title", e.target.value)} className={input} />
+          </Field>
+          <Field label="Διεύθυνση σελίδας">
+            <div className="flex gap-2">
+              <input
+                required
+                value={form.slug}
+                onChange={(e) => set("slug", e.target.value)}
+                spellCheck={false}
+                autoCapitalize="none"
+                className={input}
+              />
+              <button
+                type="button"
+                onClick={() => set("slug", uniqueSlug(form.title, otherSlugs))}
+                className="px-3 py-2 bg-black text-[#F2AA48] text-sm font-semibold border-2 border-black hover:bg-white hover:text-black transition-colors whitespace-nowrap"
+              >
+                Από τον τίτλο
+              </button>
+            </div>
+            <p className="mt-1 text-xs text-black/70 break-all">
+              /posts/{form.slug === post.slug ? post.slug : slugify(form.slug)}
+              {form.slug !== post.slug &&
+                (post.slug in RETIRED_SLUGS
+                  ? " · Ο παλιός σύνδεσμος θα οδηγεί αυτόματα στη νέα διεύθυνση."
+                  : " · Οι παλιοί σύνδεσμοι προς αυτή την ανάρτηση θα πάψουν να λειτουργούν.")}
+            </p>
           </Field>
           <Field label="Υπότιτλος">
             <input value={form.subtitle} onChange={(e) => set("subtitle", e.target.value)} className={input} />

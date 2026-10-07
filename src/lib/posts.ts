@@ -54,6 +54,12 @@ export async function fetchPostSummaries(): Promise<Post[]> {
   return (data as unknown as Record<string, unknown>[]).map(rowToPost);
 }
 
+/** The current slug of the post with this id, or null. Used to redirect retired addresses. */
+export async function fetchSlugById(id: string): Promise<string | null> {
+  const { data } = await serverClient().from("posts").select("slug").eq("id", id).maybeSingle();
+  return (data?.slug as string | undefined) ?? null;
+}
+
 /** One full post, or null if there is none with this slug. */
 export async function fetchPostBySlug(slug: string): Promise<Post | null> {
   const { data, error } = await serverClient().from("posts").select("*").eq("slug", slug).maybeSingle();

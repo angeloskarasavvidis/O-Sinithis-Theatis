@@ -1,7 +1,8 @@
 import { cache } from "react";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { fetchPostBySlug } from "@/lib/posts";
+import { notFound, permanentRedirect } from "next/navigation";
+import { fetchPostBySlug, fetchSlugById } from "@/lib/posts";
+import { RETIRED_SLUGS } from "@/lib/slug";
 import { sanitizePostHtml } from "@/lib/sanitize";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import ArticleView from "./ArticleView";
@@ -41,7 +42,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PostPage({ params }: Props) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) notFound();
+  if (!post) {
+    // an old address of a post that has since been given a readable one
+    const retiredId = RETIRED_SLUGS[decodeURIComponent(slug)];
+    const currentSlug = retiredId ? await fetchSlugById(retiredId) : null;
+    if (currentSlug) permanentRedirect(`/posts/${encodeURIComponent(currentSlug)}`);
+    notFound();
+  }
 
   const url = `${SITE_URL}/posts/${encodeURIComponent(post.slug)}`;
   const structuredData = {

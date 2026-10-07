@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DOMPurify from "dompurify";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,6 +28,12 @@ export default function ArticleView({ initialPost, shareUrl }: { initialPost: Po
 
   const livePost = ready ? posts.find((p) => p.id === initialPost.id) : undefined;
   const post = ready ? livePost : initialPost;
+
+  // if an admin changes this post's address, move to it
+  const liveSlug = livePost?.slug;
+  useEffect(() => {
+    if (liveSlug && liveSlug !== initialPost.slug) router.replace(`/posts/${encodeURIComponent(liveSlug)}`);
+  }, [liveSlug, initialPost.slug, router]);
 
   const safeContent = useMemo(
     () => (livePost ? DOMPurify.sanitize(livePost.content) : initialPost.content),
