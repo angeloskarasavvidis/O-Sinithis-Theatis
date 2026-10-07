@@ -3,10 +3,14 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { Post } from "@/types";
 import { supabase } from "@/lib/supabase";
+import { rowToPost } from "@/lib/posts";
 
 interface PostsContextType {
   posts: Post[];
+  /** true only when there is nothing to show yet */
   loading: boolean;
+  /** true once the full posts (with article bodies) have been loaded in the browser */
+  ready: boolean;
   addPost: (post: Post) => Promise<string | null>;
   updatePost: (post: Post) => Promise<string | null>;
   removePost: (id: string) => Promise<void>;
@@ -14,32 +18,12 @@ interface PostsContextType {
 
 const PostsContext = createContext<PostsContextType | null>(null);
 
-function rowToPost(row: Record<string, unknown>): Post {
-  return {
-    id:          String(row.id),
-    slug:        row.slug as string,
-    title:       row.title as string,
-    subtitle:    row.subtitle as string,
-    excerpt:     row.excerpt as string,
-    content:     row.content as string,
-    author:      row.author as string,
-    date:        row.date as string,
-    readingTime: row.reading_time as number,
-    genre:       row.genre as string[],
-    director:    row.director as string,
-    year:        row.year as number,
-    postType:    row.post_type as Post["postType"],
-    rating:      row.rating as number | undefined,
-    image:       row.image as string,
-    featured:    row.featured as boolean,
-    tags:        row.tags as string[],
-    badge:       row.badge as Post["badge"] | undefined,
-  };
-}
-
-export function PostsProvider({ children }: { children: ReactNode }) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+// `initialPosts` are rendered on the server (without article bodies) so pages have content in
+// their HTML. The browser then loads the full, current list and replaces them.
+export function PostsProvider({ children, initialPosts = [] }: { children: ReactNode; initialPosts?: Post[] }) {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [loading, setLoading] = useState(initialPosts.length === 0);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     // clear any stale localStorage from the old version of the app
@@ -54,6 +38,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
           console.error("[PostsContext] Supabase error:", error.message);
         } else if (data) {
           setPosts(data.map(rowToPost));
+          setReady(true);
         }
         setLoading(false);
       });
@@ -116,7 +101,7 @@ export function PostsProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <PostsContext.Provider value={{ posts, loading, addPost, updatePost, removePost }}>
+    <PostsContext.Provider value={{ posts, loading, ready, addPost, updatePost, removePost }}>
       {children}
     </PostsContext.Provider>
   );

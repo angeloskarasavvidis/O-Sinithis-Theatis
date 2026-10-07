@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Σχετικά",
+  description: "Ποιος γράφει τον Συνήθη Θεατή και πώς να επικοινωνήσεις μαζί μας.",
+  alternates: { canonical: "/about" },
+};
+
 export default function AboutPage() {
   const team = [
     { name: "Άγγελος Καρασαββίδης", role: "Ιδρυτής & Αρχισυντάκτης", bio: "Δήθεν σινεφίλ με ειδίκευση στο να το παίζει ψαγμένος." },

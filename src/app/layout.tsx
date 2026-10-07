@@ -7,6 +7,11 @@ import { AuthProvider } from "@/context/AuthContext";
 import { PostsProvider } from "@/context/PostsContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { fetchPostSummaries } from "@/lib/posts";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+
+// pages are rebuilt in the background at most once a minute, so new posts reach crawlers quickly
+export const revalidate = 60;
 
 // headings
 const sofiaCondensed = Sofia_Sans_Extra_Condensed({
@@ -28,20 +33,32 @@ const pressStart = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "Ο Συνήθης Θεατής",
-  description: "Κριτικές, αφιερώματα και νέα κινηματογράφου",
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_NAME, template: `%s · ${SITE_NAME}` },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    locale: "el_GR",
+    url: "/",
+  },
   icons: {
     icon: "/small_logo.svg",
     apple: "/apple-icon.png",
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const initialPosts = await fetchPostSummaries();
+
   return (
     <html lang="el" className="scroll-smooth">
       <body className={`${sofiaCondensed.variable} ${sofiaSans.variable} ${pressStart.variable} font-sans bg-[#009DF8] text-black antialiased`}>
         <AuthProvider>
-          <PostsProvider>
+          <PostsProvider initialPosts={initialPosts}>
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />

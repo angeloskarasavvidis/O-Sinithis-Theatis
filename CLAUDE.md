@@ -27,10 +27,11 @@ There is no test suite. Verify changes with `npm run build`, `npm run lint`, and
 
 ## Architecture
 
-Everything that shows posts is a client component. There are no API routes, server actions or server-side data fetching.
+Pages are rendered on the server with post data, then the browser takes over. There are no API routes or server actions; all writes go from the browser straight to Supabase.
 
 - `src/lib/supabase.ts`: the single browser Supabase client (anon key).
-- `src/context/PostsContext.tsx`: loads the whole `posts` table once on mount and exposes `posts`, `loading`, `addPost`, `updatePost`, `removePost`. Pages filter and sort that array in memory. It also maps DB columns to the `Post` type: the table is snake_case (`reading_time`, `post_type`), the type in `src/types/index.ts` is camelCase. A new post field must be added in the type, `rowToPost`, both row builders in the context, `scripts/seed.mjs`, and both admin modals.
+- `src/lib/posts.ts`: server-side reads. `fetchPostSummaries()` returns every post without its body and `fetchPostBySlug()` one full post; both cache for 60 seconds. It also holds `rowToPost`, which maps DB columns to the `Post` type: the table is snake_case (`reading_time`, `post_type`), the type in `src/types/index.ts` is camelCase. A new post field must be added in the type, `rowToPost`, the summary column list, both row builders in `PostsContext`, `scripts/seed.mjs`, and both admin modals.
+- `src/context/PostsContext.tsx`: the root layout fetches the summaries and passes them in as `initialPosts`, so every page has posts in its HTML. In the browser the provider then loads the full table and replaces them; `ready` turns true at that point. Until then posts have an empty `content`, so anything that edits a post must wait for `ready` (the edit buttons do). It exposes `posts`, `loading`, `ready`, `addPost`, `updatePost`, `removePost`. Pages filter and sort the array in memory.
 - `src/context/AuthContext.tsx`: Supabase email/password auth. `isLoggedIn` is true for any session, and any logged-in user is treated as the admin. Public signup is intentionally disabled (`/signup` is a placeholder).
 - `src/app/layout.tsx`: fonts, providers, `Navbar`, `Footer`.
 
@@ -38,7 +39,7 @@ Routes: `/` (hero slider + sections), `/posts` (filters, "load more"), `/posts/[
 
 Admin UI is inline, not a separate area: when logged in, add/edit/delete controls appear on the home page, post list, post cards and the article page, using the modals in `src/components/admin/`. `AddPostModal` and `EditPostModal` duplicate their form and constants, so change both together.
 
-Post `content` is stored as an HTML string and rendered with `dangerouslySetInnerHTML` after `DOMPurify.sanitize`. Never render it unsanitized.
+Post `content` is stored as an HTML string and rendered with `dangerouslySetInnerHTML`. It is sanitised twice: on the server with `sanitize-html` (`src/lib/sanitize.ts`) for the first render, and in the browser with `DOMPurify` once live data arrives. Never render it unsanitized.
 
 Images: uploads go to the Supabase storage bucket `images`; otherwise an `https://` URL is pasted in. Remote image hosts are allowlisted in two places in `next.config.ts` (`images.remotePatterns` and the CSP `img-src`).
 
@@ -48,7 +49,9 @@ Images: uploads go to the Supabase storage bucket `images`; otherwise an `https:
 - **Access control lives in Supabase**: the browser writes straight to the `posts` table with the anon key, so Row Level Security policies in the Supabase dashboard are the only thing stopping anonymous writes. Hiding a button behind `isLoggedIn` is not security.
 - **Slugs**: new posts get their slug from `uniqueSlug` in `src/lib/slug.ts`, which transliterates Greek to Latin and appends `-2`, `-3` on a clash. Slugs are set once at creation and never change on edit. Posts created before this fix still have their old slugs (some are just dashes and a timestamp).
 - **URL filters**: on `/posts` the query string is the single source of truth for the filters (`search`, `genre`, `director`, `year`, `postType`, `sort`). Do not copy them into component state; change a filter by navigating with `router.push`. Only the search box keeps a local draft, written to the URL after a short pause. The navbar reads `postType` to highlight the right link, which is why it is wrapped in `Suspense`.
-- **SEO**: because posts load client-side, article pages have no per-post metadata and no server-rendered content.
+- **Search engines**: do not move post rendering back to browser-only. The article page (`src/app/posts/[slug]/page.tsx`) is a server component that fetches the post, sets per-article metadata and structured data, sanitises the body with `src/lib/sanitize.ts`, and hands it to the client `ArticleView`. `/posts` has a server `page.tsx` that awaits `searchParams` so the filtered list is rendered per request. `src/app/sitemap.ts` and `robots.ts` use `SITE_URL` from `src/lib/site.ts`, which reads `NEXT_PUBLIC_SITE_URL` or Vercel's production domain.
+- **Hydration**: server and browser must print the same thing. Format dates with `formatDate` from `src/lib/format.ts` (fixed Athens time zone), and never read `window` during render.
+- **Title template**: the root layout sets `title.template`. A nested layout that sets a plain string title drops the template for the pages below it.
 
 ## Design
 

@@ -12,6 +12,7 @@ import AddPostModal from "@/components/admin/AddPostModal";
 import RatingStub from "@/components/RatingStub";
 import TitleMarquee from "@/components/TitleMarquee";
 import TypeStamp from "@/components/TypeStamp";
+import { formatDate } from "@/lib/format";
 
 const ALL_GENRES = ["Δράμα", "Θρίλερ", "Επιστημονική Φαντασία", "Κωμωδία", "Βιογραφία", "Ιστορική", "Φαντασία", "Ρομαντική", "Εγκληματική", "Φεστιβάλ"];
 
@@ -32,10 +33,6 @@ function SectionTitle({ label, href, linkLabel }: { label: string; href?: string
       )}
     </div>
   );
-}
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" });
 }
 
 /* Latest: one large lead story next to a compact list */

@@ -10,10 +10,11 @@ import { usePosts } from "@/context/PostsContext";
 import EditPostModal from "@/components/admin/EditPostModal";
 import RatingStub from "@/components/RatingStub";
 import TypeStamp from "@/components/TypeStamp";
+import { formatDate } from "@/lib/format";
 
 export default function PostCard({ post }: { post: Post }) {
   const { isLoggedIn } = useAuth();
-  const { removePost } = usePosts();
+  const { ready, removePost } = usePosts();
   const [showEdit, setShowEdit] = useState(false);
 
   function handleDelete(e: React.MouseEvent) {
@@ -60,7 +61,7 @@ export default function PostCard({ post }: { post: Post }) {
 
         <div className="flex items-center justify-between pt-3 border-t-2 border-black">
           <span className="font-sans text-xs uppercase tracking-widest text-black/70">
-            {new Date(post.date).toLocaleDateString("el-GR")}
+            {formatDate(post.date, "short")}
           </span>
           <span className="font-sans text-xs uppercase tracking-widest text-black/70">
             {post.readingTime} λεπτά
@@ -68,7 +69,7 @@ export default function PostCard({ post }: { post: Post }) {
         </div>
       </div>
 
-      {isLoggedIn && (
+      {isLoggedIn && ready && (
         <div className="absolute top-8 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={(e) => { e.preventDefault(); setShowEdit(true); }}
